@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, charset=utf-8">
+    <title>AsistenciaUN</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/formato.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <img src="img/logounal.png" alt="Logo UNAL">
+        <a class="navbar-brand" href="#">AsistenciaUN</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showAlert()" href="#">Mis Cursos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Ayuda</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#loginRegisterModal">Iniciar Sesión</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5 pt-4">
+        <h1>Bienvenido a mi sitio web</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nunc id lacinia tincidunt, nisl nunc tincidunt urna, id aliquam nunc nunc id enim. Sed auctor, nunc id lacinia tincidunt, nisl nunc tincidunt urna, id aliquam nunc nunc id enim.</p>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginRegisterModal" tabindex="-1" role="dialog" aria-labelledby="loginRegisterModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Iniciar Sesión</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">Registrarse</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content p-4" id="myTabContent">
+                        <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+                            <form>
+                                <div class="form-group">
+                                    <label for="email">Correo Electrónico</label>
+                                    <input type="email" class="form-control" id="email" placeholder="Ingrese su correo electrónico">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Contraseña</label>
+                                    <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña">
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
+                            <form>
+                                <div class="form-group">
+                                    <label for="name">Nombre</label>
+                                    <input type="text" class="form-control" id="name" placeholder="Ingrese su nombre">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Correo Electrónico</label>
+                                    <input type="email" class="form-control" id="email" placeholder="Ingrese su correo electrónico">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Contraseña</label>
+                                    <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña">
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Registrarse</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <div id="messageBox" class="alert alert-warning" style="display: none; position: absolute; right: 0; top: 80px;">
+        Esta funcionalidad no está disponible sin iniciar sesión.
+    </div>
+
+    <script>
+        function showAlert() {
+            event.preventDefault();
+            document.getElementById("messageBox").style.display = "block";
+            setTimeout(function() {
+                document.getElementById("messageBox").style.display = "none";
+            }, 5000); // Cambia el valor al número de milisegundos deseado (por ejemplo, 3000 para 3 segundos)
+        };
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

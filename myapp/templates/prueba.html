@@ -1,34 +1,147 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
-    <title>Bootstrap Example</title>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  </head>
-  <body class="p-3 m-0 border-0 bd-example m-0 border-0">
 
-    <!-- Example Code -->
-    
-        
-    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-      <button type="button" class="btn btn-primary">1</button>
-      <button type="button" class="btn btn-primary">2</button>
-    
-      <div class="btn-group" role="group">
-        <button type="button" class="btn btn-primary dropdown-toggle show" data-bs-toggle="dropdown" aria-expanded="true">
-          Dropdown
-        </button>
-        <ul class="dropdown-menu show" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 40px, 0px);" data-popper-placement="bottom-start">
-          <li><a class="dropdown-item" href="#">Dropdown link</a></li>
-          <li><a class="dropdown-item" href="#">Dropdown link</a></li>
-        </ul>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AsistenciaUN</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/formato.css">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <img src="img/logounal.png" alt="Logo UNAL">
+    <a class="navbar-brand" href="index.html">AsistenciaUN</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="index.html">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="cursos_estudiantes.html">Mis Cursos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Ayuda</a>
+        </li>
+        <li class="nav-item pl-2 pr-3 ">
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Nombre de Usuario
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Perfil</a></li>
+              <li><a class="dropdown-item" href="#">Ajustes</a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+  <div class="container mt-5 mb-5 pt-5">
+
+    <div class="row">
+      <div class="col-3">
+        <div id="list-example" class="list-group">
+          <a class="list-group-item list-group-item-action" href="#list-item-1">Datos Personales</a>
+          <a class="list-group-item list-group-item-action" href="#list-item-2">información de Cursos</a>
+        </div>
+      </div>
+      <div class="col-9">
+        <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0"
+          class="scrollspy-example scrollspy-perfil" tabindex="0">
+          <h4 id="list-item-1">Datos Personales</h4>
+          <p>En este espacio econtrará la información de su perfil, la cual podrá editar en cualquier momento.</p>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon2">Rol</span>
+            <input type="text" class="form-control" value="Profesor" aria-label="Recipient's username"
+              aria-describedby="basic-addon2" disabled>
+            <button class="btn btn-outline-success"><i class="bi bi-pencil-square"></i> Editar</button>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon2">Nombres</span>
+            <input type="text" class="form-control" value="Nombres" aria-label="Recipient's username"
+              aria-describedby="basic-addon2" disabled>
+            <button class="btn btn-outline-success"><i class="bi bi-pencil-square"></i> Editar</button>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon2">Apellidos</span>
+            <input type="text" class="form-control" value="Apellidos" aria-label="Recipient's username"
+              aria-describedby="basic-addon2" disabled>
+            <button class="btn btn-outline-success"><i class="bi bi-pencil-square"></i> Editar</button>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon2">Documento de Identidad</span>
+            <input type="text" class="form-control" value="100123020" aria-label="Recipient's username"
+              aria-describedby="basic-addon2" disabled>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon2">Correo</span>
+            <input type="text" class="form-control" value="ejemplo@unal.edu.co" aria-label="Recipient's username"
+              aria-describedby="basic-addon2" disabled>
+            <span class="input-group-text" id="basic-addon2">@unal.edu.co</span>
+          </div>
+
+
+          <h4 id="list-item-2" class="mt-5">Información de Cursos</h4>
+          <p>Información de Asistencia</p>
+          <div class="btn-group mb-3" role="group">
+            <div class="input-group mb-3">
+              <label class="input-group-text pl-5 pr-5" for="inputGroupSelect01">Seleccione el Año y Semestre</label>
+              <select class="form-select" id="inputGroupSelect01">
+                <option selected>Todos</option>
+                <option value="1">2024-1</option>
+                <option value="2">2023-2</option>
+                <option value="3">2023-1</option>
+              </select>
+            </div>
+          </div>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Curso</th>
+                <th class="text-center">Asistencias Totales</th>
+                <th class="text-center">Porcentaje de Asistencia</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Nombres Ejemplo del Curso: grupo 1</td>
+                <td class="text-center">10</td>
+                <td class="text-center">80%</td>
+              </tr>
+              <tr>
+                <td>Nombres Ejemplo del Curso: grupo 1</td>
+                <td class="text-center">10</td>
+                <td class="text-center">80%</td>
+              </tr>
+
+              <!-- Agrega más filas según sea necesario -->
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-    
-      
-    <!-- End Example Code -->
-  </body>
+
+  </div>
+
+
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
 </html>

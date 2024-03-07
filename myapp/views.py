@@ -23,11 +23,9 @@ def perfil_profesor(request):
     # Crear gráfico
 
     fig = go.Figure(data=go.Bar(y=[0.98, 0.7, 0.8,0.9], x=['Curso A', 'Curso B', 'Curso C','Curso D']))
-    colores=['#396640']*len(fig.data[0].x)
+    colores=['#9ddea6']*len(fig.data[0].x)
     for i in range(0,len(colores),2):
         colores[i]='#67b072'
-    print(colores)
-
     fig.update_traces(marker_color=colores)
     fig.update_layout(
         title="Porcentaje de Asistencia para el semestre 2024-1",
@@ -35,7 +33,7 @@ def perfil_profesor(request):
         yaxis_title="Porcentaje",
         yaxis_tickformat="%",
         yaxis=dict(tickformat=".0%")
-    )
+    )   
     # Convertir a HTML
     graph = opy.plot(fig, auto_open=False, output_type='div')
     return render(request, 'perfil_profesor.html', {'graph': graph})

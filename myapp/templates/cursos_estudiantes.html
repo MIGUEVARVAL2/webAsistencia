@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,11 +11,13 @@
     <link rel="stylesheet" href="css/formato.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css" rel="stylesheet">
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <img src="img/logounal.png" alt="Logo UNAL">
         <a class="navbar-brand" href="index.html">AsistenciaUN</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -30,12 +33,13 @@
                 </li>
                 <li class="nav-item pl-2 pr-3 ">
                     <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                          Nombre de Usuario
+                        <button type="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Nombre de Usuario
                         </button>
                         <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#">Perfil</a></li>
-                          <li><a class="dropdown-item" href="#">Ajustes</a></li>
+                            <li><a class="dropdown-item" href="#">Perfil</a></li>
+                            <li><a class="dropdown-item" href="#">Ajustes</a></li>
                         </ul>
                     </div>
                 </li>
@@ -44,10 +48,17 @@
     </nav>
 
     <div class="container mt-5 pt-5">
+        <div class="d-grid gap-2 pb-4">
+            <button type="button" class="btn btn-outline-success btn-tomar-asistencia" data-bs-toggle="modal" data-bs-target="#crearCursoModal">
+                Crear Curso
+              </button>
+        </div>
         <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Nombre del Curso" aria-label="Search" aria-describedby="search-button">
+            <input type="text" class="form-control" placeholder="Nombre del Curso" aria-label="Search"
+                aria-describedby="search-button">
             <div class="btn-group mr-2 ml-2" role="group">
-                <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                    aria-expanded="false">
                     Todos
                 </button>
                 <ul class="dropdown-menu">
@@ -64,7 +75,27 @@
             <div class="col-md-6">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title" title="Nombre del Curso Prueba de nombre para cun curso largo">Nombre del Curso Prueba de nombre para cun curso largo</h5>
+                        <h5 class="card-title" title="Nombre del Curso Prueba de nombre para cun curso largo">Nombre del
+                            Curso Prueba de nombre para cun curso largo</h5>
+                        <h6>Grupo 3</h6>
+                        <p class="card-text">
+                            Cantidad Estudiantes: 100 <br>
+                            Cantidad Clases: 10 <br>
+                            Cantidad Inasistencias: 5 <br>
+                            Porcentaje de Asistencia: 95%
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-outline-success" onclick="window.location.href='informacion_curso.html'">Información del Curso</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title" title="Nombre del Curso Prueba de nombre para cun curso largo">Nombre del
+                            Curso Prueba de nombre para cun curso largo</h5>
+                        <h6>Grupo 3</h6>
                         <p class="card-text">
                             Cantidad Estudiantes: 100 <br>
                             Cantidad Clases: 10 <br>
@@ -80,7 +111,8 @@
             <div class="col-md-6">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title" title="Nombre del Curso Prueba de nombre para cun curso largo">Nombre del Curso Prueba de nombre para cun curso largo</h5>
+                        <h5 class="card-title" title="Nombre del Curso Prueba de nombre para cun curso largo">Nombre del
+                            Curso Prueba de nombre para cun curso largo</h5>
                         <p class="card-text">
                             Cantidad Estudiantes: 100 <br>
                             Cantidad Clases: 10 <br>
@@ -96,7 +128,8 @@
             <div class="col-md-6">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title" title="Nombre del Curso Prueba de nombre para cun curso largo">Nombre del Curso Prueba de nombre para cun curso largo</h5>
+                        <h5 class="card-title" title="Nombre del Curso Prueba de nombre para cun curso largo">Nombre del
+                            Curso Prueba de nombre para cun curso largo</h5>
                         <p class="card-text">
                             Cantidad Estudiantes: 100 <br>
                             Cantidad Clases: 10 <br>
@@ -112,7 +145,8 @@
             <div class="col-md-6">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title" title="Nombre del Curso Prueba de nombre para cun curso largo">Nombre del Curso Prueba de nombre para cun curso largo</h5>
+                        <h5 class="card-title" title="Nombre del Curso Prueba de nombre para cun curso largo">Nombre del
+                            Curso Prueba de nombre para cun curso largo</h5>
                         <p class="card-text">
                             Cantidad Estudiantes: 100 <br>
                             Cantidad Clases: 10 <br>
@@ -128,7 +162,8 @@
             <div class="col-md-6">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title" title="Nombre del Curso Prueba de nombre para cun curso largo">Nombre del Curso Prueba de nombre para cun curso largo</h5>
+                        <h5 class="card-title" title="Nombre del Curso Prueba de nombre para cun curso largo">Nombre del
+                            Curso Prueba de nombre para cun curso largo</h5>
                         <p class="card-text">
                             Cantidad Estudiantes: 100 <br>
                             Cantidad Clases: 10 <br>
@@ -144,7 +179,8 @@
             <div class="col-md-6">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title" title="Nombre del Curso Prueba de nombre para cun curso largo">Nombre del Curso Prueba de nombre para cun curso largo</h5>
+                        <h5 class="card-title" title="Nombre del Curso Prueba de nombre para cun curso largo">Nombre del
+                            Curso Prueba de nombre para cun curso largo</h5>
                         <p class="card-text">
                             Cantidad Estudiantes: 100 <br>
                             Cantidad Clases: 10 <br>
@@ -160,23 +196,8 @@
             <div class="col-md-6">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title" title="Nombre del Curso Prueba de nombre para cun curso largo">Nombre del Curso Prueba de nombre para cun curso largo</h5>
-                        <p class="card-text">
-                            Cantidad Estudiantes: 100 <br>
-                            Cantidad Clases: 10 <br>
-                            Cantidad Inasistencias: 5 <br>
-                            Porcentaje de Asistencia: 95%
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <button class="btn btn-outline-success">Información del Curso</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title" title="Nombre del Curso Prueba de nombre para cun curso largo">Nombre del Curso Prueba de nombre para cun curso largo</h5>
+                        <h5 class="card-title" title="Nombre del Curso Prueba de nombre para cun curso largo">Nombre del
+                            Curso Prueba de nombre para cun curso largo</h5>
                         <p class="card-text">
                             Cantidad Estudiantes: 100 <br>
                             Cantidad Clases: 10 <br>
@@ -191,12 +212,57 @@
             </div>
         </div>
     </div>
-
     
+      
+      <!-- Modal -->
+      <div class="modal fade" id="crearCursoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Crear Curso</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="nombreCurso">Nombre del Curso</label>
+                        <input type="text" class="form-control" id="nombreCurso"
+                            placeholder="Ingrese el nombre del curso">
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label for="grupo">Grupo</label>
+                            <input type="text" class="form-control" id="grupo" placeholder="Ingrese el grupo">
+                        </div>
+                        <div class="form-group col-3">
+                            <label for="anio">Año</label>
+                            <input type="text" class="form-control" id="anio" placeholder="Ingrese el año">
+                        </div>
+                        <div class="form-group col-3">
+                            <label for="semestre">Semestre</label>
+                            <input type="text" class="form-control" id="semestre" placeholder="Ingrese el semestre">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Lista de Estudiantes</label>
+                            <input class="form-control" type="file" id="archivo" accept=".xls, .xlsx">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-primary">Guardar</button>
+            </div>
+          </div>
+        </div>
+      </div>    
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

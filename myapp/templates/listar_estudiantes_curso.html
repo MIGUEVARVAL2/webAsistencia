@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,11 +11,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="css/formato.css">
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <img src="img/logounal.png" alt="Logo UNAL">
         <a class="navbar-brand" href="index.html">AsistenciaUN</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -30,12 +33,13 @@
                 </li>
                 <li class="nav-item pl-2 pr-3 ">
                     <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                          Nombre de Usuario
+                        <button type="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Nombre de Usuario
                         </button>
                         <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#">Perfil</a></li>
-                          <li><a class="dropdown-item" href="#">Ajustes</a></li>
+                            <li><a class="dropdown-item" href="#">Perfil</a></li>
+                            <li><a class="dropdown-item" href="#">Ajustes</a></li>
                         </ul>
                     </div>
                 </li>
@@ -44,14 +48,54 @@
     </nav>
 
     <div class="container mt-5 pt-5">
-        
+
         <h1 class="pb-4">Nombre del Curso - Grupo 1</h1>
+        <div class="d-grid gap-2 pb-4">
+            <button type="button" class="btn btn-outline-secondary btn-validar-listado" data-bs-toggle="modal"
+                data-bs-target="#actualizarEstudiantes">
+                Actualizar Listado de Estudiantes del Curso
+            </button>
+        </div>
         <div class="input-group mb-3">
-            <input type="text" class="form-control" aria-label="Search" placeholder="Documento del Estudiante" aria-describedby="search-button">
+            <input type="text" class="form-control" aria-label="Search" placeholder="Documento del Estudiante"
+                aria-describedby="search-button">
             <div class="input-group-append">
                 <button class="btn btn-outline-success" type="button" id="search-button">Buscar Asistencia</button>
             </div>
         </div>
+        <h2>Estudiantes Activos</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre Completo</th>
+                    <th>Documento</th>
+                    <th>Correo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Nombres Estudiante Apellido Estudiante</td>
+                    <td>1001000202</td>
+                    <td>correo@unal.edu.co</td>
+                    <td class="text-center"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i></td>
+                </tr>
+                <tr>
+                    <td>Nombres Estudiante Apellido Estudiante</td>
+                    <td>1001000202</td>
+                    <td>correo@unal.edu.co</td>
+                    <td class="text-center"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i></td>
+                </tr>
+                <tr>
+                    <td>Nombres Estudiante Apellido Estudiante</td>
+                    <td>1001000202</td>
+                    <td>correo@unal.edu.co</td>
+                    <td class="text-center"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i></td>
+                </tr>
+                <!-- Agrega más filas según sea necesario -->
+            </tbody>
+        </table>
+
+        <h2 class="mt-5">Estudiantes Inactivos</h2>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -83,29 +127,41 @@
             </tbody>
         </table>
     </div>
-    
-      
-      <!-- Modal Mostrar Grafico -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+
+    <!-- Modal Actualizar Estudiantes-->
+    <div class="modal fade" id="actualizarEstudiantes" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Actualizar Listado de Estudiantes</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Lista Actualizada de Estudiantes</label>
+                                <input class="form-control" type="file" id="archivo" accept=".xls, .xlsx">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary">Actualizar</button>
+                </div>
             </div>
-            <div class="modal-body">
-              ...
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-          </div>
         </div>
     </div>
+
+    
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

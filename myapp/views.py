@@ -3,49 +3,105 @@ from django.http import HttpResponseRedirect
 from .models import Profesores, Cursos, Estudiantes, EstudiantesCursos
 import plotly.graph_objects as go
 import plotly.offline as opy
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
-def index(request):
-    if request.method == 'POST':
-        rol = request.POST.get('rol')
-        documento = request.POST.get('documento')
-        nombres = request.POST.get('nombres')
-        apellidos = request.POST.get('apellidos')
-        correo = request.POST.get('correo')
-        contrasenia = request.POST.get('contrasenia')
-        if rol == 'profesor':
-            Profesores.objects.create(
-                documento_profesor = documento,
-                nombres_profesor = nombres,
-                apellidos_profesor = apellidos,
-                correo_profesor = correo,
-                contrasenia_profesor = contrasenia
-            )
 
-        elif rol == 'estudiante':
+def cerrar_sesion(request):
+    logout(request)
+    return redirect('index')
+
+
+def index(request):
+    #Recibo todas las solicitudes POST (Formularios)
+    if request.method == 'POST':
+        #Verifico de qué formulario proviene la solicitud
+        if 'inicioSesion' in request.POST:
+            #Obtengo los datos del formulario
+            rol = request.POST.get('rol')
+            correo = request.POST.get('correo')
+            contrasenia = request.POST.get('contrasenia')
+            #Verifico si el usuario existe
+            user = authenticate(request, username=correo, password=contrasenia)
+            if user is not None:
+                #Creo la sesión
+                login(request, user)
+                #Redirijo al usuario a su perfil (Profesor o estudiante)
+                if rol == 'profesor' and Profesores.objects.filter(user=user).exists():
+                    #Obtengo el profesor y guardo el ID en la sesión
+                    profesor = Profesores.objects.get(user=user)
+                    request.session['profesor_id'] = profesor.id
+                    return redirect('perfil_profesor')
+                elif rol == 'estudiante' and Estudiantes.objects.filter(user=user).exists():
+                    #Obtengo el profesor y guardo el ID en la sesión
+                    estudiante= Estudiantes.objects.get(user=user)
+                    request.session['estudiante_id'] = estudiante.id
+                    return redirect('cursos_estudiantes')
+                else:
+                    #En caso de que no se encuentre en la base de datos me devuelve a la página de inicio con un mensaje de error
+                    return render(request, 'index.html', {'error': 'Usuario o contraseña incorrectos'})
+            else:
+                #En caso de que no se encuentre en la base de datos me devuelve a la página de inicio con un mensaje de error
+                return render(request, 'index.html', {'error': 'Usuario o contraseña incorrectos'})
+            
+        elif 'registro' in request.POST:
+            #Obtengo los datos del formulario
+            documento = request.POST.get('documento')
+            nombres = request.POST.get('nombres')
+            apellidos = request.POST.get('apellidos')
+            correo = request.POST.get('correo')
+            contrasenia = request.POST.get('contrasenia')
+            #Creo el usuario
+            if User.objects.filter(username=correo).exists():
+                return render(request, 'index.html', {'error_registro': 'El correo ya está en uso'})
+            user= User.objects.create_user(username=correo, email=correo, password=contrasenia)
+            #Creo el estudiante. Siempre por defecto se va a crear como estudiante, el rol lo cambia es el administrador
             Estudiantes.objects.create(
+                user= user,
                 documento_estudiante = documento,
                 nombres_estudiante = nombres,
                 apellidos_estudiante = apellidos,
-                correo_estudiante = correo,
-                contrasenia_estudiante = contrasenia
             )
 
     return render(request, 'index.html')
 
+@login_required
 def cursos_estudiantes(request):
+    if request.method == 'POST':
+        if 'crear_curso' in request.POST:
+            #Obtengo los datos del formulario
+            nombre_curso = request.POST.get('nombre_curso')
+            anio_curso = request.POST.get('anio_curso')
+            semestre_curso = request.POST.get('semestre_curso')
+            #Obtengo el profesor
+            profesor = Profesores.objects.get(id=request.session['profesor_id'])
+            #Creo el curso
+            curso = Cursos.objects.create(
+                nombre_curso = nombre_curso,
+                anio_curso = anio_curso,
+                profesor_curso = profesor
+            )
+            return redirect('informacion_curso')
+
+
     return render(request, 'cursos_estudiantes.html')
 
+@login_required
 def informacion_curso(request):
     return render(request, 'informacion_curso.html')
 
+@login_required
 def listar_estudiantes_curso(request):
     return render(request, 'listar_estudiantes_curso.html')
 
+@login_required
 def tomar_asistencia(request):
     return render(request, 'tomar_asistencia.html')
 
+@login_required
 def perfil_profesor(request):
     # Crear gráfico
 

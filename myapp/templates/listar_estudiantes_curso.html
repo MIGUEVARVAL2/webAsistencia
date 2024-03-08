@@ -1,0 +1,115 @@
+{% extends "format.html" %}
+
+{% block content %}
+
+<div class="container mt-5 pt-5">
+
+    <h1 class="pb-4">Nombre del Curso - Grupo 1</h1>
+    <div class="d-grid gap-2 pb-4">
+        <button type="button" class="btn btn-outline-secondary btn-validar-listado" data-bs-toggle="modal"
+            data-bs-target="#actualizarEstudiantes">
+            Actualizar Listado de Estudiantes del Curso
+        </button>
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" aria-label="Search" placeholder="Documento del Estudiante"
+            aria-describedby="search-button">
+        <div class="input-group-append">
+            <button class="btn btn-outline-success" type="button" id="search-button">Buscar Asistencia</button>
+        </div>
+    </div>
+    <h2>Estudiantes Activos</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre Completo</th>
+                <th>Documento</th>
+                <th>Correo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Nombres Estudiante Apellido Estudiante</td>
+                <td>1001000202</td>
+                <td>correo@unal.edu.co</td>
+                <td class="text-center"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i></td>
+            </tr>
+            <tr>
+                <td>Nombres Estudiante Apellido Estudiante</td>
+                <td>1001000202</td>
+                <td>correo@unal.edu.co</td>
+                <td class="text-center"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i></td>
+            </tr>
+            <tr>
+                <td>Nombres Estudiante Apellido Estudiante</td>
+                <td>1001000202</td>
+                <td>correo@unal.edu.co</td>
+                <td class="text-center"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i></td>
+            </tr>
+            <!-- Agrega más filas según sea necesario -->
+        </tbody>
+    </table>
+
+    <h2 class="mt-5">Estudiantes Inactivos</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre Completo</th>
+                <th>Documento</th>
+                <th>Correo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Nombres Estudiante Apellido Estudiante</td>
+                <td>1001000202</td>
+                <td>correo@unal.edu.co</td>
+                <td class="text-center"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i></td>
+            </tr>
+            <tr>
+                <td>Nombres Estudiante Apellido Estudiante</td>
+                <td>1001000202</td>
+                <td>correo@unal.edu.co</td>
+                <td class="text-center"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i></td>
+            </tr>
+            <tr>
+                <td>Nombres Estudiante Apellido Estudiante</td>
+                <td>1001000202</td>
+                <td>correo@unal.edu.co</td>
+                <td class="text-center"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i></td>
+            </tr>
+            <!-- Agrega más filas según sea necesario -->
+        </tbody>
+    </table>
+</div>
+
+
+<!-- Modal Actualizar Estudiantes-->
+<div class="modal fade" id="actualizarEstudiantes" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Actualizar Listado de Estudiantes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Lista Actualizada de Estudiantes</label>
+                            <input class="form-control" type="file" id="archivo" accept=".xls, .xlsx">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

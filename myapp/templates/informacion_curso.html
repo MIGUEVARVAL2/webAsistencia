@@ -1,0 +1,200 @@
+{% extends "format.html" %}
+
+{% block content %}
+
+
+<div class="container mt-5 pt-5">
+    <button type="button" class="btn btn-secondary btn-mostrar-grafica" data-bs-toggle="modal"
+        data-bs-target="#exampleModal">
+        Gr&aacute;fica
+    </button>
+
+    <h1 class="pb-4">Nombre del Curso - Grupo 1</h1>
+    <div class="row pb-4 d-flex justify-content-center">
+        <button type="button" class="col-3 mr-4 btn btn-outline-success btn-tomar-asistencia" data-bs-toggle="modal"
+            data-bs-target="#crearFormularioAsistenciaModal">
+            Crear Formulario de Asistencia
+        </button>
+        <button class="col-3 mr-4 ml-4 btn btn-outline-success btn-tomar-asistencia" type="button"
+            onclick="window.location.href='{% url 'listar_estudiantes_curso' %}'">Ver Estudiantes</button>
+        <button type="button" class="col-3 ml-4 btn btn-outline-success btn-tomar-asistencia" data-bs-toggle="modal"
+            data-bs-target="#editarCursoModal">
+            Editar Curso
+        </button>
+    </div>
+    <div class="input-group mb-3">
+        <input type="date" class="form-control" aria-label="Search" aria-describedby="search-button">
+        <div class="input-group-append">
+            <button class="btn btn-outline-success" type="button" id="search-button">Buscar Asistencia</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Asistencia 04/03/2024</h5>
+                    <p class="card-text">
+                        Cantidad Inasistencias: 5 <br>
+                        Porcentaje de Asistencia: 95%
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-outline-success">Información de la Asistencia</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Asistencia 04/03/2024</h5>
+                    <p class="card-text">
+                        Cantidad Inasistencias: 5 <br>
+                        Porcentaje de Asistencia: 95%
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-outline-success">Información de la Asistencia</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Asistencia 04/03/2024</h5>
+                    <p class="card-text">
+                        Cantidad Inasistencias: 5 <br>
+                        Porcentaje de Asistencia: 95%
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-outline-success">Información de la Asistencia</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Asistencia 04/03/2024</h5>
+                    <p class="card-text">
+                        Cantidad Inasistencias: 5 <br>
+                        Porcentaje de Asistencia: 95%
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-outline-success">Información de la Asistencia</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Asistencia 04/03/2024</h5>
+                    <p class="card-text">
+                        Cantidad Inasistencias: 5 <br>
+                        Porcentaje de Asistencia: 95%
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-outline-success">Información de la Asistencia</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Mostrar Grafico -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar Curso -->
+<div class="modal fade" id="editarCursoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Editar Curso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="nombreCurso">Nombre del Curso</label>
+                        <input type="text" class="form-control" id="nombreCurso" value="Curso de Ejemplo">
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label for="grupo">Grupo</label>
+                            <input type="text" class="form-control" id="grupo" value="Grupo de Ejemplo">
+                        </div>
+                        <div class="form-group col-3">
+                            <label for="anio">Año</label>
+                            <input type="text" class="form-control" id="anio" value="Año de Ejemplo">
+                        </div>
+                        <div class="form-group col-3">
+                            <label for="semestre">Semestre</label>
+                            <input type="text" class="form-control" id="semestre" value="Semestre de Ejemplo">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Crear Asistencia -->
+<div class="modal fade" id="crearFormularioAsistenciaModal" data-bs-backdrop="static" data-bs-keyboard="false"
+    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Crear Formulario de Asistencia</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label for="dia">Dia</label>
+                            <input type="text" class="form-control" id="dia" value="Dia Actual">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="mes">Mes</label>
+                            <input type="text" class="form-control" id="mes" value="Mes Actual">
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="anio">Año</label>
+                            <input type="text" class="form-control" id="anio" value="Año Actual">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary"
+                    onclick="window.location.href='{% url 'tomar_asistencia' %}'">Crear Formulario</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

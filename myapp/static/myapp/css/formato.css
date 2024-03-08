@@ -1,0 +1,75 @@
+@font-face {
+    font-family: 'AncizarSans-Bold';
+    src: url('AncizarSans-Bold_02042016.otf') format('opentype');
+}
+
+body h1,h2,h3{
+    font-family: 'AncizarSans-Bold', sans-serif;
+}
+
+.card-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.contenedor-index {  
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(60, 60, 60, 0.626);
+    position: fixed;
+}
+
+.formulario-index .nav-link{
+    color: #297e36;
+}
+
+.btn-mostrar-grafica{
+    position: absolute;
+    right: 1%;
+}
+
+.btn-tomar-asistencia{
+    background-color: rgb(238, 255, 237);
+}
+
+.btn-validar-listado{
+    background-color: rgb(237, 237, 237);
+}
+
+.accordion-button:not(.collapsed) {
+    color: #396640;
+    background-color: #e7ffed;
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,.125);
+}
+
+.card-qr-asistencia{
+    width: 8%;
+    border-radius: 10px;
+    position: absolute;
+    top: 11%;
+    right: 5%;
+    z-index: 100;
+}
+
+.card-qr-asistencia .card-body{
+    padding: 0;
+}
+
+.card-qr-asistencia:hover{
+    width: 35%;
+    padding: 10px;
+    font-size: xx-large;
+}
+
+.scrollspy-perfil{
+    height: 550px;
+}
+
+.list-group-item.active {
+    z-index: 2;
+    color: #396640;
+    background-color: #e7ffed;
+    border-color: #396640;
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,.125);
+}

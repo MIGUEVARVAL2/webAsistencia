@@ -13,21 +13,36 @@
         <input type="text" class="form-control" placeholder="Nombre del Curso" aria-label="Search"
             aria-describedby="search-button">
         <div class="btn-group mr-2 ml-2" role="group">
-            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                Todos
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">2024</a></li>
-                <li><a class="dropdown-item" href="#">2023</a></li>
-                <li><a class="dropdown-item" href="#">2022</a></li>
-            </ul>
+            <select class="form-select mr-2 ml-2 " aria-label="Default select example">
+                <option value="" selected>Todos</option>
+                <option value="2023-1">2023-1S</option>
+                <option value="2">2023-1S</option>
+                <option value="3">2023-1S</option>
+            </select>
         </div>
+
         <div class="input-group-append">
             <button class="btn btn-outline-success" type="button" id="search-button">Buscar Curso</button>
         </div>
     </div>
     <div class="row">
+        {% if error %}
+
+        <div class="alert alert-danger d-flex align-items-center" role="alert">
+            <i class="bi bi-exclamation-diamond me-2"></i>
+            <div>
+                {{error}}
+            </div>
+        </div>
+        {% endif %}
+        {% if exito %}
+        <div class="alert alert-success d-flex align-items-center" role="alert">
+            <i class="bi bi-check-circle me-2"></i>
+            <div>
+                {{exito}}
+            </div>
+        </div>
+        {% endif %}
         {% if cursos %}
         {% for curso in cursos %}
         <div class="col-md-6">
@@ -40,31 +55,34 @@
                         <div class="row">
                             <div class="col-6">
                                 <p class="card-text">
+                                    Código: {{curso.0.id_curso}}<br>
                                     Cantidad Estudiantes: {{curso.2}} <br>
                                     Cantidad Grupos: {{curso.3}} <br>
-                                    Año: {{curso.0.anio_curso}} <br>
-                                    Semestre: {{curso.0.semestre_curso}} <br>
+                                    Semestre: {{curso.0.anio_curso}}-{{curso.0.semestre_curso}} <br>
                                 </p>
                             </div>
                             <div class="col-6">
                                 <select class="form-select" multiple aria-label="multiple select example">
                                     <option selected value="todos">Todos</option>
                                     {% for grupo in curso.1 %}
-                                        <option value="{{ curso.1.grupo.nombre_grupo }}">Grupo {{ grupo.nombre_grupo }}</option>
+                                    <option value="{{ curso.1.grupo.nombre_grupo }}">Grupo {{ grupo.nombre_grupo }}
+                                    </option>
                                     {% endfor %}
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-outline-success" name="info_{{ curso.1.grupo.id_grupo }}">Información del Curso</button>
-                        <button type="submit" class="btn btn-outline-success float-end" data-bs-toggle="modal" name="crearGrupo_{{ curso.0.id_curso }}"
-                            data-bs-target="#exampleModal">Crear Grupo</button>
+                        <button type="submit" class="btn btn-outline-success"
+                            name="info_{{ curso.1.grupo.id_grupo }}">Información del Curso</button>
+                        <button type="button" class="btn btn-outline-success float-end" data-bs-toggle="modal"
+                            name="crearGrupo_{{ curso.0.id_curso }}"
+                            data-bs-target="#crearGrupo_{{ curso.0.id_curso }}">Crear Grupo</button>
                     </div>
                 </form>
 
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
+                <div class="modal fade" id="crearGrupo_{{ curso.0.id_curso }}" tabindex="-1"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -75,28 +93,22 @@
                             <form method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <div class="modal-body">
-                                    <div class="form-group">
-                                        <label for="curso">Código del Curso</label>
-                                        <div class="input-group mb-3">
-                                            <input type="text" class="form-control" id="codigoCurso" name="codigoCurso"
-                                                value="{{ curso.0.id_curso }}" aria-label="Recipient's username"
-                                                aria-describedby="basic-addon2" disabled>
-                                        </div>
-                                    </div>
+                                    <input type="hidden" class="form-control" id="codigoCurso" name="codigoCurso"
+                                        value="{{ curso.0.id_curso }}" aria-label="Recipient's username"
+                                        aria-describedby="basic-addon2">
                                     <div class="form-group">
                                         <label for="curso">Nombre Curso</label>
                                         <div class="input-group mb-3">
                                             <input type="text" class="form-control" id="nombreCurso" name="nombreCurso"
-                                                value="{{ curso.0.nombre_curso }}"
-                                                aria-label="Recipient's username" aria-describedby="basic-addon2"
-                                                disabled>
+                                                value="{{ curso.0.nombre_curso }}" aria-label="Recipient's username"
+                                                aria-describedby="basic-addon2" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="grupo">Número del Grupo</label>
                                         <div class="input-group mb-3">
                                             <span class="input-group-text" id="basic-addon1">Grupo</span>
-                                            <input type="text" class="form-control" id="grupo" name="grupo"
+                                            <input type="text" class="form-control" id="grupo" name="numero_grupo"
                                                 placeholder="Ingrese el número del grupo">
                                         </div>
 
@@ -114,7 +126,7 @@
                                         data-bs-dismiss="modal">Cerrar</button>
                                     <button type="submit" name="crearGrupo" class="btn btn-success">Crear Grupo</button>
                                 </div>
-                            </form name="crearGrupo">
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -161,8 +173,8 @@
                             <label for="semestre">Semestre</label>
                             <div class="form-control">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="semestre_curso" id="inlineRadio1" checked
-                                        value="1S">
+                                    <input class="form-check-input" type="radio" name="semestre_curso" id="inlineRadio1"
+                                        checked value="1S">
                                     <label class="form-check-label" for="inlineRadio1">1</label>
                                 </div>
                                 <div class="form-check form-check-inline">

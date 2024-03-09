@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from .models import Profesores, Cursos, Estudiantes, EstudiantesCursos
+from .models import Profesores, Cursos, Estudiantes
 import plotly.graph_objects as go
 import plotly.offline as opy
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+import pandas as pd
+from .funciones import informacion_cursos_estudiantes
 
 
 # Create your views here.
@@ -34,7 +36,7 @@ def index(request):
                     #Obtengo el profesor y guardo el ID en la sesión
                     profesor = Profesores.objects.get(user=user)
                     request.session['profesor_id'] = profesor.id
-                    return redirect('perfil_profesor')
+                    return redirect('cursos_estudiantes')
                 elif rol == 'estudiante' and Estudiantes.objects.filter(user=user).exists():
                     #Obtengo el profesor y guardo el ID en la sesión
                     estudiante= Estudiantes.objects.get(user=user)
@@ -71,7 +73,7 @@ def index(request):
 @login_required
 def cursos_estudiantes(request):
     if request.method == 'POST':
-        if 'crear_curso' in request.POST:
+        if 'crearCurso' in request.POST:
             #Obtengo los datos del formulario
             nombre_curso = request.POST.get('nombre_curso')
             anio_curso = request.POST.get('anio_curso')
@@ -82,12 +84,25 @@ def cursos_estudiantes(request):
             curso = Cursos.objects.create(
                 nombre_curso = nombre_curso,
                 anio_curso = anio_curso,
+                semestre_curso = semestre_curso,
                 profesor_curso = profesor
             )
+            # Obtengo el ID del curso creado
+            curso_id = curso.id
+            archivo = request.FILES['listaEstudiantes_curso']
+            
             return redirect('informacion_curso')
-
-
-    return render(request, 'cursos_estudiantes.html')
+        
+        else:
+            # Devuelve una respuesta si 'crearCurso' no está en request.POST
+            return render(request, 'cursos_estudiantes.html', {'error': 'No se pudo crear el curso'})
+    else:
+        if 'profesor_id' in request.session:
+            listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
+            datos= listar_cursos.ejecutar()
+            return render(request, 'cursos_estudiantes.html', {'cursos': datos})
+    
+    return render(request, 'index.html', {'error': 'No tiene acceso a la página solicitada'})
 
 @login_required
 def informacion_curso(request):

@@ -28,35 +28,36 @@
         </div>
     </div>
     <div class="row">
+        {% if cursos %}
+        {% for curso in cursos %}
         <div class="col-md-6">
             <div class="card mb-4">
-                <form>
+                <form method="POST">
+                    {% csrf_token %}
                     <div class="card-body">
-                        <h5 class="card-title mb-4" title="Nombre del Curso Prueba de nombre para cun curso largo">
-                            Nombre del Curso Prueba de nombre para cun curso largo</h5>
+                        <h5 class="card-title mb-4" title="{{curso.0.nombre_curso}}">
+                            {{curso.0.nombre_curso}}</h5>
                         <div class="row">
                             <div class="col-6">
                                 <p class="card-text">
                                     Cantidad Estudiantes: 100 <br>
-                                    Cantidad Clases: 10 <br>
-                                    Cantidad Inasistencias: 5 <br>
-                                    Porcentaje de Asistencia: 95%
+                                    Cantidad Grupos: 4 <br>
+                                    Porcentaje Asistencia Total: 95%
                                 </p>
                             </div>
                             <div class="col-6">
                                 <select class="form-select" multiple aria-label="multiple select example">
-                                    <option selected value="1">Grupo 1</option>
-                                    <option value="2">Grupo 2</option>
-                                    <option value="3">Grupo 3</option>
-                                    <option value="2">Grupo 4</option>
-                                    <option value="3">Grupo 5</option>
+                                    <option selected value="todos">Todos</option>
+                                    {% for grupo in curso.1 %}
+                                        <option value="{{ curso.1.grupo.nombre_grupo }}">Grupo {{ curso.1.grupo.nombre_grupo }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-outline-success">Información del Curso</button>
-                        <button type="button" class="btn btn-outline-success float-end" data-bs-toggle="modal"
+                        <button type="submit" class="btn btn-outline-success" name="info_{{ curso.1.grupo.id_grupo }}">Información del Curso</button>
+                        <button type="submit" class="btn btn-outline-success float-end" data-bs-toggle="modal" name="crearGrupo_{{ curso.0.id_curso }}"
                             data-bs-target="#exampleModal">Crear Grupo</button>
                     </div>
                 </form>
@@ -76,15 +77,18 @@
                                     <div class="form-group">
                                         <label for="curso">Código del Curso</label>
                                         <div class="input-group mb-3">
-                                            <input type="text" class="form-control" id="codigoCurso" name="codigoCurso" value="3"
-                                                aria-label="Recipient's username" aria-describedby="basic-addon2" disabled>
+                                            <input type="text" class="form-control" id="codigoCurso" name="codigoCurso"
+                                                value="{{ curso.0.id_curso }}" aria-label="Recipient's username"
+                                                aria-describedby="basic-addon2" disabled>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="curso">Nombre Curso</label>
                                         <div class="input-group mb-3">
-                                            <input type="text" class="form-control" id="nombreCurso" name="nombreCurso" value="Nombre del Curso Prueba de nombre para cun curso largo"
-                                                aria-label="Recipient's username" aria-describedby="basic-addon2" disabled>
+                                            <input type="text" class="form-control" id="nombreCurso" name="nombreCurso"
+                                                value="{{ curso.0.nombre_curso }}"
+                                                aria-label="Recipient's username" aria-describedby="basic-addon2"
+                                                disabled>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -92,9 +96,9 @@
                                         <div class="input-group mb-3">
                                             <span class="input-group-text" id="basic-addon1">Grupo</span>
                                             <input type="text" class="form-control" id="grupo" name="grupo"
-                                            placeholder="Ingrese el número del grupo">
-                                          </div>
-                                       
+                                                placeholder="Ingrese el número del grupo">
+                                        </div>
+
                                     </div>
                                     <div class="form-group">
                                         <div class="mb-3">
@@ -115,6 +119,8 @@
                 </div>
             </div>
         </div>
+        {% endfor %}
+        {% endif %}
     </div>
 </div>
 
@@ -144,12 +150,23 @@
                         </div>
                         <div class="form-group col-3">
                             <label for="anio">Año</label>
-                            <input type="text" class="form-control" id="anio" name="anio_curso" placeholder="Ingrese el año">
+                            <input type="text" class="form-control" id="anio" name="anio_curso"
+                                placeholder="Ingrese el año">
                         </div>
                         <div class="form-group col-3">
                             <label for="semestre">Semestre</label>
-                            <input type="text" class="form-control" id="semestre" name="semestre_curso"
-                                placeholder="Ingrese el semestre">
+                            <div class="form-control">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="semestre_curso" id="inlineRadio1" checked
+                                        value="1S">
+                                    <label class="form-check-label" for="inlineRadio1">1</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="semestre_curso" id="inlineRadio2"
+                                        value="2S">
+                                    <label class="form-check-label" for="inlineRadio2">2</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">

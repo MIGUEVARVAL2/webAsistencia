@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import pandas as pd
-from .funciones import informacion_cursos_estudiantes
+from .funciones import informacion_cursos_estudiantes, crear_estudiantes
 
 
 # Create your views here.
@@ -97,7 +97,8 @@ def cursos_estudiantes(request):
                 curso_grupo = curso
             )
             archivo = request.FILES['listaEstudiantes_curso']
-            print(archivo, type(archivo))
+            agregar_estudiantes= crear_estudiantes.Crear_grupo_estudiantes(archivo, grupo.id_grupo)
+            agregar_estudiantes.ejecutar()
             
             return redirect('informacion_curso')
         

@@ -7,7 +7,7 @@ class informacion_listado_cursos:
         self.id_profesor = id_profesor
 
     def listar_cursos(self):
-        cursos = Cursos.objects.filter(profesor_curso=self.id_profesor)
+        cursos = Cursos.objects.filter(profesor_curso=self.id_profesor).order_by('-id_curso')
         return cursos
     
     def cantidad_estudiantes(self, grupo):
@@ -18,7 +18,7 @@ class informacion_listado_cursos:
     def listar_grupos(self, cursos):
         datos = []
         for curso in cursos:
-            grupos_curso = Grupos.objects.filter(curso_grupo=curso)
+            grupos_curso = Grupos.objects.filter(curso_grupo=curso).order_by('id_grupo')
             cantidad_total_estudiantes = 0
             porcentaje_asistencia = 0
             for grupo in grupos_curso:

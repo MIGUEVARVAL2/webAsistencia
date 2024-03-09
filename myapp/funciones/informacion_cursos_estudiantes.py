@@ -1,4 +1,4 @@
-from ..models import Cursos,Grupos
+from ..models import Cursos,Grupos, Inscripcion
 
 
 class informacion_listado_cursos:
@@ -11,7 +11,7 @@ class informacion_listado_cursos:
         return cursos
     
     def cantidad_estudiantes(self, grupo):
-        estudiantes = EstudiantesCursos.objects.filter(grupo=grupo)
+        estudiantes = Inscripcion.objects.filter(grupo=grupo)
         cantidad = estudiantes.count()
         return cantidad
 
@@ -19,10 +19,15 @@ class informacion_listado_cursos:
         datos = []
         for curso in cursos:
             grupos_curso = Grupos.objects.filter(curso_grupo=curso)
-            datos.append(curso,grupos_curso)
+            cantidad_total_estudiantes = 0
+            porcentaje_asistencia = 0
+            for grupo in grupos_curso:
+                cantidad = self.cantidad_estudiantes(grupo)
+                cantidad_total_estudiantes += cantidad
+                #Calcular el porcentaje de asistencia
+            cantidad_grupos = grupos_curso.count()
+            datos.append((curso,grupos_curso,cantidad_total_estudiantes,cantidad_grupos))
         return datos
-    
-    
     
     def ejecutar(self):
         cursos= self.listar_cursos()

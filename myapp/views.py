@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from .models import Profesores, Cursos, Estudiantes
+from .models import Profesores, Cursos, Estudiantes, Grupos
 import plotly.graph_objects as go
 import plotly.offline as opy
 from django.contrib.auth.models import User
@@ -88,8 +88,16 @@ def cursos_estudiantes(request):
                 profesor_curso = profesor
             )
             # Obtengo el ID del curso creado
-            curso_id = curso.id
+            curso_id = curso.id_curso
+            #Obtengo el número del grupo
+            numero_grupo = request.POST.get('grupo_curso')
+            #Creo el grupo
+            grupo = Grupos.objects.create(
+                nombre_grupo = numero_grupo,
+                curso_grupo = curso
+            )
             archivo = request.FILES['listaEstudiantes_curso']
+            print(archivo, type(archivo))
             
             return redirect('informacion_curso')
         

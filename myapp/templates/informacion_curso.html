@@ -7,21 +7,25 @@
     <button type="button" class="btn btn-secondary btn-mostrar-grafica" data-bs-toggle="modal"
         data-bs-target="#exampleModal">
         Gr&aacute;fica
-    </button>
+    </button> 
 
-    <h1 class="pb-4">Nombre del Curso - Grupo 1</h1>
-    <div class="row pb-4 d-flex justify-content-center">
-        <button type="button" class="col-3 mr-4 btn btn-outline-success btn-tomar-asistencia" data-bs-toggle="modal"
-            data-bs-target="#crearFormularioAsistenciaModal">
-            Crear Formulario de Asistencia
-        </button>
-        <button class="col-3 mr-4 ml-4 btn btn-outline-success btn-tomar-asistencia" type="button"
-            onclick="window.location.href='{% url 'listar_estudiantes_curso' %}'">Ver Estudiantes</button>
-        <button type="button" class="col-3 ml-4 btn btn-outline-success btn-tomar-asistencia" data-bs-toggle="modal"
-            data-bs-target="#editarCursoModal">
-            Editar Curso
-        </button>
-    </div>
+    <h1 class="pb-4">{{grupo.curso_grupo.nombre_curso}} - Grupo {{grupo.nombre_grupo}}</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="row pb-4 d-flex justify-content-center">
+        
+            <button type="button" class="col-3 mr-4 btn btn-outline-success btn-tomar-asistencia" data-bs-toggle="modal"
+                data-bs-target="#crearFormularioAsistenciaModal">
+                Crear Formulario de Asistencia
+            </button>
+            <button class="col-3 mr-4 ml-4 btn btn-outline-success btn-tomar-asistencia" type="submit" name="VerEstudiantes">Ver Estudiantes</button>
+            <button type="button" class="col-3 ml-4 btn btn-outline-success btn-tomar-asistencia" data-bs-toggle="modal"
+                data-bs-target="#editarCursoModal">
+                Editar Curso
+            </button>
+        </div>
+    </form>
+    
     <div class="input-group mb-3">
         <input type="date" class="form-control" aria-label="Search" aria-describedby="search-button">
         <div class="input-group-append">
@@ -29,13 +33,15 @@
         </div>
     </div>
     <div class="row">
+        {% if asistencias%}
+        {% for asistencia in asistencias %}
         <div class="col-md-4">
             <div class="card mb-4">
                 <div class="card-body">
-                    <h5 class="card-title">Asistencia 04/03/2024</h5>
+                    <h5 class="card-title">Asistencia {{ asistencia.0.fecha|date:"d/m/Y" }}</h5>
                     <p class="card-text">
-                        Cantidad Inasistencias: 5 <br>
-                        Porcentaje de Asistencia: 95%
+                        Cantidad Inasistencias: {{ asistencia.1 }} <br>
+                        Porcentaje de Asistencia: {{ asistencia.2 }}%
                     </p>
                 </div>
                 <div class="card-footer">
@@ -43,62 +49,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">Asistencia 04/03/2024</h5>
-                    <p class="card-text">
-                        Cantidad Inasistencias: 5 <br>
-                        Porcentaje de Asistencia: 95%
-                    </p>
-                </div>
-                <div class="card-footer">
-                    <button class="btn btn-outline-success">Información de la Asistencia</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">Asistencia 04/03/2024</h5>
-                    <p class="card-text">
-                        Cantidad Inasistencias: 5 <br>
-                        Porcentaje de Asistencia: 95%
-                    </p>
-                </div>
-                <div class="card-footer">
-                    <button class="btn btn-outline-success">Información de la Asistencia</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">Asistencia 04/03/2024</h5>
-                    <p class="card-text">
-                        Cantidad Inasistencias: 5 <br>
-                        Porcentaje de Asistencia: 95%
-                    </p>
-                </div>
-                <div class="card-footer">
-                    <button class="btn btn-outline-success">Información de la Asistencia</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">Asistencia 04/03/2024</h5>
-                    <p class="card-text">
-                        Cantidad Inasistencias: 5 <br>
-                        Porcentaje de Asistencia: 95%
-                    </p>
-                </div>
-                <div class="card-footer">
-                    <button class="btn btn-outline-success">Información de la Asistencia</button>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
+        {% endif %}
+        
     </div>
 </div>
 

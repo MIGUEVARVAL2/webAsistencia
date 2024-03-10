@@ -1,13 +1,11 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
 from .models import Profesores, Cursos, Estudiantes, Grupos
 import plotly.graph_objects as go
 import plotly.offline as opy
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-import pandas as pd
-from .funciones import informacion_cursos_estudiantes, crear_estudiantes
+from .funciones import informacion_cursos_estudiantes, crear_estudiantes, informacion_asistencia_grupo
 
 
 # Create your views here.
@@ -72,87 +70,122 @@ def index(request):
 
 @login_required
 def cursos_estudiantes(request):
-    if request.method == 'POST':
-        if 'crearCurso' in request.POST:
-            try:
-                #Obtengo los datos del formulario
-                nombre_curso = request.POST.get('nombre_curso')
-                anio_curso = request.POST.get('anio_curso')
-                semestre_curso = request.POST.get('semestre_curso')
-                #Obtengo el profesor
-                profesor = Profesores.objects.get(id=request.session['profesor_id'])
-                #Creo el curso
-                curso = Cursos.objects.create(
-                    nombre_curso = nombre_curso,
-                    anio_curso = anio_curso,
-                    semestre_curso = semestre_curso,
-                    profesor_curso = profesor
-                )
-                #Obtengo el número del grupo
-                numero_grupo = request.POST.get('grupo_curso')
-                #Creo el grupo
-                grupo = Grupos.objects.create(
-                    nombre_grupo = numero_grupo,
-                    curso_grupo = curso
-                )
-                archivo = request.FILES['listaEstudiantes_curso']
-                agregar_estudiantes= crear_estudiantes.Crear_grupo_estudiantes(archivo, grupo.id_grupo)
-                agregar_estudiantes.ejecutar()
-                listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
-                datos= listar_cursos.ejecutar()
-                return render(request, 'cursos_estudiantes.html', {'cursos': datos, 'exito': 'Curso creado exitosamente'})
+    if  'profesor_id' in request.session:
+        profesor = Profesores.objects.get(id=request.session['profesor_id'])
+        listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
+        datos= listar_cursos.ejecutar()
+        if request.method == 'POST':
+            if 'crearCurso' in request.POST:
+                try:
+                    #Obtengo los datos del formulario
+                    nombre_curso = request.POST.get('nombre_curso')
+                    anio_curso = request.POST.get('anio_curso')
+                    semestre_curso = request.POST.get('semestre_curso')
+                    #Obtengo el profesor
+                    profesor = Profesores.objects.get(id=request.session['profesor_id'])
+                    #Creo el curso
+                    curso = Cursos.objects.create(
+                        nombre_curso = nombre_curso,
+                        anio_curso = anio_curso,
+                        semestre_curso = semestre_curso,
+                        profesor_curso = profesor
+                    )
+                    #Obtengo el número del grupo
+                    numero_grupo = request.POST.get('grupo_curso')
+                    #Creo el grupo
+                    grupo = Grupos.objects.create(
+                        nombre_grupo = numero_grupo,
+                        curso_grupo = curso
+                    )
+                    archivo = request.FILES['listaEstudiantes_curso']
+                    agregar_estudiantes= crear_estudiantes.Crear_grupo_estudiantes(archivo, grupo.id_grupo)
+                    agregar_estudiantes.ejecutar()
+                    return render(request, 'cursos_estudiantes.html', {'cursos': datos,'profesor': profesor, 'exito': 'Curso creado exitosamente'})
 
-            except Exception as e:
-                listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
-                datos= listar_cursos.ejecutar()
-                return render(request, 'cursos_estudiantes.html', {'cursos': datos,'error': f'No se pudo crear el curso: {str(e)}'})
-        
-        elif 'crearGrupo' in request.POST:
-            try:
-                curso_id = request.POST.get('codigoCurso')
-                print(curso_id)
-                curso = Cursos.objects.get(id_curso=curso_id)
-                numero_grupo = request.POST.get('numero_grupo')
-                #Creo el grupo
-                grupo = Grupos.objects.create(
-                    nombre_grupo = numero_grupo,
-                    curso_grupo = curso
-                )
-                archivo = request.FILES['listaEstudiantes']
-                agregar_estudiantes= crear_estudiantes.Crear_grupo_estudiantes(archivo, grupo.id_grupo)
-                agregar_estudiantes.ejecutar()
-                listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
-                datos= listar_cursos.ejecutar()
-                return render(request, 'cursos_estudiantes.html', {'cursos': datos, 'exito': 'Curso creado exitosamente'})
+                except Exception as e:
+                    listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
+                    datos= listar_cursos.ejecutar()
+                    return render(request, 'cursos_estudiantes.html', {'cursos': datos,'profesor': profesor,'error': f'No se pudo crear el curso: {str(e)}'})
+            
+            elif 'crearGrupo' in request.POST:
+                try:
+                    curso_id = request.POST.get('codigoCurso')
+                    print(curso_id)
+                    curso = Cursos.objects.get(id_curso=curso_id)
+                    numero_grupo = request.POST.get('numero_grupo')
+                    #Creo el grupo
+                    grupo = Grupos.objects.create(
+                        nombre_grupo = numero_grupo,
+                        curso_grupo = curso
+                    )
+                    archivo = request.FILES['listaEstudiantes']
+                    agregar_estudiantes= crear_estudiantes.Crear_grupo_estudiantes(archivo, grupo.id_grupo)
+                    agregar_estudiantes.ejecutar()
+                    return render(request, 'cursos_estudiantes.html', {'cursos': datos,'profesor': profesor, 'exito': 'Curso creado exitosamente'})
 
-            except Exception as e:
-                listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
-                datos= listar_cursos.ejecutar()
-                return render(request, 'cursos_estudiantes.html', {'cursos': datos,'error': f'No se pudo crear el grupo: {str(e)}'})
-        
+                except Exception as e:
+                    return render(request, 'cursos_estudiantes.html', {'cursos': datos,'profesor': profesor,'error': f'No se pudo crear el grupo: {str(e)}'})
+            
+            for i in datos:
+                if f'info_{i[0].id_curso}' in request.POST:
+                    print(i[0].id_curso)
+                    try:
+                        id_grupo = request.POST.get('grupo')
+                        grupo= Grupos.objects.get(id_grupo=id_grupo)
+                        print(grupo)
+                        return redirect('informacion_curso',  grupo=grupo.id_grupo)
+                        
+                    except Exception as e:
+                        print(e)
+                        return render(request, 'cursos_estudiantes.html', {'cursos': datos,'profesor': profesor})
+
+                else:
+                    return render(request, 'cursos_estudiantes.html', {'cursos': datos,'profesor': profesor})
         else:
-            # Devuelve una respuesta si 'crearCurso' no está en request.POST
-            listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
-            datos= listar_cursos.ejecutar()
-            return render(request, 'cursos_estudiantes.html', {'cursos': datos})
-        
-        
+            if 'profesor_id' in request.session:
+                return render(request, 'cursos_estudiantes.html', {'cursos': datos,'profesor': profesor})
     
+    return redirect('index')
+
+@login_required
+def informacion_curso(request, grupo):
+    if  'profesor_id' in request.session:
+        profesor = Profesores.objects.get(id=request.session['profesor_id'])
+        if Grupos.objects.filter(id_grupo=grupo).exists():
+            grupo = Grupos.objects.get(id_grupo=grupo)
+            listar_asistencia= informacion_asistencia_grupo.informacion_listado_asistencia(grupo.id_grupo)
+            datos= listar_asistencia.ejecutar()
+            if request.method == 'POST':
+                if 'VerEstudiantes' in request.POST:
+                    return redirect('listar_estudiantes_curso',grupo=grupo.id_grupo)
+                else:
+                    return render(request, 'informacion_curso.html', {'grupo': grupo,'profesor': profesor, 'asistencias': datos})
+            
+            else:
+                return render(request, 'informacion_curso.html', {'grupo': grupo,'profesor': profesor, 'asistencias': datos})
+        else:
+            return redirect('cursos_estudiantes')
     else:
-        if 'profesor_id' in request.session:
-            listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
-            datos= listar_cursos.ejecutar()
-            return render(request, 'cursos_estudiantes.html', {'cursos': datos})
-    
-    return render(request, 'index.html', {'error': 'No tiene acceso a la página solicitada'})
+        return redirect('index')
 
 @login_required
-def informacion_curso(request):
-    return render(request, 'informacion_curso.html')
+def listar_estudiantes_curso(request,grupo):
+    if  'profesor_id' in request.session:
+        profesor = Profesores.objects.get(id=request.session['profesor_id'])
+        try: 
+            if request.method == 'POST':
+                pass
+            else:
+                grupo = Grupos.objects.get(id_grupo=grupo)
+                estudiantes_activos = grupo.estudiantes_grupo.filter(inscripcion__estado=True)
+                estudiantes_inactivos = grupo.estudiantes_grupo.filter(inscripcion__estado=False)
+                return render(request, 'listar_estudiantes_curso.html', {'grupo': grupo,'profesor': profesor, 'estudiantes_activos': estudiantes_activos,'estudiantes_inactivos':estudiantes_inactivos})
 
-@login_required
-def listar_estudiantes_curso(request):
-    return render(request, 'listar_estudiantes_curso.html')
+        except Exception as e:
+            print(e)
+            return redirect('informacion_curso',grupo=grupo.id_grupo)
+    else:
+        return redirect('index')
 
 @login_required
 def tomar_asistencia(request):

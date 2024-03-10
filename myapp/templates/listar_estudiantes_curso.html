@@ -4,7 +4,7 @@
 
 <div class="container mt-5 pt-5">
 
-    <h1 class="pb-4">Nombre del Curso - Grupo 1</h1>
+    <h1 class="pb-4">{{grupo.curso_grupo.nombre_curso}} - Grupo {{grupo.nombre_grupo}}</h1>
     <div class="d-grid gap-2 pb-4">
         <button type="button" class="btn btn-outline-secondary btn-validar-listado" data-bs-toggle="modal"
             data-bs-target="#actualizarEstudiantes">
@@ -28,24 +28,16 @@
             </tr>
         </thead>
         <tbody>
+            {% if estudiantes_activos %}
+            {% for estudiante in estudiantes_activos %}
             <tr>
-                <td>Nombres Estudiante Apellido Estudiante</td>
-                <td>1001000202</td>
-                <td>correo@unal.edu.co</td>
+                <td>{{estudiante.nombres_estudiante}} {{estudiante.apellidos_estudiante}}</td>
+                <td>{{estudiante.documento_estudiante}}</td>
+                <td>{{estudiante.user.email}}</td>
                 <td class="text-center"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i></td>
             </tr>
-            <tr>
-                <td>Nombres Estudiante Apellido Estudiante</td>
-                <td>1001000202</td>
-                <td>correo@unal.edu.co</td>
-                <td class="text-center"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i></td>
-            </tr>
-            <tr>
-                <td>Nombres Estudiante Apellido Estudiante</td>
-                <td>1001000202</td>
-                <td>correo@unal.edu.co</td>
-                <td class="text-center"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i></td>
-            </tr>
+            {% endfor %}
+            {% endif %}
             <!-- Agrega más filas según sea necesario -->
         </tbody>
     </table>

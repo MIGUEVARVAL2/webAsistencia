@@ -40,4 +40,19 @@ class Inscripcion(models.Model):
     estudiante = models.ForeignKey(Estudiantes, on_delete=models.CASCADE)
     grupo = models.ForeignKey(Grupos, on_delete=models.CASCADE)
     fecha_inscripcion = models.DateTimeField(auto_now_add=True)
+    estado = models.BooleanField(default=True)
 
+class Asistencia(models.Model):
+    id_asistencia = models.AutoField(primary_key=True)
+    fecha_asistencia = models.DateField(auto_now_add=True)
+    grupo = models.ForeignKey(Grupos, on_delete=models.CASCADE)
+
+class Asistencia_estudiante(models.Model):
+    id_asistencia_estudiante= models.AutoField(primary_key=True)
+    registro_Asistencia = models.BooleanField(default=False)
+    excusa= models.BooleanField(default=False, null=True)
+    estudiante = models.ForeignKey(Estudiantes, on_delete=models.CASCADE)
+    asistencia = models.ForeignKey(Asistencia, on_delete=models.CASCADE)
+
+
+    

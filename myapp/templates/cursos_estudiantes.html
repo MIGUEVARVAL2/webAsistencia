@@ -62,10 +62,10 @@
                                 </p>
                             </div>
                             <div class="col-6">
-                                <select class="form-select" multiple aria-label="multiple select example">
-                                    <option selected value="todos">Todos</option>
+                                <select class="form-select" aria-label="multiple select example" multiple name="grupo">
+                                    <option selected value="todos">Seleccione un Grupo</option>
                                     {% for grupo in curso.1 %}
-                                    <option value="{{ curso.1.grupo.nombre_grupo }}">Grupo {{ grupo.nombre_grupo }}
+                                    <option value="{{ grupo.id_grupo }}">Grupo {{ grupo.nombre_grupo }}
                                     </option>
                                     {% endfor %}
                                 </select>
@@ -74,7 +74,7 @@
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-outline-success"
-                            name="info_{{ curso.1.grupo.id_grupo }}">Información del Curso</button>
+                            name="info_{{ curso.0.id_curso }}">Información del Curso</button>
                         <button type="button" class="btn btn-outline-success float-end" data-bs-toggle="modal"
                             name="crearGrupo_{{ curso.0.id_curso }}"
                             data-bs-target="#crearGrupo_{{ curso.0.id_curso }}">Crear Grupo</button>

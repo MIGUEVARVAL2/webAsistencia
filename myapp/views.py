@@ -5,7 +5,7 @@ import plotly.offline as opy
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .funciones import informacion_cursos_estudiantes, crear_estudiantes, informacion_asistencia_grupo
+from .funciones import informacion_cursos_estudiantes, crear_estudiantes, informacion_asistencia_grupo, actualizar_estudiantes
 
 
 # Create your views here.
@@ -75,6 +75,7 @@ def cursos_estudiantes(request):
         listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
         datos= listar_cursos.ejecutar()
         if request.method == 'POST':
+            print(request.POST)
             if 'crearCurso' in request.POST:
                 try:
                     #Obtengo los datos del formulario
@@ -125,8 +126,9 @@ def cursos_estudiantes(request):
 
                 except Exception as e:
                     return render(request, 'cursos_estudiantes.html', {'cursos': datos,'profesor': profesor,'error': f'No se pudo crear el grupo: {str(e)}'})
-            
+            print(datos)
             for i in datos:
+                print(i[0].id_curso)
                 if f'info_{i[0].id_curso}' in request.POST:
                     print(i[0].id_curso)
                     try:
@@ -134,7 +136,6 @@ def cursos_estudiantes(request):
                         grupo= Grupos.objects.get(id_grupo=id_grupo)
                         print(grupo)
                         return redirect('informacion_curso',  grupo=grupo.id_grupo)
-                        
                     except Exception as e:
                         print(e)
                         return render(request, 'cursos_estudiantes.html', {'cursos': datos,'profesor': profesor})
@@ -172,11 +173,17 @@ def informacion_curso(request, grupo):
 def listar_estudiantes_curso(request,grupo):
     if  'profesor_id' in request.session:
         profesor = Profesores.objects.get(id=request.session['profesor_id'])
+        grupo = Grupos.objects.get(id_grupo=grupo)
         try: 
             if request.method == 'POST':
-                pass
+                if 'actualizarEstudiantes' in request.POST:
+                    archivo = request.FILES['archivo_estudiantes']
+                    actualizar = actualizar_estudiantes.actualizar_grupo_estudiantes(archivo, grupo.id_grupo)
+                    cantidad=actualizar.ejecutar()
+                    estudiantes_activos = grupo.estudiantes_grupo.filter(inscripcion__estado=True)
+                    estudiantes_inactivos = grupo.estudiantes_grupo.filter(inscripcion__estado=False)
+                    return render(request, 'listar_estudiantes_curso.html', {'grupo': grupo,'profesor': profesor, 'estudiantes_activos': estudiantes_activos,'estudiantes_inactivos':estudiantes_inactivos, 'mensaje_actualizacion': f'Estudiantes actualizados: {cantidad[0]} estudiantes nuevos, {cantidad[1]} estudiantes eliminados'})
             else:
-                grupo = Grupos.objects.get(id_grupo=grupo)
                 estudiantes_activos = grupo.estudiantes_grupo.filter(inscripcion__estado=True)
                 estudiantes_inactivos = grupo.estudiantes_grupo.filter(inscripcion__estado=False)
                 return render(request, 'listar_estudiantes_curso.html', {'grupo': grupo,'profesor': profesor, 'estudiantes_activos': estudiantes_activos,'estudiantes_inactivos':estudiantes_inactivos})

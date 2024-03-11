@@ -20,7 +20,7 @@ class informacion_listado_asistencia:
             if cantidad_total_estudiantes == 0:
                 porcentaje_asistencia = 100
             else:
-                porcentaje_asistencia = ((cantidad_total_estudiantes - cantidad_total_inasistencia) / cantidad_total_estudiantes) * 100
+                porcentaje_asistencia = round(((cantidad_total_estudiantes - cantidad_total_inasistencia) / cantidad_total_estudiantes) * 100,1)
             datos.append((asistencia,cantidad_total_inasistencia,porcentaje_asistencia))
         return datos
     

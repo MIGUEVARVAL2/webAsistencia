@@ -101,12 +101,12 @@ def cursos_estudiantes(request):
                     archivo = request.FILES['listaEstudiantes_curso']
                     agregar_estudiantes= crear_estudiantes.Crear_grupo_estudiantes(archivo, grupo.id_grupo)
                     agregar_estudiantes.ejecutar()
-                    return render(request, 'cursos_estudiantes.html', {'cursos': datos,'profesor': profesor, 'exito': 'Curso creado exitosamente'})
+                    return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'profesor': profesor, 'exito': 'Curso creado exitosamente'})
 
                 except Exception as e:
                     listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
                     datos= listar_cursos.ejecutar()
-                    return render(request, 'cursos_estudiantes.html', {'cursos': datos,'profesor': profesor,'error': f'No se pudo crear el curso: {str(e)}'})
+                    return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'profesor': profesor,'error': f'No se pudo crear el curso: {str(e)}'})
             
             elif 'crearGrupo' in request.POST:
                 try:
@@ -122,10 +122,10 @@ def cursos_estudiantes(request):
                     archivo = request.FILES['listaEstudiantes']
                     agregar_estudiantes= crear_estudiantes.Crear_grupo_estudiantes(archivo, grupo.id_grupo)
                     agregar_estudiantes.ejecutar()
-                    return render(request, 'cursos_estudiantes.html', {'cursos': datos,'profesor': profesor, 'exito': 'Curso creado exitosamente'})
+                    return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'profesor': profesor, 'exito': 'Curso creado exitosamente'})
 
                 except Exception as e:
-                    return render(request, 'cursos_estudiantes.html', {'cursos': datos,'profesor': profesor,'error': f'No se pudo crear el grupo: {str(e)}'})
+                    return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'profesor': profesor,'error': f'No se pudo crear el grupo: {str(e)}'})
             for i in datos:
                 if f'info_{i[0].id_curso}' in request.POST:
                     try:
@@ -134,10 +134,10 @@ def cursos_estudiantes(request):
                         return redirect('informacion_curso',  grupo=grupo.id_grupo)
                     except Exception as e:
                         print(e)
-                        return render(request, 'cursos_estudiantes.html', {'cursos': datos,'profesor': profesor})
+                        return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'profesor': profesor})
         else:
             if 'profesor_id' in request.session:
-                return render(request, 'cursos_estudiantes.html', {'cursos': datos,'profesor': profesor})
+                return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'profesor': profesor})
     
     return redirect('index')
 
@@ -161,10 +161,10 @@ def informacion_curso(request, grupo):
                     asistencia_estudiante= Asistencia_estudiante.objects.bulk_create([Asistencia_estudiante(asistencia=asistencia,estudiante=estudiante) for estudiante in grupo.estudiantes_grupo.filter(inscripcion__estado=True)])
                     return redirect('tomar_asistencia',asistencia=asistencia.id_asistencia)
                 else:
-                    return render(request, 'informacion_curso.html', {'grupo': grupo,'profesor': profesor, 'asistencias': datos})
+                    return render(request, 'profesores/informacion_curso.html', {'grupo': grupo,'profesor': profesor, 'asistencias': datos})
             
             else:
-                return render(request, 'informacion_curso.html', {'grupo': grupo,'profesor': profesor, 'asistencias': datos})
+                return render(request, 'profesores/informacion_curso.html', {'grupo': grupo,'profesor': profesor, 'asistencias': datos})
         else:
             return redirect('cursos_estudiantes')
     else:
@@ -183,11 +183,11 @@ def listar_estudiantes_curso(request,grupo):
                     cantidad=actualizar.ejecutar()
                     estudiantes_activos = grupo.estudiantes_grupo.filter(inscripcion__estado=True).order_by('apellidos_estudiante')
                     estudiantes_inactivos = grupo.estudiantes_grupo.filter(inscripcion__estado=False).order_by('apellidos_estudiante')
-                    return render(request, 'listar_estudiantes_curso.html', {'grupo': grupo,'profesor': profesor, 'estudiantes_activos': estudiantes_activos,'estudiantes_inactivos':estudiantes_inactivos, 'mensaje_actualizacion': f'Estudiantes actualizados: {cantidad[0]} estudiantes nuevos, {cantidad[1]} estudiantes eliminados'})
+                    return render(request, 'profesores/listar_estudiantes_curso.html', {'grupo': grupo,'profesor': profesor, 'estudiantes_activos': estudiantes_activos,'estudiantes_inactivos':estudiantes_inactivos, 'mensaje_actualizacion': f'Estudiantes actualizados: {cantidad[0]} estudiantes nuevos, {cantidad[1]} estudiantes eliminados'})
             else:
                 estudiantes_activos = grupo.estudiantes_grupo.filter(inscripcion__estado=True).order_by('apellidos_estudiante')
                 estudiantes_inactivos = grupo.estudiantes_grupo.filter(inscripcion__estado=False).order_by('apellidos_estudiante')
-                return render(request, 'listar_estudiantes_curso.html', {'grupo': grupo,'profesor': profesor, 'estudiantes_activos': estudiantes_activos,'estudiantes_inactivos':estudiantes_inactivos})
+                return render(request, 'profesores/listar_estudiantes_curso.html', {'grupo': grupo,'profesor': profesor, 'estudiantes_activos': estudiantes_activos,'estudiantes_inactivos':estudiantes_inactivos})
 
         except Exception as e:
             print(e)
@@ -209,10 +209,10 @@ def tomar_asistencia(request,asistencia):
         if request.method == 'POST':
             pass
         else:
-            return render(request, 'tomar_asistencia.html', {'grupo': grupo,'profesor': profesor, 'estudiantes_activos': estudiantes_activos,'estudiantes_inactivos':estudiantes_inactivos, 'fecha': fecha})
+            return render(request, 'profesores/tomar_asistencia.html', {'grupo': grupo,'profesor': profesor, 'estudiantes_activos': estudiantes_activos,'estudiantes_inactivos':estudiantes_inactivos, 'fecha': fecha})
     else:
         return redirect('index')
-    return render(request, 'tomar_asistencia.html')
+    return render(request, 'profesores/tomar_asistencia.html')
 
 @login_required
 def perfil_profesor(request):
@@ -232,4 +232,4 @@ def perfil_profesor(request):
     )   
     # Convertir a HTML
     graph = opy.plot(fig, auto_open=False, output_type='div')
-    return render(request, 'perfil_profesor.html', {'graph': graph})
+    return render(request, 'profesores/perfil_profesor.html', {'graph': graph})

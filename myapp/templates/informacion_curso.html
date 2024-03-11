@@ -7,25 +7,26 @@
     <button type="button" class="btn btn-secondary btn-mostrar-grafica" data-bs-toggle="modal"
         data-bs-target="#exampleModal">
         Gr&aacute;fica
-    </button> 
+    </button>
 
     <h1 class="pb-4">{{grupo.curso_grupo.nombre_curso}} - Grupo {{grupo.nombre_grupo}}</h1>
     <form method="POST">
         {% csrf_token %}
         <div class="row pb-4 d-flex justify-content-center">
-        
+
             <button type="button" class="col-3 mr-4 btn btn-outline-success btn-tomar-asistencia" data-bs-toggle="modal"
                 data-bs-target="#crearFormularioAsistenciaModal">
                 Crear Formulario de Asistencia
             </button>
-            <button class="col-3 mr-4 ml-4 btn btn-outline-success btn-tomar-asistencia" type="submit" name="VerEstudiantes">Ver Estudiantes</button>
+            <button class="col-3 mr-4 ml-4 btn btn-outline-success btn-tomar-asistencia" type="submit"
+                name="VerEstudiantes">Ver Estudiantes</button>
             <button type="button" class="col-3 ml-4 btn btn-outline-success btn-tomar-asistencia" data-bs-toggle="modal"
                 data-bs-target="#editarCursoModal">
                 Editar Curso
             </button>
         </div>
     </form>
-    
+
     <div class="input-group mb-3">
         <input type="date" class="form-control" aria-label="Search" aria-describedby="search-button">
         <div class="input-group-append">
@@ -38,7 +39,7 @@
         <div class="col-md-4">
             <div class="card mb-4">
                 <div class="card-body">
-                    <h5 class="card-title">Asistencia {{ asistencia.0.fecha|date:"d/m/Y" }}</h5>
+                    <h5 class="card-title">Asistencia - {{ asistencia.0.fecha_asistencia|date:"d/m/Y" }}</h5>
                     <p class="card-text">
                         Cantidad Inasistencias: {{ asistencia.1 }} <br>
                         Porcentaje de Asistencia: {{ asistencia.2 }}%
@@ -51,7 +52,7 @@
         </div>
         {% endfor %}
         {% endif %}
-        
+
     </div>
 </div>
 
@@ -123,29 +124,19 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Crear Formulario de Asistencia</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form>
-                    <div class="row">
-                        <div class="form-group col-4">
-                            <label for="dia">Dia</label>
-                            <input type="text" class="form-control" id="dia" value="Dia Actual">
-                        </div>
-                        <div class="form-group col-4">
-                            <label for="mes">Mes</label>
-                            <input type="text" class="form-control" id="mes" value="Mes Actual">
-                        </div>
-                        <div class="form-group col-4">
-                            <label for="anio">Año</label>
-                            <input type="text" class="form-control" id="anio" value="Año Actual">
-                        </div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="fecha">Fecha de Asistencia</label>
+                        <input type="date" class="form-control" id="fecha" name="fecha" required>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary"
-                    onclick="window.location.href='{% url 'tomar_asistencia' %}'">Crear Formulario</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-success" name="crearAsistencia">Crear Formulario</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -27,7 +27,8 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Nombre Completo</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
                 <th>Documento</th>
                 <th>Correo</th>
             </tr>
@@ -36,7 +37,8 @@
             {% if estudiantes_activos %}
             {% for estudiante in estudiantes_activos %}
             <tr>
-                <td>{{estudiante.nombres_estudiante}} {{estudiante.apellidos_estudiante}}</td>
+                <td>{{estudiante.nombres_estudiante}}</td>
+                <td>{{estudiante.apellidos_estudiante}}</td>
                 <td>{{estudiante.documento_estudiante}}</td>
                 <td>{{estudiante.user.email}}</td>
                 <td class="text-center"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i></td>
@@ -94,7 +96,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="submit" class="btn btn-primary" name="actualizarEstudiantes">Actualizar</button>
+                <button type="submit" class="btn btn-success" name="actualizarEstudiantes">Actualizar</button>
             </div>
         </form>
         </div>

@@ -17,7 +17,10 @@ class informacion_listado_asistencia:
             cantidad_total_inasistencia = asistencia_estudiante.count()
             asistencia_estudiante = Asistencia_estudiante.objects.filter(asistencia=asistencia)
             cantidad_total_estudiantes = asistencia_estudiante.count()
-            porcentaje_asistencia = ((cantidad_total_estudiantes-cantidad_total_inasistencia)/cantidad_total_estudiantes)*100
+            if cantidad_total_estudiantes == 0:
+                porcentaje_asistencia = 100
+            else:
+                porcentaje_asistencia = ((cantidad_total_estudiantes - cantidad_total_inasistencia) / cantidad_total_estudiantes) * 100
             datos.append((asistencia,cantidad_total_inasistencia,porcentaje_asistencia))
         return datos
     

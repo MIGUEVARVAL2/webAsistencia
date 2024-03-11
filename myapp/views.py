@@ -201,12 +201,15 @@ def tomar_asistencia(request,asistencia):
         profesor = Profesores.objects.get(id=request.session['profesor_id'])
         asistencia = Asistencia.objects.get(id_asistencia=asistencia)
         grupo = asistencia.grupo
-        estudiantes = grupo.estudiantes_grupo.filter(inscripcion__estado=True).order_by('apellidos_estudiante')
+        estudiantes_activos = grupo.estudiantes_grupo.filter(asistencia_estudiante__registro_Asistencia=True).order_by('apellidos_estudiante')
+        estudiantes_inactivos = grupo.estudiantes_grupo.filter(asistencia_estudiante__registro_Asistencia=False).order_by('apellidos_estudiante')
+        fecha= asistencia.fecha_asistencia
+        print(estudiantes_activos)
+        print(estudiantes_inactivos)
         if request.method == 'POST':
             pass
-            return redirect('informacion_curso',grupo=grupo.id_grupo)
         else:
-            return render(request, 'tomar_asistencia.html', {'grupo': grupo,'profesor': profesor, 'estudiantes': estudiantes})
+            return render(request, 'tomar_asistencia.html', {'grupo': grupo,'profesor': profesor, 'estudiantes_activos': estudiantes_activos,'estudiantes_inactivos':estudiantes_inactivos, 'fecha': fecha})
     else:
         return redirect('index')
     return render(request, 'tomar_asistencia.html')

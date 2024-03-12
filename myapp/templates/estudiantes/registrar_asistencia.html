@@ -1,83 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "estudiantes/format.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AsistenciaUN</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/formato.css'%}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        .validar-asistencia-false {
-            border-color: #dc3545;
-            background-color: #fff0f0;
-            padding-right: calc(1.5em + .75rem);
-            background-image: url("descargar (1).svg");
-            background-repeat: no-repeat;
-            background-position: right calc(.375em + .1875rem) center;
-            background-size: calc(.75em + .375rem) calc(.75em + .375rem);
-        }
-
-        .validar-asistencia-true {
-            border-color: #198754;
-            background-color: #f7fffc;
-            background-image: url("descargar.svg");
-            padding-right: calc(1.5em + .75rem);
-            background-image: url("descargar.svg");
-            background-repeat: no-repeat;
-            background-position: right calc(.375em + .1875rem) center;
-            background-size: calc(.75em + .375rem) calc(.75em + .375rem);
-        }
-    </style>
-</head>
-
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <img src="{% static 'img/logounal.png'%}" alt="Logo UNAL">
-        <a class="navbar-brand" href="{% url 'listar_grupos_estudiantes' %}">AsistenciaUN</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'listar_grupos_estudiantes' %}">Ver Cursos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Ayuda</a>
-                </li>
-                <li class="nav-item pl-2 pr-3 ">
-                    <div class="btn-group" role="group">
-                        {% if estudiante %}
-                        <button type="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            {{estudiante.nombres_estudiante}} {{estudiante.apellidos_estudiante}}
-                        </button>
-                        {% endif %}
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Perfil</a></li>
-                            <li><a class="dropdown-item" href="{% url 'cerrar_sesion'%}">Cerrar Sesión</a></li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </nav>
+{% block content %}
 
 
     <div class="container mt-5 pt-5">
         <h3 class="mb-4">Listado de Asistencia </h3>
+        {% if asistencias %}
+        {% for asistencia in asistencias %}
+        {% if asistencia.registro_Asistencia %}
         <div class="card mt-3 validar-asistencia-true">
             <div class="card-body ">
                 <div class="row">
                     <div class="col-6">
-                        <p><strong>Fecha:</strong> 11 de marzo de 2024</p>
+                        <p><strong>Fecha:</strong> {{asistencia.asistencia.fecha_asistencia}}</p>
                     </div>
                     <div class="col-3 col-">
                         <button class="btn btn-outline-success" disabled>Asistencia Registada</button>
@@ -88,86 +23,92 @@
                 </div>
             </div>
         </div>
+        {% elif not asistencia.asistencia.activa %}
         <div class="card mt-3 validar-asistencia-false">
             <div class="card-body ">
                 <div class="row">
                     <div class="col-6">
-                        <p><strong>Fecha:</strong> 11 de marzo de 2024</p>
+                        <p><strong>Fecha:</strong> {{asistencia.asistencia.fecha_asistencia}}</p>
                     </div>
                     <div class="col-3">
-                        <button class="btn btn-outline-danger" disabled>Registar Asistencia</button>
+                        <button type="submit" class="btn btn-outline-danger" disabled>Registar Asistencia</button>
                     </div>
                     <div class="col-3">
-                        <button class="btn btn-outline-danger" data-bs-target="#staticBackdrop" data-bs-toggle="modal">Presentar Excusa</button>
+                        <button class="btn btn-outline-danger" data-bs-target="#staticBackdrop"
+                            data-bs-toggle="modal">Presentar Excusa</button>
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-xl">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="staticBackdropLabel">Registrar Excsa</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form method="POST" enctype="multipart/form-data">
-                            <div class="modal-body">
-                                <input type="hidden" class="form-control" id="codigoCurso" name="codigoCurso"
-                                    value="{{ curso.0.id_curso }}" aria-label="Recipient's username"
-                                    aria-describedby="basic-addon2">
-                                <div class="form-group">
-                                    <label for="curso">Justificación Excusa</label>
-                                    <div class="input-group mb-3">
-                                        <textarea type="text" class="form-control" id="nombreCurso" name="nombreCurso" aria-label="Recipient's username"
-                                            aria-describedby="basic-addon2" style="height: 150px;"></textarea>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Registrar Excsa</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="modal-body">
+                                    <input type="hidden" class="form-control" id="codigoCurso" name="codigoCurso"
+                                        value="{{ curso.0.id_curso }}" aria-label="Recipient's username"
+                                        aria-describedby="basic-addon2">
+                                    <div class="form-group">
+                                        <label for="curso">Justificación Excusa</label>
+                                        <div class="input-group mb-3">
+                                            <textarea type="text" class="form-control" id="nombreCurso"
+                                                name="nombreCurso" aria-label="Recipient's username"
+                                                aria-describedby="basic-addon2" style="height: 150px;"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="mb-3">
+                                            <label for="formFile" class="form-label">Anexar Documento PDF
+                                                (Opcional)</label>
+                                            <input class="form-control" type="file" id="archivo" name="listaEstudiantes"
+                                                accept=".pdf">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="mb-3">
-                                        <label for="formFile" class="form-label">Anexar Documento PDF (Opcional)</label>
-                                        <input class="form-control" type="file" id="archivo" name="listaEstudiantes"
-                                            accept=".pdf">
-                                    </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="submit" name="crearGrupo" class="btn btn-success">Enviar
+                                        Excusa</button>
                                 </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Cerrar</button>
-                                <button type="submit" name="crearGrupo" class="btn btn-success">Enviar Excusa</button>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
+            </div>
 
         </div>
+        {% else %}
         <div class="card mt-3 validar-asistencia-false">
             <div class="card-body ">
                 <div class="row">
                     <div class="col-6">
-                        <p><strong>Fecha:</strong> 11 de marzo de 2024</p>
+                        <p><strong>Fecha:</strong> {{asistencia.asistencia.fecha_asistencia}}</p>
                     </div>
                     <div class="col-3 col-">
-                        <button class="btn btn-outline-danger">Registar Asistencia</button>
+                        <form method="POST">
+                        {% csrf_token %}
+                        <button type="submit" name="registar_{{asistencia.id_asistencia_estudiante}}" class="btn btn-outline-danger">Registar Asistencia</button>
+                    </form>
                     </div>
                     <div class="col-3">
-                        <button class="btn btn-outline-danger">Presentar Excusa</button>
+                        <button class="btn btn-outline-danger" disabled>Presentar Excusa</button>
                     </div>
                 </div>
             </div>
         </div>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
         
+        
+
     </div>
 
-
-
-
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-
-</html>
+    {% endblock %}

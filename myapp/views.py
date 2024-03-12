@@ -253,7 +253,38 @@ def listar_grupos_estudiantes(request):
     if  'estudiante_id' in request.session:
         estudiante = Estudiantes.objects.get(id=request.session['estudiante_id'])
         grupos = Grupos.objects.filter(estudiantes_grupo=estudiante).order_by('-id_grupo')
-        print(estudiante.nombres_estudiante)
+
+        for i in grupos:
+            if f'info_{i.id_grupo}' in request.POST:
+                try:
+                    return redirect('registrar_asistencia',  grupo=i.id_grupo)
+                except Exception as e:
+                    print(e)
+                    return render(request, 'estudiantes/cursos_estudiante.html', {'grupos': grupos, 'estudiante': estudiante})
+
         return render(request, 'estudiantes/cursos_estudiante.html', {'grupos': grupos, 'estudiante': estudiante})
     else:
         return redirect('index')
+    
+def registrar_asistencia(request,grupo):
+    if  'estudiante_id' in request.session:
+        estudiante = Estudiantes.objects.get(id=request.session['estudiante_id'])
+        grupo = Grupos.objects.get(id_grupo=grupo)
+        asistencia = Asistencia_estudiante.objects.filter(estudiante=estudiante, asistencia__grupo=grupo)
+        if request.method == 'POST':
+            for i in asistencia:
+                if f'registar_{i.id_asistencia_estudiante}' in request.POST:
+                    asistencia_estudiante= Asistencia_estudiante.objects.get(id_asistencia_estudiante=i.id_asistencia_estudiante)
+                    asistencia_estudiante.registro_Asistencia=True
+                    asistencia_estudiante.save()
+                    return redirect('registrar_asistencia', grupo=grupo.id_grupo)
+            """ elif 'excusa' in request.POST:
+                asistencia_estudiante= Asistencia_estudiante.objects.get(estudiante=estudiante, asistencia=asistencia)
+                asistencia_estudiante.excusa=True
+                asistencia_estudiante.save()
+                return redirect('listar_grupos_estudiantes') """
+        else:
+            return render(request, 'estudiantes/registrar_asistencia.html', {'grupo': grupo, 'estudiante': estudiante, 'asistencias': asistencia})
+    else:
+        return redirect('index')
+    return render(request, 'estudiantes/registrar_asistencia.html')

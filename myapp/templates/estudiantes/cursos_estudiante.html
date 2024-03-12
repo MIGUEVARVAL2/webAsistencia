@@ -22,7 +22,7 @@
     <div class="row">
         {% if grupos %}
         {% for grupo in grupos %}
-        <div class="col-md-4 mb-4">
+        <div class="col-md-4 mb-5">
             <div class="card">
                 <form method="POST">
                     {% csrf_token %}
@@ -41,7 +41,7 @@
                         <div class="row" >
                             <div class="d-grid gap-2 col-8 mx-auto">
                                 <button type="submit" class="btn btn-outline-success" 
-                                name="info_{{ grupo.curso_grupo.id_curso }}">Información del Curso</button>
+                                name="info_{{ grupo.id_grupo }}">Información del Curso</button>
                             </div>
                               </div>
                         

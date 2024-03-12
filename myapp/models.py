@@ -44,7 +44,7 @@ class Inscripcion(models.Model):
 
 class Asistencia(models.Model):
     id_asistencia = models.AutoField(primary_key=True)
-    fecha_asistencia = models.DateField(auto_now_add=True)
+    fecha_asistencia = models.DateField(null=False)
     grupo = models.ForeignKey(Grupos, on_delete=models.CASCADE)
 
 class Asistencia_estudiante(models.Model):

@@ -39,7 +39,7 @@ def index(request):
                     #Obtengo el profesor y guardo el ID en la sesión
                     estudiante= Estudiantes.objects.get(user=user)
                     request.session['estudiante_id'] = estudiante.id
-                    return redirect('cursos_estudiantes')
+                    return redirect('listar_grupos_estudiantes')
                 else:
                     #En caso de que no se encuentre en la base de datos me devuelve a la página de inicio con un mensaje de error
                     return render(request, 'index.html', {'error': 'Usuario o contraseña incorrectos'})
@@ -160,8 +160,14 @@ def informacion_curso(request, grupo):
                     )
                     asistencia_estudiante= Asistencia_estudiante.objects.bulk_create([Asistencia_estudiante(asistencia=asistencia,estudiante=estudiante) for estudiante in grupo.estudiantes_grupo.filter(inscripcion__estado=True)])
                     return redirect('tomar_asistencia',asistencia=asistencia.id_asistencia)
-                else:
-                    return render(request, 'profesores/informacion_curso.html', {'grupo': grupo,'profesor': profesor, 'asistencias': datos})
+                
+                for i in datos:
+                    if f'info_{i[0].id_asistencia}' in request.POST:
+                        try:
+                            return redirect('tomar_asistencia',  asistencia=i[0].id_asistencia)
+                        except Exception as e:
+                            print(e)
+                            return render(request, 'profesores/informacion_curso.html', {'grupo': grupo,'profesor': profesor, 'asistencias': datos})
             
             else:
                 return render(request, 'profesores/informacion_curso.html', {'grupo': grupo,'profesor': profesor, 'asistencias': datos})
@@ -201,11 +207,15 @@ def tomar_asistencia(request,asistencia):
         profesor = Profesores.objects.get(id=request.session['profesor_id'])
         asistencia = Asistencia.objects.get(id_asistencia=asistencia)
         grupo = asistencia.grupo
-        estudiantes_activos = grupo.estudiantes_grupo.filter(asistencia_estudiante__registro_Asistencia=True).order_by('apellidos_estudiante')
-        estudiantes_inactivos = grupo.estudiantes_grupo.filter(asistencia_estudiante__registro_Asistencia=False).order_by('apellidos_estudiante')
+        estudiantes_activos = Estudiantes.objects.filter(
+            asistencia_estudiante__asistencia=asistencia,
+            asistencia_estudiante__registro_Asistencia=True
+        )
+        estudiantes_inactivos = Estudiantes.objects.filter(
+            asistencia_estudiante__asistencia=asistencia,
+            asistencia_estudiante__registro_Asistencia=False
+        )
         fecha= asistencia.fecha_asistencia
-        print(estudiantes_activos)
-        print(estudiantes_inactivos)
         if request.method == 'POST':
             pass
         else:
@@ -233,3 +243,17 @@ def perfil_profesor(request):
     # Convertir a HTML
     graph = opy.plot(fig, auto_open=False, output_type='div')
     return render(request, 'profesores/perfil_profesor.html', {'graph': graph})
+
+
+
+#Vistas para estudiantes
+
+@login_required
+def listar_grupos_estudiantes(request):
+    if  'estudiante_id' in request.session:
+        estudiante = Estudiantes.objects.get(id=request.session['estudiante_id'])
+        grupos = Grupos.objects.filter(estudiantes_grupo=estudiante).order_by('-id_grupo')
+        print(estudiante.nombres_estudiante)
+        return render(request, 'estudiantes/cursos_estudiante.html', {'grupos': grupos, 'estudiante': estudiante})
+    else:
+        return redirect('index')

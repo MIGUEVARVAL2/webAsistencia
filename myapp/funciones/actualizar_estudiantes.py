@@ -62,7 +62,10 @@ class actualizar_grupo_estudiantes:
                     grupo=grupo
                 )
                 cant_nuevos+=1
-                
+            elif validar_inscripcion.estado == False:
+                validar_inscripcion.estado=True
+                validar_inscripcion.save()
+                cant_nuevos+=1
         return cant_nuevos
 
     def ejecutar(self):

@@ -1,0 +1,55 @@
+{% extends "estudiantes/format.html" %}
+
+{% block content %}
+
+<div class="container mt-5 pt-5">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Nombre del Curso" aria-label="Search"
+            aria-describedby="search-button">
+        <div class="btn-group mr-2 ml-2" role="group">
+            <select class="form-select mr-2 ml-2 " aria-label="Default select example">
+                <option value="" selected>Todos</option>
+                <option value="2023-1">2023-1S</option>
+                <option value="2">2023-1S</option>
+                <option value="3">2023-1S</option>
+            </select>
+        </div>
+
+        <div class="input-group-append">
+            <button class="btn btn-outline-success" type="button" id="search-button">Buscar Curso</button>
+        </div>
+    </div>
+    <div class="row">
+        {% if grupos %}
+        {% for grupo in grupos %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="card-header">
+                    <strong>{{grupo.curso_grupo.nombre_curso}}</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-6">
+                            <strong>Grupo:</strong> {{grupo.nombre_grupo}}
+                            </div>
+                            <div class="col-6">
+                                <strong>Semestre:</strong> {{grupo.curso_grupo.anio_curso}}-{{grupo.curso_grupo.semestre_curso}}
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-outline-success"
+                                name="info_{{ grupo.curso_grupo.id_curso }}">Información del Curso</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+
+{% endblock %}

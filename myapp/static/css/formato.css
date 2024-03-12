@@ -82,3 +82,28 @@ body h1,h2,h3{
     background-color: #198754;
     border-color: #198754;
 }
+
+.header-cursos-estudiante{
+    background-color: rgb(219, 255, 218);
+}
+
+.validar-asistencia-false {
+    border-color: #dc3545;
+    background-color: #fff0f0;
+    padding-right: calc(1.5em + .75rem);
+    background-image: url("descargar (1).svg");
+    background-repeat: no-repeat;
+    background-position: right calc(.375em + .1875rem) center;
+    background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+}
+
+.validar-asistencia-true {
+    border-color: #198754;
+    background-color: #f7fffc;
+    background-image: url("descargar.svg");
+    padding-right: calc(1.5em + .75rem);
+    background-image: url("descargar.svg");
+    background-repeat: no-repeat;
+    background-position: right calc(.375em + .1875rem) center;
+    background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+}

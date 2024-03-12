@@ -26,7 +26,7 @@
             <div class="card">
                 <form method="POST">
                     {% csrf_token %}
-                    <div class="card-header">
+                    <div class="card-header header-cursos-estudiante">
                     <strong>{{grupo.curso_grupo.nombre_curso}}</strong>
                     </div>
                     <div class="card-body">
@@ -38,10 +38,13 @@
                                 <strong>Semestre:</strong> {{grupo.curso_grupo.anio_curso}}-{{grupo.curso_grupo.semestre_curso}}
                             </div>
                         </div>
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-outline-success"
+                        <div class="row" >
+                            <div class="d-grid gap-2 col-8 mx-auto">
+                                <button type="submit" class="btn btn-outline-success" 
                                 name="info_{{ grupo.curso_grupo.id_curso }}">Información del Curso</button>
-                        </div>
+                            </div>
+                              </div>
+                        
                     </div>
                 </form>
             </div>

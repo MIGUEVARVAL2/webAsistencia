@@ -54,5 +54,10 @@ class Asistencia_estudiante(models.Model):
     estudiante = models.ForeignKey(Estudiantes, on_delete=models.CASCADE)
     asistencia = models.ForeignKey(Asistencia, on_delete=models.CASCADE)
 
-
+class Excusa_falta_estudiante(models.Model): 
+    id_excusa = models.AutoField(primary_key=True) 
+    motivo = models.CharField(max_length=100, null=False) 
+    fecha_creacion_excusa = models.DateTimeField(auto_now_add=True)
+    estudiante = models.ForeignKey(Estudiantes, on_delete=models.CASCADE) 
+    asistencia_estudiante = models.ForeignKey(Asistencia_estudiante, on_delete=models.CASCADE)
     

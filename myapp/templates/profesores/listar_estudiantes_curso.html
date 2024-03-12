@@ -24,11 +24,11 @@
         {{mensaje_actualizacion}}
     </div>
     {% endif %}
-    <table class="table table-striped">
+    <div class="table-responsive">
+    <table class="table table-striped table-hover">
         <thead>
             <tr>
-                <th>Nombres</th>
-                <th>Apellidos</th>
+                <th>Nombre Completo</th>
                 <th>Documento</th>
                 <th>Correo</th>
             </tr>
@@ -37,8 +37,7 @@
             {% if estudiantes_activos %}
             {% for estudiante in estudiantes_activos %}
             <tr>
-                <td>{{estudiante.nombres_estudiante}}</td>
-                <td>{{estudiante.apellidos_estudiante}}</td>
+                <td>{{estudiante.nombres_estudiante}} {{estudiante.apellidos_estudiante}}</td>
                 <td>{{estudiante.documento_estudiante}}</td>
                 <td>{{estudiante.user.email}}</td>
                 <td class="text-center"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i></td>
@@ -48,9 +47,10 @@
             <!-- Agrega más filas según sea necesario -->
         </tbody>
     </table>
-
+</div>
+<div class="table-responsive">
     <h2 class="mt-5">Estudiantes Inactivos</h2>
-    <table class="table table-striped mb-5">
+    <table class="table table-striped mb-5 table-hover">
         <thead>
             <tr>
                 <th>Nombre Completo</th>
@@ -72,6 +72,7 @@
             <!-- Agrega más filas según sea necesario -->
         </tbody>
     </table>
+</div>
 </div>
 
 

@@ -4,7 +4,8 @@
 
 
     <div class="container mt-5 pt-5">
-        <h3 class="mb-4">Listado de Asistencia </h3>
+        <h3 class="pb-3" style="border-bottom: 2px solid black;">Listado de Asistencia </h3>
+        <br>
         {% if asistencias %}
         {% for asistencia in asistencias %}
         {% if asistencia.registro_Asistencia %}
@@ -58,7 +59,7 @@
                                         <label for="curso">Justificación Excusa</label>
                                         <div class="input-group mb-3">
                                             <textarea type="text" class="form-control" id="nombreCurso"
-                                                name="nombreCurso" aria-label="Recipient's username"
+                                                name="justificacion" aria-label="Recipient's username"
                                                 aria-describedby="basic-addon2" style="height: 150px;"></textarea>
                                         </div>
                                     </div>
@@ -66,7 +67,7 @@
                                         <div class="mb-3">
                                             <label for="formFile" class="form-label">Anexar Documento PDF
                                                 (Opcional)</label>
-                                            <input class="form-control" type="file" id="archivo" name="listaEstudiantes"
+                                            <input class="form-control" type="file" id="archivo" name="documento_soporte"
                                                 accept=".pdf">
                                         </div>
                                     </div>
@@ -74,7 +75,7 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="submit" name="crearGrupo" class="btn btn-success">Enviar
+                                    <button type="submit" name="enviar_excusa_{{asistencia.id_asistencia_estudiante}}" class="btn btn-success">Enviar
                                         Excusa</button>
                                 </div>
                             </form>
@@ -105,10 +106,14 @@
         </div>
         {% endif %}
         {% endfor %}
+        {% else %}
+        <div class="alert alert-warning" role="alert">
+            No hay asistencias registradas
+        </div>
         {% endif %}
         
         
 
     </div>
 
-    {% endblock %}
+{% endblock %}

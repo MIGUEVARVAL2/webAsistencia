@@ -7,15 +7,19 @@
 <div class="container mt-5 mb-5 pt-5">
 
     <h1 class="pb-4">{{grupo.curso_grupo.nombre_curso}} - Grupo {{grupo.nombre_grupo}}</h1>
-    <div class="card-qr-asistencia">
-        <div class="card">
-            <div class="card-body text-center">
-                <p class="card-title"><small>QR Asistencia</small></p>
-            </div>
-            <img src="{% static 'img/qrejemplo.png' %}" class="card-img-bottom imagen-qr-asistencia" alt="...">
-        </div>
+    <h2>Lista de Asistencia: {{fecha}}</h2>
+    <div class="row">
+    <form method="POST" class="mb-3">
+        {% csrf_token %}
+        <div class="align-self-end text-end">
+        {% if estado_asistencia %}
+        <button type="submit" class="btn btn-success" name="cambiar_estado" >Asistencia Habilitada</button>
+        {% else %}
+        <button type="submit" class="btn btn-danger" name="cambiar_estado" >Asistencia Inhabilitada</button>
+        {% endif %}
     </div>
-    <h2 class="m-4">Lista de Asistencia: {{fecha}}</h2>
+    </form>
+</div>
     <div class="accordion" id="accordionPanelsStayOpenExample">
         <div class="accordion-item">
             <h2 class="accordion-header" id="panelsStayOpen-headingOne">
@@ -87,6 +91,8 @@
                                 <th>Nombre Completo</th>
                                 <th>Documento</th>
                                 <th>Correo</th>
+                                <th>Excusa</th>
+                                <th>Info</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -95,9 +101,13 @@
                             <tr>
                                 <td>{{estudiante.nombres_estudiante}} {{estudiante.apellidos_estudiante}}</td>
                                 <td>{{estudiante.documento_estudiante}}</td>
-                                <td>{{estudiante.user.email}}</td>
-                                <td class="text-center"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i>
-                                </td>
+                                <td>{{estudiante.user__email}}</td>
+                                {% if estudiante.asistencia_estudiante__excusa%}
+                                <td><a href="#" class="nav-link active text-danger">Ver Excusa</a></td>
+                                {% else %}
+                                <td class="text-muted">Sin Excusa</td>
+                                {% endif %}
+                                <td class="text-center"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i></td>
                             </tr>
                             {% endfor %}
                             {% endif %}

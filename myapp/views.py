@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Profesores, Cursos, Estudiantes, Grupos, Asistencia, Asistencia_estudiante
+from .models import Excusa_falta_estudiante, Profesores, Cursos, Estudiantes, Grupos, Asistencia, Asistencia_estudiante
 import plotly.graph_objects as go
 import plotly.offline as opy
 from django.contrib.auth.models import User
@@ -101,7 +101,7 @@ def cursos_estudiantes(request):
                     archivo = request.FILES['listaEstudiantes_curso']
                     agregar_estudiantes= crear_estudiantes.Crear_grupo_estudiantes(archivo, grupo.id_grupo)
                     agregar_estudiantes.ejecutar()
-                    return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'profesor': profesor, 'exito': 'Curso creado exitosamente'})
+                    return redirect('cursos_estudiantes')
 
                 except Exception as e:
                     listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
@@ -122,9 +122,11 @@ def cursos_estudiantes(request):
                     archivo = request.FILES['listaEstudiantes']
                     agregar_estudiantes= crear_estudiantes.Crear_grupo_estudiantes(archivo, grupo.id_grupo)
                     agregar_estudiantes.ejecutar()
-                    return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'profesor': profesor, 'exito': 'Curso creado exitosamente'})
+                    return redirect('cursos_estudiantes')
 
                 except Exception as e:
+                    listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
+                    datos= listar_cursos.ejecutar()
                     return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'profesor': profesor,'error': f'No se pudo crear el grupo: {str(e)}'})
             for i in datos:
                 if f'info_{i[0].id_curso}' in request.POST:
@@ -134,9 +136,11 @@ def cursos_estudiantes(request):
                         return redirect('informacion_curso',  grupo=grupo.id_grupo)
                     except Exception as e:
                         print(e)
-                        return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'profesor': profesor})
+                        redirect('cursos_estudiantes')
         else:
             if 'profesor_id' in request.session:
+                listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
+                datos= listar_cursos.ejecutar()
                 return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'profesor': profesor})
     
     return redirect('index')
@@ -206,20 +210,24 @@ def tomar_asistencia(request,asistencia):
     if  'profesor_id' in request.session:
         profesor = Profesores.objects.get(id=request.session['profesor_id'])
         asistencia = Asistencia.objects.get(id_asistencia=asistencia)
-        grupo = asistencia.grupo
-        estudiantes_activos = Estudiantes.objects.filter(
-            asistencia_estudiante__asistencia=asistencia,
-            asistencia_estudiante__registro_Asistencia=True
-        )
-        estudiantes_inactivos = Estudiantes.objects.filter(
-            asistencia_estudiante__asistencia=asistencia,
-            asistencia_estudiante__registro_Asistencia=False
-        )
-        fecha= asistencia.fecha_asistencia
-        if request.method == 'POST':
-            pass
+        if request.method == 'POST': 
+            if 'cambiar_estado' in request.POST:
+                asistencia.activa= not asistencia.activa
+                asistencia.save()
+                return redirect('tomar_asistencia',asistencia=asistencia.id_asistencia)
         else:
-            return render(request, 'profesores/tomar_asistencia.html', {'grupo': grupo,'profesor': profesor, 'estudiantes_activos': estudiantes_activos,'estudiantes_inactivos':estudiantes_inactivos, 'fecha': fecha})
+            grupo = asistencia.grupo
+            estudiantes_activos = Estudiantes.objects.filter(
+                asistencia_estudiante__asistencia=asistencia,
+                asistencia_estudiante__registro_Asistencia=True
+            )
+            estudiantes_inactivos = Estudiantes.objects.filter(
+                asistencia_estudiante__asistencia=asistencia,
+                asistencia_estudiante__registro_Asistencia=False
+            ).values('id', 'documento_estudiante', 'nombres_estudiante', 'apellidos_estudiante', 'plan_estudio', 'user__email', 'asistencia_estudiante__excusa')
+            fecha= asistencia.fecha_asistencia
+            estado_asistencia= asistencia.activa
+            return render(request, 'profesores/tomar_asistencia.html', {'grupo': grupo,'profesor': profesor, 'estudiantes_activos': estudiantes_activos,'estudiantes_inactivos':estudiantes_inactivos, 'fecha': fecha, 'estado_asistencia': estado_asistencia})
     else:
         return redirect('index')
     return render(request, 'profesores/tomar_asistencia.html')
@@ -278,11 +286,20 @@ def registrar_asistencia(request,grupo):
                     asistencia_estudiante.registro_Asistencia=True
                     asistencia_estudiante.save()
                     return redirect('registrar_asistencia', grupo=grupo.id_grupo)
-            """ elif 'excusa' in request.POST:
-                asistencia_estudiante= Asistencia_estudiante.objects.get(estudiante=estudiante, asistencia=asistencia)
-                asistencia_estudiante.excusa=True
-                asistencia_estudiante.save()
-                return redirect('listar_grupos_estudiantes') """
+
+                elif f'enviar_excusa_{i.id_asistencia_estudiante}' in request.POST:
+                    excusa = request.POST.get('justificacion')
+                    soporte = request.FILES.get('documento_soporte', None)
+                    excusa_estudiante= Excusa_falta_estudiante.objects.create(
+                        motivo=excusa,
+                        soporte_excusa=soporte,
+                        estudiante=estudiante,
+                        asistencia_estudiante=i
+                    )
+                    i.excusa=True
+                    i.save()
+                    return redirect('registrar_asistencia', grupo=grupo.id_grupo)
+                    
         else:
             return render(request, 'estudiantes/registrar_asistencia.html', {'grupo': grupo, 'estudiante': estudiante, 'asistencias': asistencia})
     else:

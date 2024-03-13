@@ -133,17 +133,33 @@ def cursos_estudiantes(request):
                     try:
                         id_grupo = request.POST.get('grupo')
                         grupo= Grupos.objects.get(id_grupo=id_grupo)
-                        return redirect('informacion_curso',  grupo=grupo.id_grupo)
+                        if grupo is not None:
+                            return redirect('informacion_curso',  grupo=grupo.id_grupo)
+                        else:
+                            return redirect('cursos_estudiantes')
                     except Exception as e:
                         print(e)
                         redirect('cursos_estudiantes')
+                elif f'eliminar_curso_{i[0].id_curso}' in request.POST:
+                    try:
+                        curso= Cursos.objects.get(id_curso=i[0].id_curso)
+                        curso.delete()
+                        return redirect('cursos_estudiantes')
+                    except Exception as e:
+                        print(e)
+                        redirect('cursos_estudiantes')
+
+
         else:
             if 'profesor_id' in request.session:
                 listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
                 datos= listar_cursos.ejecutar()
                 return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'profesor': profesor})
-    
-    return redirect('index')
+            else:
+                return redirect('index')
+    listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
+    datos= listar_cursos.ejecutar()
+    return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'profesor': profesor})
 
 @login_required
 def informacion_curso(request, grupo):

@@ -9,17 +9,17 @@
     <h1 class="pb-4">{{grupo.curso_grupo.nombre_curso}} - Grupo {{grupo.nombre_grupo}}</h1>
     <h2>Lista de Asistencia: {{fecha}}</h2>
     <div class="row">
-    <form method="POST" class="mb-3">
-        {% csrf_token %}
-        <div class="align-self-end text-end">
-        {% if estado_asistencia %}
-        <button type="submit" class="btn btn-success" name="cambiar_estado" >Asistencia Habilitada</button>
-        {% else %}
-        <button type="submit" class="btn btn-danger" name="cambiar_estado" >Asistencia Inhabilitada</button>
-        {% endif %}
+        <form method="POST" class="mb-3">
+            {% csrf_token %}
+            <div class="align-self-end text-end">
+                {% if estado_asistencia %}
+                <button type="submit" class="btn btn-success" name="cambiar_estado">Asistencia Habilitada</button>
+                {% else %}
+                <button type="submit" class="btn btn-danger" name="cambiar_estado">Asistencia Inhabilitada</button>
+                {% endif %}
+            </div>
+        </form>
     </div>
-    </form>
-</div>
     <div class="accordion" id="accordionPanelsStayOpenExample">
         <div class="accordion-item">
             <h2 class="accordion-header" id="panelsStayOpen-headingOne">
@@ -103,11 +103,61 @@
                                 <td>{{estudiante.documento_estudiante}}</td>
                                 <td>{{estudiante.user__email}}</td>
                                 {% if estudiante.asistencia_estudiante__excusa%}
-                                <td><a href="#" class="nav-link active text-danger">Ver Excusa</a></td>
+                                <td><a href="#" class="nav-link active text-danger" data-bs-toggle="modal"
+                                        data-bs-target="#excusa_{{estudiante.id}}">Ver Excusa</a></td>
+
+                                <div class="modal fade" id="excusa_{{estudiante.id}}" data-bs-backdrop="static"
+                                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="staticBackdropLabel">Información de la
+                                                    excusa</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body p-4">
+                                                {% for excusa in excusas %}
+                                                {% if excusa.estudiante.id == estudiante.id %}
+                                                <p><strong>Estudiante: </strong>{{estudiante.nombres_estudiante}}
+                                                    {{estudiante.apellidos_estudiante}}</p>
+                                                <p class="text-muted pb-4" style="border-bottom: 1px solid black;">
+                                                    <strong>Fecha Envío:</strong> {{ excusa.fecha_creacion_excusa }}</p>
+                                                <br>
+                                                <h5>Justificación</h5>
+                                                <div class="alert alert-secondary" role="alert">
+                                                    <p>{{ excusa.motivo }}</p>
+                                                </div>
+                                                {% if excusa.soporte_excusa %}
+                                                <h5>Soporte de la Excusa</h5>
+                                                <iframe src="{{excusa.soporte_excusa.url}}" width="100%" height="600px" style="zoom: 0.9;"></iframe>
+                                                    <p>En caso de no poder visualizar el archivo lo puede decargar <a href="{{excusa.soporte_excusa.url}}" download>aquí</a>.</p>
+                                                </iframe>
+                                                {% else %}
+                                                <p>No hay soporte de excusa disponible.</p>
+                                                {% endif %}
+                                                {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                            <form method="POST">
+                                            {% csrf_token %}
+                                            <div class="modal-footer">
+                                                <input type="hidden" name="id_estudiante" value="{{estudiante.id}}">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                <button type="submit" name="aceptar_excusa_{{excusas.0.id_excusa}}" class="btn btn-success">Aceptar Excusa</button>
+                                            </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                                 {% else %}
                                 <td class="text-muted">Sin Excusa</td>
                                 {% endif %}
-                                <td class="text-center"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i></td>
+                                <td class="text-center"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i>
+                                </td>
+
+
                             </tr>
                             {% endfor %}
                             {% endif %}
@@ -153,3 +203,4 @@
 
 
 {% endblock %}
+

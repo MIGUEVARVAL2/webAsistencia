@@ -231,6 +231,17 @@ def tomar_asistencia(request,asistencia):
                 asistencia.activa= not asistencia.activa
                 asistencia.save()
                 return redirect('tomar_asistencia',asistencia=asistencia.id_asistencia)
+            excusa_falta = Excusa_falta_estudiante.objects.filter(asistencia_estudiante__asistencia=asistencia)
+            for i in excusa_falta:
+                if f'aceptar_excusa_{i.id_excusa}' in request.POST:
+                    i.excusa_valida=True
+                    i.save()
+                    estudiante= request.POST.get('id_estudiante')
+                    asignar_asistencia = Asistencia_estudiante.objects.get(estudiante=estudiante, asistencia=asistencia)
+                    asignar_asistencia.excusa=True
+                    asignar_asistencia.registro_Asistencia=True    
+                    asignar_asistencia.save()
+                    return redirect('tomar_asistencia',asistencia=asistencia.id_asistencia)
         else:
             grupo = asistencia.grupo
             estudiantes_activos = Estudiantes.objects.filter(
@@ -243,7 +254,9 @@ def tomar_asistencia(request,asistencia):
             ).values('id', 'documento_estudiante', 'nombres_estudiante', 'apellidos_estudiante', 'plan_estudio', 'user__email', 'asistencia_estudiante__excusa')
             fecha= asistencia.fecha_asistencia
             estado_asistencia= asistencia.activa
-            return render(request, 'profesores/tomar_asistencia.html', {'grupo': grupo,'profesor': profesor, 'estudiantes_activos': estudiantes_activos,'estudiantes_inactivos':estudiantes_inactivos, 'fecha': fecha, 'estado_asistencia': estado_asistencia})
+            excusa_falta = Excusa_falta_estudiante.objects.filter(asistencia_estudiante__asistencia=asistencia)
+            print(excusa_falta)
+            return render(request, 'profesores/tomar_asistencia.html', {'grupo': grupo,'profesor': profesor, 'estudiantes_activos': estudiantes_activos,'estudiantes_inactivos':estudiantes_inactivos, 'fecha': fecha, 'estado_asistencia': estado_asistencia, 'excusas': excusa_falta})
     else:
         return redirect('index')
     return render(request, 'profesores/tomar_asistencia.html')

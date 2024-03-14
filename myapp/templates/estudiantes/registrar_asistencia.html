@@ -49,18 +49,21 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form method="POST" enctype="multipart/form-data">
+                            <form method="POST" enctype="multipart/form-data"  class="row g-3 needs-validation" novalidate>
                                 {% csrf_token %}
                                 <div class="modal-body">
                                     <input type="hidden" class="form-control" id="codigoCurso" name="codigoCurso"
                                         value="{{ curso.0.id_curso }}" aria-label="Recipient's username"
-                                        aria-describedby="basic-addon2">
+                                        aria-describedby="basic-addon2" required>
                                     <div class="form-group">
                                         <label for="curso">Justificación Excusa</label>
                                         <div class="input-group mb-3">
                                             <textarea type="text" class="form-control" id="nombreCurso"
                                                 name="justificacion" aria-label="Recipient's username"
-                                                aria-describedby="basic-addon2" style="height: 150px;"></textarea>
+                                                aria-describedby="basic-addon2" style="height: 150px;" required></textarea>
+                                            <div class="invalid-feedback">
+                                                Por favor ingrese una justificación
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">

@@ -179,7 +179,25 @@ def informacion_curso(request, grupo):
                         grupo=grupo
                     )
                     asistencia_estudiante= Asistencia_estudiante.objects.bulk_create([Asistencia_estudiante(asistencia=asistencia,estudiante=estudiante) for estudiante in grupo.estudiantes_grupo.filter(inscripcion__estado=True)])
-                    return redirect('tomar_asistencia',asistencia=asistencia.id_asistencia)
+                
+                elif 'actualizar_grupo' in request.POST:
+                    try:
+                        nuevo_nombre_grupo = request.POST.get('nuevo_nombre_grupo')
+                        grupo.nombre_grupo = nuevo_nombre_grupo
+                        grupo.save()
+                        return redirect('informacion_curso', grupo=grupo.id_grupo)
+                    except Exception as e:
+                        print(e)
+                        return redirect('informacion_curso', grupo=grupo.id_grupo)
+
+                elif 'eliminar_grupo' in request.POST:
+                    print('eliminar')
+                    try:
+                        grupo.delete()
+                        return redirect('cursos_estudiantes')
+                    except Exception as e:
+                        print(e)
+                        return redirect('cursos_estudiantes')
                 
                 for i in datos:
                     if f'info_{i[0].id_asistencia}' in request.POST:
@@ -188,6 +206,8 @@ def informacion_curso(request, grupo):
                         except Exception as e:
                             print(e)
                             return render(request, 'profesores/informacion_curso.html', {'grupo': grupo,'profesor': profesor, 'asistencias': datos})
+                    
+                
             
             else:
                 return render(request, 'profesores/informacion_curso.html', {'grupo': grupo,'profesor': profesor, 'asistencias': datos})

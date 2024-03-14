@@ -22,7 +22,7 @@
                 name="VerEstudiantes">Ver Estudiantes</button>
             <button type="button" class="col-3 ml-4 btn btn-outline-success btn-tomar-asistencia" data-bs-toggle="modal"
                 data-bs-target="#editarCursoModal">
-                Editar Curso
+                Editar Grupo
             </button>
         </div>
     </form>
@@ -88,32 +88,27 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Editar Curso</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <form method="POST" class="row g-3 needs-validation" novalidate>
+                {% csrf_token %}
             <div class="modal-body">
-                <form>
                     <div class="form-group">
                         <label for="nombreCurso">Nombre del Curso</label>
-                        <input type="text" class="form-control" id="nombreCurso" value="Curso de Ejemplo">
+                        <input type="text" class="form-control" id="nombreCurso" value="{{grupo.curso_grupo.nombre_curso}}" disabled>
                     </div>
                     <div class="row">
-                        <div class="form-group col-6">
-                            <label for="grupo">Grupo</label>
-                            <input type="text" class="form-control" id="grupo" value="Grupo de Ejemplo">
-                        </div>
-                        <div class="form-group col-3">
-                            <label for="anio">Año</label>
-                            <input type="text" class="form-control" id="anio" value="Año de Ejemplo">
-                        </div>
-                        <div class="form-group col-3">
-                            <label for="semestre">Semestre</label>
-                            <input type="text" class="form-control" id="semestre" value="Semestre de Ejemplo">
+                        <div class="form-group">
+                            <label for="grupo">Número del Grupo</label>
+                            <input type="text" class="form-control" id="grupo" name="nuevo_nombre_grupo" value="{{grupo.nombre_grupo}}" required>
+                            <div class="invalid-feedback">Ingrese el nuevo número del grupo</div>
                         </div>
                     </div>
-                </form>
             </div>
             <div class="modal-footer">
+                <button type="submit" class="btn btn-success" name="actualizar_grupo">Actualizar</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary">Actualizar</button>
+                <button type="submit" class="btn btn-danger" name="eliminar_grupo" data-bs-dismiss="modal" onclick="return confirm('¿Estás seguro de que deseas eliminar el grupo?')">Eliminar Grupo</button>
             </div>
+            </form>
         </div>
     </div>
 </div>

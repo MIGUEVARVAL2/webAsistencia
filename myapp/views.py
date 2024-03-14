@@ -149,6 +149,23 @@ def cursos_estudiantes(request):
                         print(e)
                         redirect('cursos_estudiantes')
 
+                elif f'editar_curso_{i[0].id_curso}' in request.POST:
+                    try:
+                        curso_id = request.POST.get('codigoCurso')
+                        curso = Cursos.objects.get(id_curso=curso_id)
+                        nombre_curso = request.POST.get('nombre_curso')
+                        anio_curso = request.POST.get('anio_curso')
+                        semestre_curso = request.POST.get('semestre_curso')
+                        curso.nombre_curso = nombre_curso
+                        curso.anio_curso = anio_curso
+                        curso.semestre_curso = semestre_curso
+                        curso.save()
+                        return redirect('cursos_estudiantes')
+                        
+                    except Exception as e:
+                        print(e)
+                        redirect('cursos_estudiantes')
+
 
         else:
             if 'profesor_id' in request.session:

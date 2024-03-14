@@ -63,7 +63,10 @@
                                 </a>
 
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item text-success" href="#">Editar</a></li>
+                                    <li><a class="dropdown-item text-success" href="#" data-bs-toggle="modal"
+                                        data-bs-target="#editar_curso_{{curso.0.id_curso}}">
+                                        Editar
+                                    </a></li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
@@ -107,6 +110,69 @@
                     </div>
                 </form>
 
+                <div class="modal fade" id="editar_curso_{{curso.0.id_curso}}" tabindex="-1"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Editar Curso</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form method="POST" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
+                                {% csrf_token %}
+                                <div class="modal-body">
+                                    <input type="hidden" class="form-control" id="codigoCurso" name="codigoCurso"
+                                        value="{{ curso.0.id_curso }}" aria-label="Recipient's username"
+                                        aria-describedby="basic-addon2" required>
+                                    <div class="form-group">
+                                        <label for="nombreCurso">Nombre del Curso</label>
+                                        <input type="text" class="form-control" id="nombreCurso" value="{{curso.0.nombre_curso}}"
+                                            placeholder="Ingrese el nombre del curso" name="nombre_curso" required>
+                                        <div class="invalid-feedback">Por favor ingrese el nombre del curso</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-6">
+                                            <label for="anio">Año</label>
+                                            <input type="text" class="form-control" id="anio" name="anio_curso" value="{{curso.0.anio_curso}}"
+                                                placeholder="Ingrese el año" pattern="[0-9]{4}" required>
+                                                <div class="invalid-feedback">Por favor ingrese el año</div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label for="semestre">Semestre</label>
+                                            <div class="form-control">
+                                                <div class="form-check form-check-inline">
+                                                    {%if curso.0.semestre_curso == '1S' %} 
+                                                    <input class="form-check-input" type="radio" name="semestre_curso" id="inlineRadio1"
+                                                       checked value="1S" required>
+                                                    {% else %}
+                                                    <input class="form-check-input" type="radio" name="semestre_curso" id="inlineRadio1"
+                                                        value="1S" required>
+                                                    {% endif %}
+                                                    <label class="form-check-label" for="inlineRadio1">1</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    {%if curso.0.semestre_curso == '2S' %} 
+                                                    <input class="form-check-input" type="radio" name="semestre_curso" id="inlineRadio1"
+                                                       checked value="2S" required>
+                                                    {% else %}
+                                                    <input class="form-check-input" type="radio" name="semestre_curso" id="inlineRadio1"
+                                                        value="2S" required>
+                                                    {% endif %}
+                                                    <label class="form-check-label" for="inlineRadio2">2</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="submit" name="editar_curso_{{curso.0.id_curso}}" class="btn btn-success">Actualizar Curso</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="modal fade" id="eliminar_curso_{{curso.0.id_curso}}" tabindex="-1"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -138,7 +204,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Crear Curso</h5>
+                                <h5 class="modal-title" id="staticBackdropLabel">Crear Grupo</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
@@ -224,7 +290,7 @@
                         <div class="form-group col-3">
                             <label for="anio">Año</label>
                             <input type="text" class="form-control" id="anio" name="anio_curso"
-                                placeholder="Ingrese el año" required>
+                                placeholder="Ingrese el año" pattern="[0-9]{4}" required>
                                 <div class="invalid-feedback">Por favor ingrese el año</div>
                         </div>
                         <div class="form-group col-3">

@@ -3,22 +3,29 @@
 {% block content %}
 
 <div class="container mt-5 pt-5">
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Nombre del Curso" aria-label="Search"
-            aria-describedby="search-button">
-        <div class="btn-group mr-2 ml-2" role="group">
-            <select class="form-select mr-2 ml-2 " aria-label="Default select example">
-                <option value="" selected>Todos</option>
-                <option value="2023-1">2023-1S</option>
-                <option value="2">2023-1S</option>
-                <option value="3">2023-1S</option>
-            </select>
-        </div>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="input-group mb-3">
 
-        <div class="input-group-append">
-            <button class="btn btn-outline-success" type="button" id="search-button">Buscar Curso</button>
+            <input type="text" class="form-control" placeholder="Nombre del Curso" aria-label="Search"
+                aria-describedby="search-button" name="nombre_curso">
+            <div class="btn-group mr-2 ml-2" role="group">
+                <select class="form-select mr-2 ml-2" aria-label="Default select example" name="semestre">
+                    <option selected disabled value="">Todos</option>
+                    {% for semestre in semestres %}
+                    <option value="{{semestre.curso_grupo__anio_curso}}-{{semestre.curso_grupo__semestre_curso}}">
+                        {{semestre.curso_grupo__anio_curso}}-{{semestre.curso_grupo__semestre_curso}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="input-group-append">
+                <button class="btn btn-outline-success" type="submit" name="buscar_curso" id="search-button">Buscar
+                    Curso</button>
+            </div>
+
         </div>
-    </div>
+    </form>
     <div class="row">
         {% if grupos %}
 

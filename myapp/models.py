@@ -29,7 +29,7 @@ class Cursos(models.Model):
     semestre_curso = models.CharField(max_length=2, null=False, choices=[('1S', '1S'), ('2S', '2S')])
     fecha_creacion_curso = models.DateTimeField(auto_now_add=True)
     profesor_curso = models.ForeignKey(Profesores, on_delete=models.CASCADE)
-
+ 
 class Grupos(models.Model):
     id_grupo = models.AutoField(primary_key=True)
     nombre_grupo = models.CharField(max_length=100, null=False)

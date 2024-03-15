@@ -33,24 +33,26 @@
                     <a class="nav-link" href="#">Ayuda</a>
                 </li>
                 <li class="nav-item pl-2 pr-3">
-                    {% if estudiante %}
-                    <button type="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle="dropdown"
-                        data-bs-display="static" aria-expanded="false">
-                        {{estudiante.nombres_estudiante}} {{estudiante.apellidos_estudiante}}
-                    </button>
-                    {% endif %}
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Perfil</a></li>
-                        <li><a class="dropdown-item" href="{% url 'cerrar_sesion'%}">Cerrar Sesión</a></li>
-                    </ul>
-
+                    <div class="btn-group" style="display: block;"   role="group">
+                        {% if estudiante %}
+                        <button type="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle="dropdown"
+                            data-bs-display="static" aria-expanded="false">
+                            {{estudiante.nombres_estudiante}} {{estudiante.apellidos_estudiante}}
+                        </button>
+                        {% endif %}
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'perfil_estudiante'%}">Perfil</a></li>
+                            <li><a class="dropdown-item" href="{% url 'cerrar_sesion'%}">Cerrar Sesión</a></li>
+                        </ul>
+                        
+                    </div>
                 </li>
             </ul>
         </div>
     </nav>
 
     {% block content %}
-
+    
     {% endblock %}
     <script>
         window.onload = function () {

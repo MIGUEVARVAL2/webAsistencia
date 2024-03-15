@@ -15,81 +15,89 @@
         class="scrollspy-example scrollspy-perfil" tabindex="0">
         <div id="list-item-1">
           <h4>Datos Personales</h4>
-          <p>En este espacio econtrará la información de su perfil, la cual podrá editar en cualquier momento.</p>
+          <p>En este espacio econtrará la información de su perfil</p>
           <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon2">Rol</span>
             <input type="text" class="form-control" value="Profesor" aria-label="Recipient's username"
               aria-describedby="basic-addon2" disabled>
-            <button class="btn btn-outline-success"><i class="bi bi-pencil-square"></i> Editar</button>
           </div>
+          {% if datos_profesor %}
           <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon2">Nombres</span>
-            <input type="text" class="form-control" value="Nombres" aria-label="Recipient's username"
+            <input type="text" class="form-control" value="{{datos_profesor.nombres_profesor}}" aria-label="Recipient's username"
               aria-describedby="basic-addon2" disabled>
-            <button class="btn btn-outline-success"><i class="bi bi-pencil-square"></i> Editar</button>
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon2">Apellidos</span>
-            <input type="text" class="form-control" value="Apellidos" aria-label="Recipient's username"
+            <input type="text" class="form-control" value="{{datos_profesor.apellidos_profesor}}" aria-label="Recipient's username"
               aria-describedby="basic-addon2" disabled>
-            <button class="btn btn-outline-success"><i class="bi bi-pencil-square"></i> Editar</button>
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon2">Documento de Identidad</span>
-            <input type="text" class="form-control" value="100123020" aria-label="Recipient's username"
+            <input type="text" class="form-control" value="{{datos_profesor.documento_profesor}}" aria-label="Recipient's username"
               aria-describedby="basic-addon2" disabled>
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon2">Correo</span>
-            <input type="text" class="form-control" value="ejemplo@unal.edu.co" aria-label="Recipient's username"
+            <input type="text" class="form-control" value="{{datos_profesor.user.username}}" aria-label="Recipient's username"
               aria-describedby="basic-addon2" disabled>
-            <span class="input-group-text" id="basic-addon2">@unal.edu.co</span>
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon2">Contraseña</span>
             <input type="password" class="form-control" value="contraseñadeejemplo" aria-label="Recipient's username"
               aria-describedby="basic-addon2" disabled>
-            <button class="btn btn-outline-success"><i class="bi bi-pencil-square"></i> Editar</button>
+            <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#editPasswordModal"><i class="bi bi-pencil-square"></i> Editar</button>
           </div>
+          {% endif %}
         </div>
         <div id="list-item-2">
         <h4 class="mt-5">Información de Cursos</h4>
         <p>Información de Asistencia</p>
+        {% if graph %}
+        <form method="POST">
+          {% csrf_token %}
         <div class="btn-group" role="group">
           <div class="input-group mb-3">
             <label class="input-group-text pl-5 pr-5" for="inputGroupSelect01">Seleccione el Año y Semestre</label>
-            <select class="form-select" id="inputGroupSelect01">
-              <option selected>Todos</option>
-              <option value="1">2024-1</option>
-              <option value="2">2023-2</option>
-              <option value="3">2023-1</option>
-            </select>
+            <select class="form-select mr-2 ml-2" aria-label="Default select example" name="semestre">
+              <option selected disabled value="">Todos</option>
+              {% for semestre in semestres %}
+              <option value="{{semestre.anio_curso}}-{{semestre.semestre_curso}}">
+                  {{semestre.anio_curso}}-{{semestre.semestre_curso}}</option>
+              {% endfor %}
+          </select>
+          <button class="btn btn-outline-success" type="submit" name="ver_grafica_semestre">Ver</button>
           </div>
         </div>
+      </form>
         <div class="graph">
           {{ graph|safe }}
         </div>
+      {% endif %}
         <table class="table table-striped">
           <thead>
             <tr>
               <th>Curso</th>
-              <th class="text-center">Asistencias Totales</th>
-              <th class="text-center">Porcentaje de Asistencia</th>
+              <th>Grupo</th>
+              <th class="text-center">Asistencias</th>
+              <th class="text-center">% de Asistencia</th>
             </tr>
           </thead>
           <tbody>
+            {% if informacion_asistencia %}
+            {% for asistencia in informacion_asistencia %}
             <tr>
-              <td>Nombres Ejemplo del Curso: grupo 1</td>
-              <td class="text-center">10</td>
-              <td class="text-center">80%</td>
+              <td>{{asistencia.curso_grupo.nombre_curso}}</td>
+              <td>{{asistencia.nombre_grupo}}</td>
+              <td class="text-center">{{asistencia.cantidad_asistencia}}</td>
+              <td class="text-center">{{asistencia.porcentaje_asistencia_total}}%</td>
             </tr>
-            <tr>
-              <td>Nombres Ejemplo del Curso: grupo 1</td>
-              <td class="text-center">10</td>
-              <td class="text-center">80%</td>
-            </tr>
-
-            <!-- Agrega más filas según sea necesario -->
+            {% endfor %}
+            {% else %}
+            <div class="alert alert-warning" role="alert">
+              Todavía no tienes cursos
+            </div>
+            {% endif %}
           </tbody>
         </table>
       </div>
@@ -99,5 +107,36 @@
 
 </div>
 
+
+<div class="modal fade" id="editPasswordModal" tabindex="-1" aria-labelledby="editPasswordModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editPasswordModalLabel">Editar Contraseña</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST">
+        <div class="mb-3">
+          <label for="contraActual" class="form-label">Contraseña Actual</label>
+          <input type="password" id="contraActual" name="contraActual" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
+        </div>
+        <div class="mb-3">
+          <label for="nuevaContra" class="form-label">Nueva Contraseña</label>
+          <input type="password" id="nuevaContra" name="nuevaContra" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
+        </div>
+        <div class="mb-3">
+          <label for="confirmContra" class="form-label">Confirmar Contraseña</label>
+          <input type="password" id="confirmContra" name="confirmarContra" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" name="cambiarContrasenia" class="btn btn-success">Guardar Cambios</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

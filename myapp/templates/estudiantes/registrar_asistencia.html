@@ -6,6 +6,15 @@
 <div class="container mt-5 pt-5">
     <h3 class="pb-3" style="border-bottom: 2px solid black;">Listado de Asistencia </h3>
     <br>
+    <form method="POST">
+        {% csrf_token %}
+    <div class="input-group mb-3">
+        <input type="date" class="form-control" aria-label="Search" aria-describedby="search-button" name="fecha_asistencia">
+        <div class="input-group-append">
+            <button class="btn btn-outline-success" type="submit" name="buscar_asistencia" id="search-button">Buscar Asistencia</button>
+        </div>
+    </div>
+    </form>
     {% if asistencias %}
     {% for asistencia in asistencias %}
     {% if asistencia.registro_Asistencia %}

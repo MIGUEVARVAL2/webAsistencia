@@ -29,6 +29,11 @@ class informacion_listado_asistencia:
         datos= self.info_asistencia(asistencia)
         
         return datos
+    
+    def buscar_asistencia(self,fecha):
+        asistencia= Asistencia.objects.filter(grupo=self.id_grupo,fecha_asistencia=fecha).order_by('-fecha_asistencia')
+        datos= self.info_asistencia(asistencia)
+        return datos
 
 
     

@@ -5,7 +5,7 @@ import plotly.offline as opy
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .funciones import informacion_cursos_estudiantes, crear_estudiantes, informacion_asistencia_grupo, actualizar_estudiantes
+from .funciones import informacion_cursos_estudiantes, crear_estudiantes, informacion_asistencia_grupo, actualizar_estudiantes, informacion_tomar_asistencia
 
 
 # Create your views here.
@@ -56,14 +56,18 @@ def index(request):
             contrasenia = request.POST.get('contrasenia')
             #Creo el usuario
             if User.objects.filter(username=correo).exists():
-                return render(request, 'index.html', {'error_registro': 'El correo ya está en uso'})
-            user= User.objects.create_user(username=correo, email=correo, password=contrasenia)
+                if Profesores.objects.filter(user__username=correo).exists():
+                    return render(request, 'index.html', {'error_registro': 'El correo ya está en uso'})
+                else:
+                    user= User.objects.get(username=correo)
+            else:
+                user= User.objects.create_user(username=correo, email=correo, password=contrasenia)
             #Creo el estudiante. Siempre por defecto se va a crear como estudiante, el rol lo cambia es el administrador
-            Estudiantes.objects.create(
+            Profesores.objects.create(
                 user= user,
-                documento_estudiante = documento,
-                nombres_estudiante = nombres,
-                apellidos_estudiante = apellidos,
+                documento_profesor = documento,
+                nombres_profesor = nombres,
+                apellidos_profesor = apellidos,
             )
 
     return render(request, 'index.html')
@@ -74,9 +78,23 @@ def cursos_estudiantes(request):
         profesor = Profesores.objects.get(id=request.session['profesor_id'])
         listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
         datos= listar_cursos.ejecutar()
+        semestres= listar_cursos.anios_semestre()
         if request.method == 'POST':
-            print(request.POST)
-            if 'crearCurso' in request.POST:
+            
+            if 'buscar_cursos' in request.POST:
+                print('buscar')
+                periodo = request.POST.get('semestre')
+                nombre_curso= request.POST.get('nombre_curso')
+                print(nombre_curso)
+                if periodo:
+                    semestre = periodo.split('-')[1]
+                    anio_curso = periodo.split('-')[0]
+                    datos= listar_cursos.buscar_cursos(nombre_curso,anio_curso, semestre)
+                else:
+                    datos= listar_cursos.buscar_cursos(nombre_curso)                
+                return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'semestres':semestres ,'profesor': profesor})
+
+            elif 'crearCurso' in request.POST:
                 try:
                     #Obtengo los datos del formulario
                     nombre_curso = request.POST.get('nombre_curso')
@@ -106,7 +124,7 @@ def cursos_estudiantes(request):
                 except Exception as e:
                     listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
                     datos= listar_cursos.ejecutar()
-                    return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'profesor': profesor,'error': f'No se pudo crear el curso: {str(e)}'})
+                    return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'semestres':semestres ,'profesor': profesor,'error': f'No se pudo crear el curso: {str(e)}'})
             
             elif 'crearGrupo' in request.POST:
                 try:
@@ -127,7 +145,7 @@ def cursos_estudiantes(request):
                 except Exception as e:
                     listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
                     datos= listar_cursos.ejecutar()
-                    return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'profesor': profesor,'error': f'No se pudo crear el grupo: {str(e)}'})
+                    return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'semestres':semestres ,'profesor': profesor,'error': f'No se pudo crear el grupo: {str(e)}'})
             for i in datos:
                 if f'info_{i[0].id_curso}' in request.POST:
                     try:
@@ -171,12 +189,12 @@ def cursos_estudiantes(request):
             if 'profesor_id' in request.session:
                 listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
                 datos= listar_cursos.ejecutar()
-                return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'profesor': profesor})
+                return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'semestres':semestres ,'profesor': profesor})
             else:
                 return redirect('index')
     listar_cursos= informacion_cursos_estudiantes.informacion_listado_cursos(request.session['profesor_id'])
     datos= listar_cursos.ejecutar()
-    return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'profesor': profesor})
+    return render(request, 'profesores/cursos_estudiantes.html', {'cursos': datos,'semestres':semestres ,'profesor': profesor})
 
 @login_required
 def informacion_curso(request, grupo):
@@ -189,6 +207,13 @@ def informacion_curso(request, grupo):
             if request.method == 'POST':
                 if 'VerEstudiantes' in request.POST:
                     return redirect('listar_estudiantes_curso',grupo=grupo.id_grupo)
+                
+                elif 'buscar_asistencia' in request.POST:
+                    fecha = request.POST.get('fecha_asistencia')
+                    datos_buscados= listar_asistencia.buscar_asistencia(fecha)
+                    return render(request, 'profesores/informacion_curso.html', {'grupo': grupo,'profesor': profesor, 'asistencias': datos_buscados})
+
+
                 elif 'crearAsistencia' in request.POST:
                     fecha = request.POST.get('fecha')
                     asistencia= Asistencia.objects.create(
@@ -247,6 +272,14 @@ def listar_estudiantes_curso(request,grupo):
                     estudiantes_activos = grupo.estudiantes_grupo.filter(inscripcion__estado=True).order_by('apellidos_estudiante')
                     estudiantes_inactivos = grupo.estudiantes_grupo.filter(inscripcion__estado=False).order_by('apellidos_estudiante')
                     return render(request, 'profesores/listar_estudiantes_curso.html', {'grupo': grupo,'profesor': profesor, 'estudiantes_activos': estudiantes_activos,'estudiantes_inactivos':estudiantes_inactivos, 'mensaje_actualizacion': f'Estudiantes actualizados: {cantidad[0]} estudiantes nuevos, {cantidad[1]} estudiantes eliminados'})
+                
+                elif 'buscar_estudiante' in request.POST:
+                    documento = request.POST.get('documento')
+                    documento= '' if documento is None else documento
+                    estudiantes_activos = grupo.estudiantes_grupo.filter(inscripcion__estado=True, documento_estudiante__startswith=documento).order_by('apellidos_estudiante')
+                    estudiantes_inactivos = grupo.estudiantes_grupo.filter(inscripcion__estado=False, documento_estudiante__startswith=documento).order_by('apellidos_estudiante')
+                    return render(request, 'profesores/listar_estudiantes_curso.html', {'grupo': grupo,'profesor': profesor, 'estudiantes_activos': estudiantes_activos,'estudiantes_inactivos':estudiantes_inactivos})
+
             else:
                 estudiantes_activos = grupo.estudiantes_grupo.filter(inscripcion__estado=True).order_by('apellidos_estudiante')
                 estudiantes_inactivos = grupo.estudiantes_grupo.filter(inscripcion__estado=False).order_by('apellidos_estudiante')
@@ -262,12 +295,18 @@ def listar_estudiantes_curso(request,grupo):
 def tomar_asistencia(request,asistencia):
     if  'profesor_id' in request.session:
         profesor = Profesores.objects.get(id=request.session['profesor_id'])
-        asistencia = Asistencia.objects.get(id_asistencia=asistencia)
         if request.method == 'POST': 
-            if 'cambiar_estado' in request.POST:
+
+            if 'buscar_estudiante_ausente' in request.POST:
+                pass
+
+            elif 'buscar_estudiante_presente' in request.POST:
+                pass
+
+            elif 'cambiar_estado' in request.POST:
                 asistencia.activa= not asistencia.activa
                 asistencia.save()
-                return redirect('tomar_asistencia',asistencia=asistencia.id_asistencia)
+                return redirect('tomar_asistencia',asistencia=asistencia)
             excusa_falta = Excusa_falta_estudiante.objects.filter(asistencia_estudiante__asistencia=asistencia)
             for i in excusa_falta:
                 if f'aceptar_excusa_{i.id_excusa}' in request.POST:
@@ -280,19 +319,8 @@ def tomar_asistencia(request,asistencia):
                     asignar_asistencia.save()
                     return redirect('tomar_asistencia',asistencia=asistencia.id_asistencia)
         else:
-            grupo = asistencia.grupo
-            estudiantes_activos = Estudiantes.objects.filter(
-                asistencia_estudiante__asistencia=asistencia,
-                asistencia_estudiante__registro_Asistencia=True
-            )
-            estudiantes_inactivos = Estudiantes.objects.filter(
-                asistencia_estudiante__asistencia=asistencia,
-                asistencia_estudiante__registro_Asistencia=False
-            ).values('id', 'documento_estudiante', 'nombres_estudiante', 'apellidos_estudiante', 'plan_estudio', 'user__email', 'asistencia_estudiante__excusa')
-            fecha= asistencia.fecha_asistencia
-            estado_asistencia= asistencia.activa
-            excusa_falta = Excusa_falta_estudiante.objects.filter(asistencia_estudiante__asistencia=asistencia)
-            print(excusa_falta)
+            listar= informacion_tomar_asistencia.informacion_listado_tomar_asistencia(asistencia)
+            grupo,estudiantes_activos,estudiantes_inactivos, fecha, estado_asistencia, excusa_falta = listar.listar_asistencia()
             return render(request, 'profesores/tomar_asistencia.html', {'grupo': grupo,'profesor': profesor, 'estudiantes_activos': estudiantes_activos,'estudiantes_inactivos':estudiantes_inactivos, 'fecha': fecha, 'estado_asistencia': estado_asistencia, 'excusas': excusa_falta})
     else:
         return redirect('index')

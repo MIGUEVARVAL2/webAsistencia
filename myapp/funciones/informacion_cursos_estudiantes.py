@@ -34,7 +34,19 @@ class informacion_listado_cursos:
         datos= self.listar_grupos(cursos)
         
         return datos
+    
 
+    def anios_semestre(self):
+        anios = Cursos.objects.filter(profesor_curso=self.id_profesor).values('anio_curso', 'semestre_curso').distinct().order_by('-anio_curso', '-semestre_curso')
+        return anios
+
+    def buscar_cursos(self, nombre, anio='', semestre=''):
+        nombre = '' if nombre is None else nombre
+        anio = '' if anio is None else anio
+        semestre = '' if semestre is None else semestre
+        cursos = Cursos.objects.filter(profesor_curso=self.id_profesor, nombre_curso__contains=nombre, anio_curso__contains=anio, semestre_curso__contains=semestre).order_by('-id_curso')
+        datos = self.listar_grupos(cursos)
+        return datos
 
     
             

@@ -9,22 +9,28 @@
             Crear Curso
         </button>
     </div>
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Nombre del Curso" aria-label="Search"
-            aria-describedby="search-button">
-        <div class="btn-group mr-2 ml-2" role="group">
-            <select class="form-select mr-2 ml-2 " aria-label="Default select example">
-                <option value="" selected>Todos</option>
-                <option value="2023-1">2023-1S</option>
-                <option value="2">2023-1S</option>
-                <option value="3">2023-1S</option>
-            </select>
-        </div>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <span class="input-group-text">Curso</span>
+            <input type="text" id="curso-input" class="form-control" placeholder="Nombre del Curso" aria-label="Search"
+                aria-describedby="search-button" name="nombre_curso">
+            <div class="btn-group mr-2 ml-2" role="group">
+                <select class="form-select mr-2 ml-2" aria-label="Default select example" name="semestre">
+                    <option selected disabled value="">Todos</option>
+                    {% for semestre in semestres %}
+                    <option value="{{semestre.anio_curso}}-{{semestre.semestre_curso}}">
+                        {{semestre.anio_curso}}-{{semestre.semestre_curso}}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <div class="input-group-append">
-            <button class="btn btn-outline-success" type="button" id="search-button">Buscar Curso</button>
+            <div class="input-group-append">
+                <button class="btn btn-outline-success" type="submit" id="search-button" name="buscar_cursos">Buscar
+                    Curso</button>
+            </div>
         </div>
-    </div>
+    </form>
     <div class="row">
         {% if error %}
 
@@ -64,9 +70,9 @@
 
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item text-success" href="#" data-bs-toggle="modal"
-                                        data-bs-target="#editar_curso_{{curso.0.id_curso}}">
-                                        Editar
-                                    </a></li>
+                                            data-bs-target="#editar_curso_{{curso.0.id_curso}}">
+                                            Editar
+                                        </a></li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
@@ -116,9 +122,11 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="staticBackdropLabel">Editar Curso</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
-                            <form method="POST" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
+                            <form method="POST" enctype="multipart/form-data" class="row g-3 needs-validation"
+                                novalidate>
                                 {% csrf_token %}
                                 <div class="modal-body">
                                     <input type="hidden" class="form-control" id="codigoCurso" name="codigoCurso"
@@ -126,37 +134,39 @@
                                         aria-describedby="basic-addon2" required>
                                     <div class="form-group">
                                         <label for="nombreCurso">Nombre del Curso</label>
-                                        <input type="text" class="form-control" id="nombreCurso" value="{{curso.0.nombre_curso}}"
-                                            placeholder="Ingrese el nombre del curso" name="nombre_curso" required>
+                                        <input type="text" class="form-control" id="nombreCurso"
+                                            value="{{curso.0.nombre_curso}}" placeholder="Ingrese el nombre del curso"
+                                            name="nombre_curso" required>
                                         <div class="invalid-feedback">Por favor ingrese el nombre del curso</div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-6">
                                             <label for="anio">Año</label>
-                                            <input type="text" class="form-control" id="anio" name="anio_curso" value="{{curso.0.anio_curso}}"
-                                                placeholder="Ingrese el año" pattern="[0-9]{4}" required>
-                                                <div class="invalid-feedback">Por favor ingrese el año</div>
+                                            <input type="text" class="form-control" id="anio" name="anio_curso"
+                                                value="{{curso.0.anio_curso}}" placeholder="Ingrese el año"
+                                                pattern="[0-9]{4}" required>
+                                            <div class="invalid-feedback">Por favor ingrese el año</div>
                                         </div>
                                         <div class="form-group col-6">
                                             <label for="semestre">Semestre</label>
                                             <div class="form-control">
                                                 <div class="form-check form-check-inline">
-                                                    {%if curso.0.semestre_curso == '1S' %} 
-                                                    <input class="form-check-input" type="radio" name="semestre_curso" id="inlineRadio1"
-                                                       checked value="1S" required>
+                                                    {%if curso.0.semestre_curso == '1S' %}
+                                                    <input class="form-check-input" type="radio" name="semestre_curso"
+                                                        id="inlineRadio1" checked value="1S" required>
                                                     {% else %}
-                                                    <input class="form-check-input" type="radio" name="semestre_curso" id="inlineRadio1"
-                                                        value="1S" required>
+                                                    <input class="form-check-input" type="radio" name="semestre_curso"
+                                                        id="inlineRadio1" value="1S" required>
                                                     {% endif %}
                                                     <label class="form-check-label" for="inlineRadio1">1</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
-                                                    {%if curso.0.semestre_curso == '2S' %} 
-                                                    <input class="form-check-input" type="radio" name="semestre_curso" id="inlineRadio1"
-                                                       checked value="2S" required>
+                                                    {%if curso.0.semestre_curso == '2S' %}
+                                                    <input class="form-check-input" type="radio" name="semestre_curso"
+                                                        id="inlineRadio1" checked value="2S" required>
                                                     {% else %}
-                                                    <input class="form-check-input" type="radio" name="semestre_curso" id="inlineRadio1"
-                                                        value="2S" required>
+                                                    <input class="form-check-input" type="radio" name="semestre_curso"
+                                                        id="inlineRadio1" value="2S" required>
                                                     {% endif %}
                                                     <label class="form-check-label" for="inlineRadio2">2</label>
                                                 </div>
@@ -165,8 +175,10 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="submit" name="editar_curso_{{curso.0.id_curso}}" class="btn btn-success">Actualizar Curso</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="submit" name="editar_curso_{{curso.0.id_curso}}"
+                                        class="btn btn-success">Actualizar Curso</button>
                                 </div>
                             </form>
                         </div>
@@ -208,7 +220,8 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <form method="POST" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
+                            <form method="POST" enctype="multipart/form-data" class="row g-3 needs-validation"
+                                novalidate>
                                 {% csrf_token %}
                                 <div class="modal-body">
                                     <input type="hidden" class="form-control" id="codigoCurso" name="codigoCurso"
@@ -218,10 +231,11 @@
                                         <label for="curso">Nombre Curso</label>
                                         <div class="input-group mb-3">
                                             <input type="text" class="form-control" id="nombreCurso" name="nombreCurso"
-                                                value="{{ curso.0.nombre_curso }}" aria-label="readonly input example" readonly>
-                                            
+                                                value="{{ curso.0.nombre_curso }}" aria-label="readonly input example"
+                                                readonly>
+
                                         </div>
-                                        
+
                                     </div>
                                     <div class="form-group">
                                         <label for="grupo">Número del Grupo</label>
@@ -235,10 +249,12 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="mb-3">
-                                            <label for="formFile" class="form-label">Lista de Estudiantes (Formato SIA)</label>
+                                            <label for="formFile" class="form-label">Lista de Estudiantes (Formato
+                                                SIA)</label>
                                             <input class="form-control" type="file" id="archivo" name="listaEstudiantes"
                                                 accept=".xls, .xlsx" required>
-                                            <div class="invalid-feedback">Por favor ingrese la lista de estudiantes con el formato del SIA</div>
+                                            <div class="invalid-feedback">Por favor ingrese la lista de estudiantes con
+                                                el formato del SIA</div>
                                         </div>
                                     </div>
                                 </div>
@@ -291,21 +307,19 @@
                             <label for="anio">Año</label>
                             <input type="text" class="form-control" id="anio" name="anio_curso"
                                 placeholder="Ingrese el año" pattern="[0-9]{4}" required>
-                                <div class="invalid-feedback">Por favor ingrese el año</div>
+                            <div class="invalid-feedback">Por favor ingrese el año</div>
                         </div>
                         <div class="form-group col-3">
                             <label for="semestre">Semestre</label>
-                            <div class="form-control">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="semestre_curso" id="inlineRadio1"
-                                        checked value="1S" required>
-                                    <label class="form-check-label" for="inlineRadio1">1</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="semestre_curso" id="inlineRadio2"
-                                        value="2S" required>
-                                    <label class="form-check-label" for="inlineRadio2">2</label>
-                                </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="semestre_curso" id="inlineRadio1"
+                                    checked value="1S" required>
+                                <label class="form-check-label" for="inlineRadio1">1</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="semestre_curso" id="inlineRadio2"
+                                    value="2S" required>
+                                <label class="form-check-label" for="inlineRadio2">2</label>
                             </div>
                         </div>
                     </div>
@@ -314,7 +328,8 @@
                             <label for="formFile" class="form-label">Lista de Estudiantes (Formato SIA)</label>
                             <input class="form-control" type="file" id="archivo" name="listaEstudiantes_curso"
                                 accept=".xls, .xlsx" required>
-                            <div class="invalid-feedback">Por favor ingrese la lista de estudiantes con el formato del SIA</div>
+                            <div class="invalid-feedback">Por favor ingrese la lista de estudiantes con el formato del
+                                SIA</div>
                         </div>
                     </div>
                 </div>

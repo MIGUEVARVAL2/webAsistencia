@@ -3,120 +3,121 @@
 {% block content %}
 
 
-    <div class="container mt-5 pt-5">
-        <h3 class="pb-3" style="border-bottom: 2px solid black;">Listado de Asistencia </h3>
-        <br>
-        {% if asistencias %}
-        {% for asistencia in asistencias %}
-        {% if asistencia.registro_Asistencia %}
-        <div class="card mt-3 validar-asistencia-true">
-            <div class="card-body ">
-                <div class="row">
-                    <div class="col-6">
-                        <p><strong>Fecha:</strong> {{asistencia.asistencia.fecha_asistencia}}</p>
-                    </div>
-                    <div class="col-3 col-">
-                        <button class="btn btn-outline-success" disabled>Asistencia Registada</button>
-                    </div>
-                    <div class="col-3">
-                        <button class="btn btn-outline-success" disabled>Presentar Excusa</button>
-                    </div>
+<div class="container mt-5 pt-5">
+    <h3 class="pb-3" style="border-bottom: 2px solid black;">Listado de Asistencia </h3>
+    <br>
+    {% if asistencias %}
+    {% for asistencia in asistencias %}
+    {% if asistencia.registro_Asistencia %}
+    <div class="card mt-3 validar-asistencia-true">
+        <div class="card-body ">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <p><strong>Fecha:</strong> {{asistencia.asistencia.fecha_asistencia}}</p>
+                </div>
+                <div class="col-6 col-md-3">
+                    <button class="btn btn-outline-success" disabled>Asistencia Registada</button>
+                </div>
+                <div class="col-6 col-md-3">
+                    <button class="btn btn-outline-success" disabled>Presentar Excusa</button>
                 </div>
             </div>
         </div>
-        {% elif not asistencia.asistencia.activa %}
-        <div class="card mt-3 validar-asistencia-false">
-            <div class="card-body ">
-                <div class="row">
-                    <div class="col-6">
-                        <p><strong>Fecha:</strong> {{asistencia.asistencia.fecha_asistencia}}</p>
-                    </div>
-                    <div class="col-3">
-                        <button type="submit" class="btn btn-outline-danger" disabled>Registar Asistencia</button>
-                    </div>
-                    <div class="col-3">
-                        <button class="btn btn-outline-danger" data-bs-target="#staticBackdrop"
-                            data-bs-toggle="modal">Presentar Excusa</button>
-                    </div>
+    </div>
+    {% elif not asistencia.asistencia.activa %}
+    <div class="card mt-3 validar-asistencia-false">
+        <div class="card-body ">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <p><strong>Fecha:</strong> {{asistencia.asistencia.fecha_asistencia}}</p>
+                </div>
+                <div class="col-6 col-md-3">
+                    <button type="submit" class="btn btn-outline-danger" disabled>Registar Asistencia</button>
+                </div>
+                <div class="col-6 col-md-3">
+                    <button class="btn btn-outline-danger" data-bs-target="#staticBackdrop"
+                        data-bs-toggle="modal">Presentar Excusa</button>
                 </div>
             </div>
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Registrar Excsa</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form method="POST" enctype="multipart/form-data"  class="row g-3 needs-validation" novalidate>
-                                {% csrf_token %}
-                                <div class="modal-body">
-                                    <input type="hidden" class="form-control" id="codigoCurso" name="codigoCurso"
-                                        value="{{ curso.0.id_curso }}" aria-label="Recipient's username"
-                                        aria-describedby="basic-addon2" required>
-                                    <div class="form-group">
-                                        <label for="curso">Justificación Excusa</label>
-                                        <div class="input-group mb-3">
-                                            <textarea type="text" class="form-control" id="nombreCurso"
-                                                name="justificacion" aria-label="Recipient's username"
-                                                aria-describedby="basic-addon2" style="height: 150px;" required></textarea>
-                                            <div class="invalid-feedback">
-                                                Por favor ingrese una justificación
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="mb-3">
-                                            <label for="formFile" class="form-label">Anexar Documento PDF
-                                                (Opcional)</label>
-                                            <input class="form-control" type="file" id="archivo" name="documento_soporte"
-                                                accept=".pdf">
+        </div>
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Registrar Excsa</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
+                            {% csrf_token %}
+                            <div class="modal-body">
+                                <input type="hidden" class="form-control" id="codigoCurso" name="codigoCurso"
+                                    value="{{ curso.0.id_curso }}" aria-label="Recipient's username"
+                                    aria-describedby="basic-addon2" required>
+                                <div class="form-group">
+                                    <label for="curso">Justificación Excusa</label>
+                                    <div class="input-group mb-3">
+                                        <textarea type="text" class="form-control" id="nombreCurso" name="justificacion"
+                                            aria-label="Recipient's username" aria-describedby="basic-addon2"
+                                            style="height: 150px;" required></textarea>
+                                        <div class="invalid-feedback">
+                                            Por favor ingrese una justificación
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="submit" name="enviar_excusa_{{asistencia.id_asistencia_estudiante}}" class="btn btn-success">Enviar
-                                        Excusa</button>
+                                <div class="form-group">
+                                    <div class="mb-3">
+                                        <label for="formFile" class="form-label">Anexar Documento PDF
+                                            (Opcional)</label>
+                                        <input class="form-control" type="file" id="archivo" name="documento_soporte"
+                                            accept=".pdf">
+                                    </div>
                                 </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        {% else %}
-        <div class="card mt-3 validar-asistencia-false">
-            <div class="card-body ">
-                <div class="row">
-                    <div class="col-6">
-                        <p><strong>Fecha:</strong> {{asistencia.asistencia.fecha_asistencia}}</p>
-                    </div>
-                    <div class="col-3 col-">
-                        <form method="POST">
-                        {% csrf_token %}
-                        <button type="submit" name="registar_{{asistencia.id_asistencia_estudiante}}" class="btn btn-outline-danger">Registar Asistencia</button>
-                    </form>
-                    </div>
-                    <div class="col-3">
-                        <button class="btn btn-outline-danger" disabled>Presentar Excusa</button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" name="enviar_excusa_{{asistencia.id_asistencia_estudiante}}"
+                                    class="btn btn-success">Enviar
+                                    Excusa</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        {% endif %}
-        {% endfor %}
-        {% else %}
-        <div class="alert alert-warning" role="alert">
-            No hay asistencias registradas
-        </div>
-        {% endif %}
-        
-        
 
     </div>
+    {% else %}
+    <div class="card mt-3 validar-asistencia-false">
+        <div class="card-body ">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <p><strong>Fecha:</strong> {{asistencia.asistencia.fecha_asistencia}}</p>
+                </div>
+                <div class="col-6 col-md-3">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <button type="submit" name="registar_{{asistencia.id_asistencia_estudiante}}"
+                            class="btn btn-outline-danger">Registar Asistencia</button>
+                    </form>
+                </div>
+                <div class="col-6 col-md-3">
+                    <button class="btn btn-outline-danger" disabled>Presentar Excusa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+        No hay asistencias registradas
+    </div>
+    {% endif %}
+
+
+
+</div>
 
 {% endblock %}

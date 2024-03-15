@@ -26,12 +26,14 @@
             </button>
         </div>
     </form>
-
+    <form method="POST">
+        {% csrf_token %}
     <div class="input-group mb-3">
-        <input type="date" class="form-control" aria-label="Search" aria-describedby="search-button">
+        <input type="date" class="form-control" aria-label="Search" aria-describedby="search-button" name="fecha_asistencia">
         <div class="input-group-append">
-            <button class="btn btn-outline-success" type="button" id="search-button">Buscar Asistencia</button>
+            <button class="btn btn-outline-success" type="submit" name="buscar_asistencia" id="search-button">Buscar Asistencia</button>
         </div>
+    </form>
     </div>
     <div class="row">
         {% if asistencias%}

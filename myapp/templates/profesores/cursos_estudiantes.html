@@ -5,7 +5,7 @@
 <div class="container mt-5 pt-5">
     <div class="d-grid gap-2 pb-4">
         <button type="button" class="btn btn-outline-success btn-tomar-asistencia" data-bs-toggle="modal"
-            data-bs-target="#crearCursoModal">
+            data-bs-target="#crearCursoModal" id="crear-curso-btn-modal">
             Crear Curso
         </button>
     </div>
@@ -13,7 +13,7 @@
         {% csrf_token %}
         <div class="input-group mb-3">
             <span class="input-group-text">Curso</span>
-            <input type="text" id="curso-input" class="form-control" placeholder="Nombre del Curso" aria-label="Search"
+            <input type="text" id="crear-curso-input" class="form-control" placeholder="Nombre del Curso" aria-label="Search"
                 aria-describedby="search-button" name="nombre_curso">
             <div class="btn-group mr-2 ml-2" role="group">
                 <select class="form-select mr-2 ml-2" aria-label="Default select example" name="semestre">
@@ -110,7 +110,7 @@
                     <div class="card-footer">
                         <button type="submit" class="btn btn-outline-success"
                             name="info_{{ curso.0.id_curso }}">Información del Curso</button>
-                        <button type="button" class="btn btn-outline-success float-end" data-bs-toggle="modal"
+                        <button type="button" class="btn btn-outline-success float-end crear-grupo" data-bs-toggle="modal"
                             name="crearGrupo_{{ curso.0.id_curso }}"
                             data-bs-target="#crearGrupo_{{ curso.0.id_curso }}">Crear Grupo</button>
                     </div>
@@ -134,7 +134,7 @@
                                         aria-describedby="basic-addon2" required>
                                     <div class="form-group">
                                         <label for="nombreCurso">Nombre del Curso</label>
-                                        <input type="text" class="form-control" id="nombreCurso"
+                                        <input type="text" class="form-control" id="nombreCurso_editado"
                                             value="{{curso.0.nombre_curso}}" placeholder="Ingrese el nombre del curso"
                                             name="nombre_curso" required>
                                         <div class="invalid-feedback">Por favor ingrese el nombre del curso</div>
@@ -142,7 +142,7 @@
                                     <div class="row">
                                         <div class="form-group col-6">
                                             <label for="anio">Año</label>
-                                            <input type="text" class="form-control" id="anio" name="anio_curso"
+                                            <input type="text" class="form-control" id="anio_editado" name="anio_curso"
                                                 value="{{curso.0.anio_curso}}" placeholder="Ingrese el año"
                                                 pattern="[0-9]{4}" required>
                                             <div class="invalid-feedback">Por favor ingrese el año</div>
@@ -152,20 +152,20 @@
                                             <div class="form-control">
                                                 <div class="form-check form-check-inline">
                                                     {%if curso.0.semestre_curso == '1S' %}
-                                                    <input class="form-check-input" type="radio" name="semestre_curso"
+                                                    <input class="form-check-input" type="radio" id="semestre_curso_editar" name="semestre_curso"
                                                         id="inlineRadio1" checked value="1S" required>
                                                     {% else %}
-                                                    <input class="form-check-input" type="radio" name="semestre_curso"
+                                                    <input class="form-check-input" type="radio" id="semestre_curso_editar" name="semestre_curso"
                                                         id="inlineRadio1" value="1S" required>
                                                     {% endif %}
                                                     <label class="form-check-label" for="inlineRadio1">1</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     {%if curso.0.semestre_curso == '2S' %}
-                                                    <input class="form-check-input" type="radio" name="semestre_curso"
+                                                    <input class="form-check-input" type="radio" id="semestre_curso_editar" name="semestre_curso"
                                                         id="inlineRadio1" checked value="2S" required>
                                                     {% else %}
-                                                    <input class="form-check-input" type="radio" name="semestre_curso"
+                                                    <input class="form-check-input" type="radio" id="semestre_curso_editar" name="semestre_curso"
                                                         id="inlineRadio1" value="2S" required>
                                                     {% endif %}
                                                     <label class="form-check-label" for="inlineRadio2">2</label>
@@ -230,7 +230,7 @@
                                     <div class="form-group">
                                         <label for="curso">Nombre Curso</label>
                                         <div class="input-group mb-3">
-                                            <input type="text" class="form-control" id="nombreCurso" name="nombreCurso"
+                                            <input type="text" class="form-control" name="nombreCurso"
                                                 value="{{ curso.0.nombre_curso }}" aria-label="readonly input example"
                                                 readonly>
 
@@ -241,7 +241,7 @@
                                         <label for="grupo">Número del Grupo</label>
                                         <div class="input-group mb-3">
                                             <span class="input-group-text" id="basic-addon1">Grupo</span>
-                                            <input type="text" class="form-control" id="grupo" name="numero_grupo"
+                                            <input type="text" class="form-control" id="numero_grupo_nuevo" name="numero_grupo"
                                                 placeholder="Ingrese el número del grupo" required>
                                             <div class="invalid-feedback">Por favor ingrese el número del grupo</div>
                                         </div>
@@ -251,7 +251,7 @@
                                         <div class="mb-3">
                                             <label for="formFile" class="form-label">Lista de Estudiantes (Formato
                                                 SIA)</label>
-                                            <input class="form-control" type="file" id="archivo" name="listaEstudiantes"
+                                            <input class="form-control" type="file" id="archivo_nuevo_grupo" name="listaEstudiantes"
                                                 accept=".xls, .xlsx" required>
                                             <div class="invalid-feedback">Por favor ingrese la lista de estudiantes con
                                                 el formato del SIA</div>
@@ -261,7 +261,7 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="submit" name="crearGrupo" class="btn btn-success">Crear Grupo</button>
+                                    <button type="submit" name="crearGrupo" id="crear_nuevo_grupo" class="btn btn-success">Crear Grupo</button>
                                 </div>
                             </form>
                         </div>
@@ -281,7 +281,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Crear Curso</h5>
+                <h5 class="modal-title" id="staticBackdropLabel" >Crear Curso</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="POST" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
@@ -298,7 +298,7 @@
                             <label for="grupo">Grupo</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="basic-addon1">Grupo</span>
-                                <input type="text" class="form-control" id="grupo" name="grupo_curso"
+                                <input type="text" class="form-control" id="grupo_curso" name="grupo_curso"
                                     placeholder="Ingrese el número del grupo" required>
                                 <div class="invalid-feedback">Por favor ingrese el número del grupo</div>
                             </div>
@@ -312,12 +312,12 @@
                         <div class="form-group col-3">
                             <label for="semestre">Semestre</label>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="semestre_curso" id="inlineRadio1"
+                                <input class="form-check-input" type="radio" name="semestre_curso" id="semestre_curso"
                                     checked value="1S" required>
                                 <label class="form-check-label" for="inlineRadio1">1</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="semestre_curso" id="inlineRadio2"
+                                <input class="form-check-input" type="radio" name="semestre_curso" id="semestre_curso"
                                     value="2S" required>
                                 <label class="form-check-label" for="inlineRadio2">2</label>
                             </div>
@@ -335,7 +335,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="submit" name="crearCurso" class="btn btn-success">Guardar</button>
+                    <button type="submit" id="crearCursoBTN" name="crearCurso" class="btn btn-success">Guardar</button>
                 </div>
             </form>
 

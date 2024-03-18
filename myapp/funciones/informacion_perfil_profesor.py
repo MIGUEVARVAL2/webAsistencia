@@ -21,7 +21,7 @@ class informacion_profesor:
             return semestre
         
         def listar_asistencia(self):
-            cursos = Grupos.objects.filter(curso_grupo__profesor_curso=self.profesor).order_by('-curso_grupo__id_curso', 'nombre_grupo')
+            cursos = Grupos.objects.filter(curso_grupo__profesor_curso=self.profesor).order_by('-curso_grupo__anio_curso', '-curso_grupo__semestre_curso', 'curso_grupo__nombre_curso', 'nombre_grupo')
             for curso in cursos:
                 asistencias= Asistencia.objects.filter(grupo=curso)
                 curso.cantidad_asistencia = asistencias.count()

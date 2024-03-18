@@ -347,8 +347,10 @@ def perfil_profesor(request):
                 return redirect('perfil_profesor')
             
             if 'ver_grafica_semestre' in request.POST:
-                
-                return render(request, 'profesores/perfil_profesor.html', {'profesor': profesor, 'datos_profesor':datos_profesor, 'semestres': semestres, 'graph': graph})
+                datos_semestre= request.POST.get('semestre_curso')
+                print('semestre',datos_semestre)
+                graph = informacion.crear_grafica_total(datos_semestre)
+                return render(request, 'profesores/perfil_profesor.html', {'profesor': profesor, 'datos_profesor':datos_profesor, 'semestres': semestres, 'informacion_asistencia':informacion_asistencia, 'graph': graph})
         
 
 

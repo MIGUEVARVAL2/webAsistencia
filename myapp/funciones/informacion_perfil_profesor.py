@@ -49,7 +49,6 @@ class informacion_profesor:
                 ultimo_periodo = Cursos.objects.filter(profesor_curso=self.profesor).latest('anio_curso', 'semestre_curso')
                 ultimo_anio = ultimo_periodo.anio_curso
                 ultimo_semestre = ultimo_periodo.semestre_curso
-            print(ultimo_periodo)
             
             cursos = Cursos.objects.filter(profesor_curso=self.profesor,anio_curso=ultimo_anio,semestre_curso=ultimo_semestre).order_by('nombre_curso')
             valor_x = []
@@ -87,12 +86,6 @@ class informacion_profesor:
                 valor_x.append(curso.nombre_curso)
                 valor_y.append(curso.porcentaje_asistencia_total)
             valor_x = [x[:20] + '...' if len(x) > 20 else x for x in valor_x]
-            
-            
-            print(valor_x)
-            print(valor_y)
-            print(valor_y_por_grupo)
-            print(nombre_grupo_por_curso)
             return valor_x, valor_y, valor_y_por_grupo, nombre_grupo_por_curso
 
 

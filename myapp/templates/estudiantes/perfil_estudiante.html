@@ -1,4 +1,4 @@
-{% extends "profesores/format.html" %}
+{% extends "estudiantes/format.html" %}
 
 {% block content %}
 <div class="container mt-5 mb-5 pt-5">
@@ -15,87 +15,82 @@
         class="scrollspy-example scrollspy-perfil" tabindex="0">
         <div id="list-item-1">
           <h4>Datos Personales</h4>
-          <p>En este espacio econtrará la información de su perfil, la cual podrá editar en cualquier momento.</p>
+          <p>En este espacio econtrará la información de su perfil</p>
           <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon2">Rol</span>
-            <input type="text" class="form-control" value="Profesor" aria-label="Recipient's username"
+            <input type="text" class="form-control" value="Estudiante" aria-label="Recipient's username"
               aria-describedby="basic-addon2" disabled>
-            <button class="btn btn-outline-success"><i class="bi bi-pencil-square"></i> Editar</button>
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon2">Nombres</span>
-            <input type="text" class="form-control" value="Nombres" aria-label="Recipient's username"
-              aria-describedby="basic-addon2" disabled>
-            <button class="btn btn-outline-success"><i class="bi bi-pencil-square"></i> Editar</button>
+            <input type="text" class="form-control" value="{{datos_estudiante.nombres_estudiante}}"
+              aria-label="Recipient's username" aria-describedby="basic-addon2" disabled>
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon2">Apellidos</span>
-            <input type="text" class="form-control" value="Apellidos" aria-label="Recipient's username"
-              aria-describedby="basic-addon2" disabled>
-            <button class="btn btn-outline-success"><i class="bi bi-pencil-square"></i> Editar</button>
+            <input type="text" class="form-control" value="{{datos_estudiante.apellidos_estudiante}}"
+              aria-label="Recipient's username" aria-describedby="basic-addon2" disabled>
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon2">Documento de Identidad</span>
-            <input type="text" class="form-control" value="100123020" aria-label="Recipient's username"
-              aria-describedby="basic-addon2" disabled>
+            <input type="text" class="form-control" value="{{datos_estudiante.documento_estudiante}}"
+              aria-label="Recipient's username" aria-describedby="basic-addon2" disabled>
           </div>
           <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon2">Programa Académico</span>
+            <input type="text" class="form-control"
+              value="{{datos_estudiante.plan_estudio.id_plan}}-{{datos_estudiante.plan_estudio.nombre_plan}}"
+              aria-label="Recipient's username" aria-describedby="basic-addon2" disabled>
+          </div>
+
+          <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon2">Correo</span>
-            <input type="text" class="form-control" value="ejemplo@unal.edu.co" aria-label="Recipient's username"
-              aria-describedby="basic-addon2" disabled>
+            <input type="text" class="form-control" value="{{datos_estudiante.user.username}}"
+              aria-label="Recipient's username" aria-describedby="basic-addon2" disabled>
             <span class="input-group-text" id="basic-addon2">@unal.edu.co</span>
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon2">Contraseña</span>
             <input type="password" class="form-control" value="contraseñadeejemplo" aria-label="Recipient's username"
               aria-describedby="basic-addon2" disabled>
-            <button class="btn btn-outline-success"><i class="bi bi-pencil-square"></i> Editar</button>
           </div>
         </div>
         <div id="list-item-2">
-        <h4 class="mt-5">Información de Cursos</h4>
-        <p>Información de Asistencia</p>
-        <div class="btn-group" role="group">
-          <div class="input-group mb-3">
-            <label class="input-group-text pl-5 pr-5" for="inputGroupSelect01">Seleccione el Año y Semestre</label>
-            <select class="form-select" id="inputGroupSelect01">
-              <option selected>Todos</option>
-              <option value="1">2024-1</option>
-              <option value="2">2023-2</option>
-              <option value="3">2023-1</option>
-            </select>
-          </div>
+          <h4 class="mt-5">Información de Cursos</h4>
+          <p>Información de Asistencia para el semestre {{periodo}}</p>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Curso</th>
+                <th>Grupo</th>
+                <th class="text-center">Asistencias</th>
+                <th class="text-center">% de Asistencia</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if informacion_asistencia %}
+              {% for asistencia in informacion_asistencia %}
+              <tr>
+                <td>{{asistencia.codigo_curso}}</td>
+                <td>{{asistencia.curso}}</td>
+                <td>{{asistencia.grupo}}</td>
+                <td class="text-center">{{asistencia.asistencias_estudiante}}/{{asistencia.total_asistencias_grupo}}
+                </td>
+                <td class="text-center">{{asistencia.porcentaje_asistencia_grupo}}%</td>
+              </tr>
+              {% endfor %}
+              {% else %}
+              <div class="alert alert-warning" role="alert">
+                Todavía no tienes cursos
+              </div>
+              {% endif %}
+            </tbody>
+          </table>
         </div>
-        <div class="graph">
-          {{ graph|safe }}
-        </div>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Curso</th>
-              <th class="text-center">Asistencias Totales</th>
-              <th class="text-center">Porcentaje de Asistencia</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Nombres Ejemplo del Curso: grupo 1</td>
-              <td class="text-center">10</td>
-              <td class="text-center">80%</td>
-            </tr>
-            <tr>
-              <td>Nombres Ejemplo del Curso: grupo 1</td>
-              <td class="text-center">10</td>
-              <td class="text-center">80%</td>
-            </tr>
-
-            <!-- Agrega más filas según sea necesario -->
-          </tbody>
-        </table>
       </div>
     </div>
   </div>
-</div>
 
 </div>
 

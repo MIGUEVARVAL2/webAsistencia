@@ -45,6 +45,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Asistencia - {{ asistencia.0.fecha_asistencia|date:"d/m/Y" }}</h5>
                         <p class="card-text">
+                            Código Asistencia: {{ asistencia.0.id_asistencia }} <br>
                             Cantidad Inasistencias: {{ asistencia.1 }} <br>
                             Porcentaje de Asistencia: {{ asistencia.2 }}%
                         </p>
@@ -64,18 +65,16 @@
 
 <!-- Modal Mostrar Grafico -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Gráfica Procentaje de Asistencia</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <div class="graph">
+                    {{ graph|safe }}
+                  </div>
             </div>
         </div>
     </div>
@@ -118,7 +117,7 @@
 <!-- Modal Crear Asistencia -->
 <div class="modal fade" id="crearFormularioAsistenciaModal" data-bs-backdrop="static" data-bs-keyboard="false"
     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Crear Formulario de Asistencia</h5>

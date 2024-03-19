@@ -5,7 +5,7 @@ import plotly.offline as opy
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .funciones import informacion_cursos_estudiantes, crear_estudiantes, informacion_asistencia_grupo, actualizar_estudiantes, informacion_tomar_asistencia, informacion_perfil_profesor
+from .funciones import informacion_cursos_estudiantes, crear_estudiantes, informacion_asistencia_grupo, actualizar_estudiantes, informacion_tomar_asistencia, informacion_perfil_profesor, informacion_perfil_estudiante, informacion_estudiante_profesor
 
 
 # Create your views here.
@@ -201,7 +201,7 @@ def informacion_curso(request, grupo):
         if Grupos.objects.filter(id_grupo=grupo).exists():
             grupo = Grupos.objects.get(id_grupo=grupo)
             listar_asistencia= informacion_asistencia_grupo.informacion_listado_asistencia(grupo.id_grupo)
-            datos= listar_asistencia.ejecutar()
+            datos,graph= listar_asistencia.ejecutar()
             if request.method == 'POST':
                 if 'VerEstudiantes' in request.POST:
                     return redirect('listar_estudiantes_curso',grupo=grupo.id_grupo)
@@ -209,7 +209,7 @@ def informacion_curso(request, grupo):
                 elif 'buscar_asistencia' in request.POST:
                     fecha = request.POST.get('fecha_asistencia')
                     datos_buscados= listar_asistencia.buscar_asistencia(fecha)
-                    return render(request, 'profesores/informacion_curso.html', {'grupo': grupo,'profesor': profesor, 'asistencias': datos_buscados})
+                    return render(request, 'profesores/informacion_curso.html', {'grupo': grupo,'profesor': profesor, 'asistencias': datos_buscados,'graph':graph})
 
 
                 elif 'crearAsistencia' in request.POST:
@@ -247,10 +247,10 @@ def informacion_curso(request, grupo):
                             return redirect('tomar_asistencia',  asistencia=i[0].id_asistencia)
                         except Exception as e:
                             print(e)
-                            return render(request, 'profesores/informacion_curso.html', {'grupo': grupo,'profesor': profesor, 'asistencias': datos})
+                            return render(request, 'profesores/informacion_curso.html', {'grupo': grupo,'profesor': profesor, 'asistencias': datos, 'graph':graph})
                     
             else:
-                return render(request, 'profesores/informacion_curso.html', {'grupo': grupo,'profesor': profesor, 'asistencias': datos})
+                return render(request, 'profesores/informacion_curso.html', {'grupo': grupo,'profesor': profesor, 'asistencias': datos, 'graph':graph})
         else:
             return redirect('cursos_estudiantes')
     else:
@@ -363,6 +363,13 @@ def perfil_profesor(request):
 
     # Crear gráfico
 
+def informacion_estudiante(request,id_estudiante):
+    profesor= Profesores.objects.get(id=request.session['profesor_id'])
+    estudiante= Estudiantes.objects.get(id=id_estudiante)
+    informacion= informacion_estudiante_profesor.informacion_estudiante(estudiante.id)
+    informacion_asistencia= informacion.listar_asistencia(profesor.id)
+    return render(request, 'profesores/informacion_estudiante.html', {'profesor': profesor, 'datos_estudiante': estudiante, 'informacion_asistencia':informacion_asistencia})
+
     
 
 
@@ -439,4 +446,9 @@ def registrar_asistencia(request,grupo):
 
 @login_required
 def perfil_estudiante(request):
-    return render(request, 'estudiantes/perfil_estudiante.html')
+    estudiante = Estudiantes.objects.get(id=request.session['estudiante_id'])
+    informacion= informacion_perfil_estudiante.informacion_estudiante(estudiante.id)
+    datos_estudiante= informacion.datos_estudiante()
+    informacion_asistencia,periodo = informacion.listar_asistencia()
+    return render(request, 'estudiantes/perfil_estudiante.html', {'estudiante': estudiante, 'datos_estudiante':datos_estudiante, 'informacion_asistencia':informacion_asistencia, 'periodo': periodo})
+

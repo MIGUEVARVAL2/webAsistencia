@@ -60,7 +60,7 @@
                                 <td>{{estudiante.nombres_estudiante}} {{estudiante.apellidos_estudiante}}</td>
                                 <td>{{estudiante.documento_estudiante}}</td>
                                 <td>{{estudiante.user.email}}</td>
-                                <td class="text-center"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i>
+                                <td class="text-center"><a class="nav-link" href="{% url 'informacion_estudiante' estudiante.id %}"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i></a></td>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -169,7 +169,7 @@
                                 {% else %}
                                 <td class="text-muted">Sin Excusa</td>
                                 {% endif %}
-                                <td class="text-center"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i>
+                                <td class="text-center"><a class="nav-link" href="{% url 'informacion_estudiante' estudiante.id %}"><i class="bi bi-info-square-fill" style="cursor: pointer;"></i></a></td>
                                 </td>
 
 

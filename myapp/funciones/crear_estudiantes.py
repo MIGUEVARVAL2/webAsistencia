@@ -51,5 +51,4 @@ class Crear_grupo_estudiantes:
     def ejecutar(self):
         data = self.modificar_datos_lista()
         self.cargar_estudiantes(data)
-        print(data)
     

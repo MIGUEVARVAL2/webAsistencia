@@ -1,0 +1,109 @@
+{% extends "profesores/format.html" %}
+
+{% block content %}
+<div class="container mt-5 mb-5 pt-5">
+
+    <div class="row">
+        <div class="col-3">
+            <div id="list-example" class="list-group">
+                <a class="list-group-item list-group-item-action" href="#list-item-1">Datos Personales</a>
+                <a class="list-group-item list-group-item-action" href="#list-item-2">información de Cursos</a>
+            </div>
+        </div>
+        <div class="col-9">
+            <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0"
+                class="scrollspy-example scrollspy-perfil" tabindex="0">
+                <div id="list-item-1">
+                    <h4>Datos Personales</h4>
+                    <p>En este espacio econtrará la información de su perfil</p>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon2">Rol</span>
+                        <input type="text" class="form-control" value="Estudiante" aria-label="Recipient's username"
+                            aria-describedby="basic-addon2" disabled>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon2">Nombres</span>
+                        <input type="text" class="form-control" value="{{datos_estudiante.nombres_estudiante}}"
+                            aria-label="Recipient's username" aria-describedby="basic-addon2" disabled>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon2">Apellidos</span>
+                        <input type="text" class="form-control" value="{{datos_estudiante.apellidos_estudiante}}"
+                            aria-label="Recipient's username" aria-describedby="basic-addon2" disabled>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon2">Documento de Identidad</span>
+                        <input type="text" class="form-control" value="{{datos_estudiante.documento_estudiante}}"
+                            aria-label="Recipient's username" aria-describedby="basic-addon2" disabled>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon2">Programa Académico</span>
+                        <input type="text" class="form-control"
+                            value="{{datos_estudiante.plan_estudio.id_plan}}-{{datos_estudiante.plan_estudio.nombre_plan}}"
+                            aria-label="Recipient's username" aria-describedby="basic-addon2" disabled>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon2">Correo</span>
+                        <input type="text" class="form-control" value="{{datos_estudiante.user.username}}"
+                            aria-label="Recipient's username" aria-describedby="basic-addon2" disabled>
+                        <span class="input-group-text" id="basic-addon2">@unal.edu.co</span>
+                    </div>
+                </div>
+                <div id="list-item-2">
+                    <h4 class="mt-5">Información de Cursos</h4>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Semestre</th>
+                                <th>Curso</th>
+                                <th>Grupo</th>
+                                <th class="text-center">Asistencias</th>
+                                <th class="text-center">% de Asistencia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if informacion_asistencia %}
+                            {% for asistencia in informacion_asistencia %}
+                            {% if asistencia.porcentaje_asistencia_grupo < 60 and asistencia.total_asistencias_grupo > 0 %}
+                            <tr>
+                                <td> {{asistencia.codigo_curso}}</td>
+                                <td >{{asistencia.periodo}}</td>
+                                <td>{{asistencia.curso}}</td>
+                                <td>{{asistencia.grupo}}</td>
+                                <td class="text-center">
+                                    {{asistencia.asistencias_estudiante}}/{{asistencia.total_asistencias_grupo}}
+                                </td>
+                                <td style="background-color: rgba(255, 203, 203, 0.63);" class="text-center">{{asistencia.porcentaje_asistencia_grupo}}%</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                    <td> {{asistencia.codigo_curso}}</td>
+                                    <td >{{asistencia.periodo}}</td>
+                                    <td>{{asistencia.curso}}</td>
+                                    <td>{{asistencia.grupo}}</td>
+                                    <td class="text-center">
+                                        {{asistencia.asistencias_estudiante}}/{{asistencia.total_asistencias_grupo}}
+                                    </td>
+                                    <td class="text-center">{{asistencia.porcentaje_asistencia_grupo}}%</td>
+                                </tr>
+                                
+                            {% endif %}
+                                {% endfor %}
+                                {% else %}
+                                <div class="alert alert-warning" role="alert">
+                                    Todavía no tienes cursos
+                                </div>
+                                {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

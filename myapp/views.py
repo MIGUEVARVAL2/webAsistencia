@@ -36,7 +36,7 @@ def index(request):
                     request.session['profesor_id'] = profesor.id
                     return redirect('cursos_estudiantes')
                 elif rol == 'estudiante' and Estudiantes.objects.filter(user=user).exists():
-                    ip_address = request.META.get('REMOTE_ADDR')  # obtén la dirección IP del usuario
+                    ip_address = request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', ''))  # obtén la dirección IP del usuario
                     print("ip",ip_address)
                     # Check if there is already a record with the same IP address
                     validarIP= UserDevice.objects.filter(ip_address=ip_address).first()

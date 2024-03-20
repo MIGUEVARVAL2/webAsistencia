@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Excusa_falta_estudiante, Profesores, Cursos, Estudiantes, Grupos, Asistencia, Asistencia_estudiante
+from .models import Excusa_falta_estudiante, Profesores, Cursos, Estudiantes, Grupos, Asistencia, Asistencia_estudiante,UserDevice
 import plotly.graph_objects as go
 import plotly.offline as opy
 from django.contrib.auth.models import User
@@ -39,6 +39,8 @@ def index(request):
                     #Obtengo el profesor y guardo el ID en la sesión
                     estudiante= Estudiantes.objects.get(user=user)
                     request.session['estudiante_id'] = estudiante.id
+                    ip_address = request.META.get('REMOTE_ADDR')  # obtén la dirección IP del usuario
+                    UserDevice.objects.create(user=user, ip_address=ip_address)  # registra la dirección IP del usuario
                     return redirect('listar_grupos_estudiantes')
                 else:
                     #En caso de que no se encuentre en la base de datos me devuelve a la página de inicio con un mensaje de error

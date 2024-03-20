@@ -4,6 +4,11 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+class UserDevice(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    ip_address = models.GenericIPAddressField()
+    fecha= models.DateTimeField(auto_now_add=True)
+
 class Profesores(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,null=True)
     documento_profesor = models.CharField(max_length=20, null=False)
@@ -48,6 +53,7 @@ class Asistencia(models.Model):
     activa = models.BooleanField(default=False)
     grupo = models.ForeignKey(Grupos, on_delete=models.CASCADE)
 
+
 class Asistencia_estudiante(models.Model):
     id_asistencia_estudiante= models.AutoField(primary_key=True)
     registro_Asistencia = models.BooleanField(default=False)
@@ -64,5 +70,3 @@ class Excusa_falta_estudiante(models.Model):
     estudiante = models.ForeignKey(Estudiantes, on_delete=models.CASCADE) 
     asistencia_estudiante = models.ForeignKey(Asistencia_estudiante, on_delete=models.CASCADE)
     
-
-

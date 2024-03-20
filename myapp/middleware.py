@@ -1,0 +1,26 @@
+from django.contrib.auth import logout
+from .models import UserDevice
+from datetime import datetime, timedelta
+
+class DeviceCheckMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        self.eliminar_registros_antiguos()
+        if request.user.is_authenticated and 'estudiante_id' in request.session:
+            ip_address = request.META.get('REMOTE_ADDR')
+            user_device = UserDevice.objects.filter(user=request.user, ip_address=ip_address).first()
+            if not user_device:
+                logout(request)  # cierra la sesión del usuario si la dirección IP no coincide
+
+        response = self.get_response(request)
+        return response
+    
+    def eliminar_registros_antiguos(self):
+        # Obtener la fecha actual
+        fecha_actual = datetime.now().date()
+        # Calcular la fecha límite (ayer)
+        fecha_limite = fecha_actual - timedelta(hours=12)
+        # Eliminar registros anteriores al día actual
+        UserDevice.objects.filter(fecha__lt=fecha_limite).delete()

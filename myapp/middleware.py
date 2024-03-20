@@ -12,6 +12,7 @@ class DeviceCheckMiddleware:
             ip_address = request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', ''))
             print("ip2",ip_address)
             user_device = UserDevice.objects.filter(user=request.user, ip_address=ip_address).first()
+            print("user_device",user_device.fecha,user_device.ip_address,user_device.user)
             if not user_device:
                 logout(request)  # cierra la sesión del usuario si la dirección IP no coincide
 

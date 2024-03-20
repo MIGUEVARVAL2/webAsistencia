@@ -9,7 +9,7 @@ class DeviceCheckMiddleware:
     def __call__(self, request):
         self.eliminar_registros_antiguos()
         if request.user.is_authenticated and 'estudiante_id' in request.session:
-            ip_address = request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', ''))
+            ip_address = request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', '')).split(',')[0].strip()
             print("ip2",ip_address)
             user_device = UserDevice.objects.filter(user=request.user, ip_address=ip_address).first()
             print("user_device",user_device.fecha,user_device.ip_address,user_device.user)

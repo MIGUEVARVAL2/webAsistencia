@@ -10,6 +10,7 @@ class DeviceCheckMiddleware:
         self.eliminar_registros_antiguos()
         if request.user.is_authenticated and 'estudiante_id' in request.session:
             ip_address = request.META.get('REMOTE_ADDR')
+            print("ip2",ip_address)
             user_device = UserDevice.objects.filter(user=request.user, ip_address=ip_address).first()
             if not user_device:
                 logout(request)  # cierra la sesión del usuario si la dirección IP no coincide
@@ -21,6 +22,7 @@ class DeviceCheckMiddleware:
         # Obtener la fecha actual
         fecha_actual = datetime.now().date()
         # Calcular la fecha límite (ayer)
-        fecha_limite = fecha_actual - timedelta(hours=12)
+        fecha_limite = fecha_actual - timedelta(minutes=5)
         # Eliminar registros anteriores al día actual
         UserDevice.objects.filter(fecha__lt=fecha_limite).delete()
+        print("Eliminando registros antiguos")

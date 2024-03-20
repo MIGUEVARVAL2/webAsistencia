@@ -36,20 +36,20 @@ def index(request):
                     request.session['profesor_id'] = profesor.id
                     return redirect('cursos_estudiantes')
                 elif rol == 'estudiante' and Estudiantes.objects.filter(user=user).exists():
-                    #Obtengo el profesor y guardo el ID en la sesión
-                    estudiante= Estudiantes.objects.get(user=user)
-                    request.session['estudiante_id'] = estudiante.id
                     ip_address = request.META.get('REMOTE_ADDR')  # obtén la dirección IP del usuario
+                    print("ip",ip_address)
                     # Check if there is already a record with the same IP address
                     validarIP= UserDevice.objects.filter(ip_address=ip_address).first()
                     if validarIP and validarIP.user != user:
                         # Close the session and redirect to the index page
-                        logout(request)
-                        return redirect('cerrar_sesion')
+                        return render(request, 'index.html', {'error': 'Ya inició sesión en otra cuenta, no puede iniciar sesión en dos cuentas el mismo día'})
                     else:
+                        #Obtengo el profesor y guardo el ID en la sesión
+                        estudiante= Estudiantes.objects.get(user=user)
+                        request.session['estudiante_id'] = estudiante.id
                         # Register the IP address
                         UserDevice.objects.create(user=user, ip_address=ip_address)  # registra la dirección IP del usuario
-                    return redirect('listar_grupos_estudiantes')
+                        return redirect('listar_grupos_estudiantes')
                 else:
                     #En caso de que no se encuentre en la base de datos me devuelve a la página de inicio con un mensaje de error
                     return render(request, 'index.html', {'error': 'Usuario o contraseña incorrectos'})

@@ -40,7 +40,15 @@ def index(request):
                     estudiante= Estudiantes.objects.get(user=user)
                     request.session['estudiante_id'] = estudiante.id
                     ip_address = request.META.get('REMOTE_ADDR')  # obtén la dirección IP del usuario
-                    UserDevice.objects.create(user=user, ip_address=ip_address)  # registra la dirección IP del usuario
+                    # Check if there is already a record with the same IP address
+                    validarIP= UserDevice.objects.filter(ip_address=ip_address).first()
+                    if validarIP and validarIP.user != user:
+                        # Close the session and redirect to the index page
+                        logout(request)
+                        return redirect('cerrar_sesion')
+                    else:
+                        # Register the IP address
+                        UserDevice.objects.create(user=user, ip_address=ip_address)  # registra la dirección IP del usuario
                     return redirect('listar_grupos_estudiantes')
                 else:
                     #En caso de que no se encuentre en la base de datos me devuelve a la página de inicio con un mensaje de error

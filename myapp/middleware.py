@@ -38,4 +38,9 @@ class DeviceCheckMiddleware:
         print("Eliminando registros antiguos:")
         for registro in registros_eliminados:
             print(registro.fecha, registro.ip_address, registro.user)
+
+        # Imprimir todos los registros del modelo UserDevice
+        registros = UserDevice.objects.all()
+        for registro in registros:
+            print(registro.fecha, registro.ip_address, registro.user)
         registros_eliminados.delete()

@@ -21,8 +21,10 @@ class DeviceCheckMiddleware:
             user_device = UserDevice.objects.filter(user=request.user, ip_address=ip_address).first()
             #En caso de que la ip y el usuario sean iguales a la encontrada en el modelo se le permite el acceso 
             #De lo contrario significa que está intentando acceder a otra cuenta, entonces se le cierra la sesión
+            """ 
             if not user_device:
                 logout(request) 
+                 """
             print("user_device -1 ",user_device.fecha,user_device.ip_address,user_device.user)
         response = self.get_response(request)
         return response

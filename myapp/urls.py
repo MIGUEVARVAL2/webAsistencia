@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.index,name="index"),
@@ -19,4 +21,4 @@ urlpatterns = [
     path('perfil_estudiante/', views.perfil_estudiante, name='perfil_estudiante'),
 
     path('cerrar_sesion/', views.cerrar_sesion, name='cerrar_sesion'),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

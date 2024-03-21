@@ -23,7 +23,7 @@ class DeviceCheckMiddleware:
             #De lo contrario significa que está intentando acceder a otra cuenta, entonces se le cierra la sesión
             if not user_device:
                 logout(request) 
-            print("user_device",user_device.fecha,user_device.ip_address,user_device.user)
+            print("user_device -1 ",user_device.fecha,user_device.ip_address,user_device.user)
         response = self.get_response(request)
         return response
     
@@ -37,10 +37,10 @@ class DeviceCheckMiddleware:
         registros_eliminados = UserDevice.objects.filter(fecha__lt=fecha_limite)
         print("Eliminando registros antiguos:")
         for registro in registros_eliminados:
-            print(registro.fecha, registro.ip_address, registro.user)
+            print("Eliminado",registro.fecha, registro.ip_address, registro.user)
 
         # Imprimir todos los registros del modelo UserDevice
         registros = UserDevice.objects.all()
         for registro in registros:
-            print(registro.fecha, registro.ip_address, registro.user)
+            print("En la base de datos",registro.fecha, registro.ip_address, registro.user)
         registros_eliminados.delete()

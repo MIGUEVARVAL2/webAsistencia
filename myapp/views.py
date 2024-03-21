@@ -39,7 +39,7 @@ def index(request):
                 elif rol == 'estudiante' and Estudiantes.objects.filter(user=user).exists():
                     #Obtengo la ip del cliente para registrar el dispositivo
                     ip_address = request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', '')).split(',')[0].strip()  # obtén la dirección IP del usuario
-                    print("ip",ip_address)
+                    print("ip view",request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', '')))
                     # Valido si la IP ya está registrada
                     validarIP= UserDevice.objects.filter(ip_address=ip_address).first()
                     print(validarIP)

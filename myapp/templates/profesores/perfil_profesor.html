@@ -1,18 +1,7 @@
 {% extends "profesores/format.html" %}
 
 {% block content %}
-<div class="mt-5 mb-5 pt-5">
-
-  <div class="row">
-    <div class="col-3">
-      <div id="list-example" class="list-group">
-        <a class="list-group-item list-group-item-action" href="#list-item-1">Datos Personales</a>
-        <a class="list-group-item list-group-item-action" href="#list-item-2">información de Cursos</a>
-      </div>
-    </div>
-    <div class="col-9">
-      <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0"
-        class="scrollspy-example scrollspy-perfil" tabindex="0">
+<div class="container mt-5 pt-5">
         <div id="list-item-1">
           <h4>Datos Personales</h4>
           <p>En este espacio econtrará la información de su perfil</p>
@@ -111,11 +100,14 @@
         </form>
         
         
-        <div class="graph">
-          {{ graph|safe }}
+        <div class="table-responsive">
+          <div class="graph" style="min-width: 1000px;">
+            {{ graph|safe }}
+          </div>
         </div>
       {% endif %}
-        <table class="table table-striped">
+        <div class="table-responsive">
+        <table class="table table-striped" style="min-width: 800px;">
           <thead>
             <tr>
               <th>Código</th>
@@ -145,9 +137,7 @@
             {% endif %}
           </tbody>
         </table>
-      </div>
-    </div>
-  </div>
+        </div>
 </div>
 
 </div>

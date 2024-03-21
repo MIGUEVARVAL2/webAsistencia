@@ -4,7 +4,7 @@
 
 {% load static %}
 
-<div class="container mt-5 mb-5 pt-5">
+<div class="container mt-5 mb-5 pt-5" >
 
     <h1 class="pb-4">{{grupo.curso_grupo.nombre_curso}} - Grupo {{grupo.nombre_grupo}}</h1>
     <h2>Lista de Asistencia: {{fecha}}</h2>
@@ -45,7 +45,8 @@
                             </div>
                         </div>
                     </form>
-                    <table class="table table-striped">
+                    <div class="table-responsive">
+                        <table class="table table-striped" style="min-width: 840px;">
                         <thead>
                             <tr>
                                 <th>Nombre Completo</th>
@@ -68,6 +69,7 @@
                             <!-- Agrega más filas según sea necesario -->
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -95,7 +97,8 @@
                             </div>
                         </div>
                     </form>
-                    <table class="table table-striped">
+                    <div class="table-responsive">
+                        <table class="table table-striped" style="min-width: 840px;">
                         <thead>
                             <tr>
                                 <th>Nombre Completo</th>
@@ -114,7 +117,7 @@
                                 <td>{{estudiante.user__email}}</td>
                                 {% if estudiante.asistencia_estudiante__excusa%}
                                 <td><a href="#" class="nav-link active text-danger" data-bs-toggle="modal"
-                                        data-bs-target="#excusa_{{estudiante.id}}">Ver Excusa</a></td>
+                                        data-bs-target="#excusa_{{estudiante.id}}" style="background-color: rgba(255, 229, 229, 0.766);">Ver Excusa</a></td>
 
                                 <div class="modal fade" id="excusa_{{estudiante.id}}" data-bs-backdrop="static"
                                     data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
@@ -179,6 +182,7 @@
                             <!-- Agrega más filas según sea necesario -->
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </div>

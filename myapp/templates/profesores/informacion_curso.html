@@ -12,15 +12,15 @@
     <h1 class="pb-4">{{grupo.curso_grupo.nombre_curso}} - Grupo {{grupo.nombre_grupo}}</h1>
     <form method="POST">
         {% csrf_token %}
-        <div class="row pb-4 d-flex justify-content-center">
+        <div class="row pb-3 d-flex justify-content-center">
 
-            <button type="button" class="col-3 mr-4 btn btn-outline-success btn-tomar-asistencia" data-bs-toggle="modal"
+            <button type="button" class="col-12 col-md-3 mr-2 ml-2 mb-2 btn btn-outline-success btn-tomar-asistencia " data-bs-toggle="modal"
                 data-bs-target="#crearFormularioAsistenciaModal">
                 Crear Formulario de Asistencia
             </button>
-            <button class="col-3 mr-4 ml-4 btn btn-outline-success btn-tomar-asistencia" type="submit"
+            <button class="col-12 col-md-3 mr-2 ml-2 mb-2 btn btn-outline-success btn-tomar-asistencia" type="submit"
                 name="VerEstudiantes">Ver Estudiantes</button>
-            <button type="button" class="col-3 ml-4 btn btn-outline-success btn-tomar-asistencia" data-bs-toggle="modal"
+            <button type="button" class="col-12 col-md-3 mr-2 ml-2 mb-2 btn btn-outline-success btn-tomar-asistencia" data-bs-toggle="modal"
                 data-bs-target="#editarCursoModal">
                 Editar Grupo
             </button>
@@ -65,7 +65,7 @@
 
 <!-- Modal Mostrar Grafico -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Gráfica Procentaje de Asistencia</h5>
@@ -118,7 +118,7 @@
 <div class="modal fade" id="crearFormularioAsistenciaModal" data-bs-backdrop="static" data-bs-keyboard="false"
     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
+        <div class="modal-content ">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Crear Formulario de Asistencia</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

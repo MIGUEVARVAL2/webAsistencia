@@ -17,6 +17,7 @@ def cerrar_sesion(request):
 
 
 def index(request):
+    print("ip index",request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', '')))
     #Recibo todas las solicitudes POST (Formularios)
     if request.method == 'POST':
         #Verifico de qué formulario proviene la solicitud

@@ -39,8 +39,9 @@ class DeviceCheckMiddleware:
         for registro in registros_eliminados:
             print("Eliminado",registro.fecha, registro.ip_address, registro.user)
 
+        registros_eliminados.delete()
         # Imprimir todos los registros del modelo UserDevice
         registros = UserDevice.objects.all()
         for registro in registros:
             print("En la base de datos",registro.fecha, registro.ip_address, registro.user)
-        registros_eliminados.delete()
+        

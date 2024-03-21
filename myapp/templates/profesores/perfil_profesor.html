@@ -2,70 +2,76 @@
 
 {% block content %}
 <div class="container mt-5 pt-5">
-        <div id="list-item-1">
-          <h4>Datos Personales</h4>
-          <p>En este espacio econtrará la información de su perfil</p>
-          <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon2">Rol</span>
-            <input type="text" class="form-control" value="Profesor" aria-label="Recipient's username"
-              aria-describedby="basic-addon2" disabled>
-          </div>
-          {% if datos_profesor %}
-          <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon2">Nombres</span>
-            <input type="text" class="form-control" value="{{datos_profesor.nombres_profesor}}" aria-label="Recipient's username"
-              aria-describedby="basic-addon2" disabled>
-          </div>
-          <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon2">Apellidos</span>
-            <input type="text" class="form-control" value="{{datos_profesor.apellidos_profesor}}" aria-label="Recipient's username"
-              aria-describedby="basic-addon2" disabled>
-          </div>
-          <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon2">Documento de Identidad</span>
-            <input type="text" class="form-control" value="{{datos_profesor.documento_profesor}}" aria-label="Recipient's username"
-              aria-describedby="basic-addon2" disabled>
-          </div>
-          <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon2">Correo</span>
-            <input type="text" class="form-control" value="{{datos_profesor.user.username}}" aria-label="Recipient's username"
-              aria-describedby="basic-addon2" disabled>
-          </div>
-          <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon2">Contraseña</span>
-            <input type="password" class="form-control" value="contraseñadeejemplo" aria-label="Recipient's username"
-              aria-describedby="basic-addon2" disabled>
-            <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#editPasswordModal"><i class="bi bi-pencil-square"></i> Editar</button>
-          </div>
-          {% endif %}
-        </div>
-        <div id="list-item-2">
-        <h4 class="mt-5">Información de Cursos</h4>
-        <p>Información de Asistencia</p>
-        <small class="text-muted">La gráfica que aparece por defecto es para todos los cursos para el último periodo académico</small><br>
-        {% if graph %}
-        <form method="POST">
-          {% csrf_token %}
+  <div id="list-item-1" style="border-bottom: 1px solid black;">
+    <h4>Datos Personales</h4>
+    <p>En este espacio econtrará la información de su perfil</p>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon2">Rol</span>
+      <input type="text" class="form-control" value="Profesor" aria-label="Recipient's username"
+        aria-describedby="basic-addon2" disabled>
+    </div>
+    {% if datos_profesor %}
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon2">Nombres</span>
+      <input type="text" class="form-control" value="{{datos_profesor.nombres_profesor}}"
+        aria-label="Recipient's username" aria-describedby="basic-addon2" disabled>
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon2">Apellidos</span>
+      <input type="text" class="form-control" value="{{datos_profesor.apellidos_profesor}}"
+        aria-label="Recipient's username" aria-describedby="basic-addon2" disabled>
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon2">Documento de Identidad</span>
+      <input type="text" class="form-control" value="{{datos_profesor.documento_profesor}}"
+        aria-label="Recipient's username" aria-describedby="basic-addon2" disabled>
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon2">Correo</span>
+      <input type="text" class="form-control" value="{{datos_profesor.user.username}}" aria-label="Recipient's username"
+        aria-describedby="basic-addon2" disabled>
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon2">Contraseña</span>
+      <input type="password" class="form-control" value="contraseñadeejemplo" aria-label="Recipient's username"
+        aria-describedby="basic-addon2" disabled>
+      <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#editPasswordModal"><i
+          class="bi bi-pencil-square"></i> Editar</button>
+    </div>
+    {% endif %}
+  </div>
+  <div id="list-item-2">
+    <h4 class="mt-5">Información de Cursos</h4>
+    <p>Información de Asistencia</p>
+    <small class="text-muted">La gráfica que aparece por defecto es para todos los cursos para el último periodo
+      académico</small><br>
+    {% if graph %}
+    <form method="POST">
+      {% csrf_token %}
 
-          <div class="accordion" id="accordionPanelsStayOpenExample">
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                  Semestre
-                </button>
-              </h2>
-              <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne">
-                <div class="accordion-body">
-                  {% for semestre in semestres %}
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="semestre_curso" id="semestre_curso"
-                        checked value="{{semestre.anio_curso}}-{{semestre.semestre_curso}}" required>
-                    <label class="form-check-label" for="inlineRadio1">{{semestre.anio_curso}}-{{semestre.semestre_curso}}</label>
-                  </div>
-                {% endfor %}
-                </div>
+      <div class="accordion" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+              aria-controls="panelsStayOpen-collapseOne">
+              Semestre
+            </button>
+          </h2>
+          <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse"
+            aria-labelledby="panelsStayOpen-headingOne">
+            <div class="accordion-body">
+              {% for semestre in semestres %}
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="semestre_curso" id="semestre_curso" checked
+                  value="{{semestre.anio_curso}}-{{semestre.semestre_curso}}" required>
+                <label class="form-check-label"
+                  for="inlineRadio1">{{semestre.anio_curso}}-{{semestre.semestre_curso}}</label>
               </div>
+              {% endfor %}
             </div>
+          </div>
+        </div>
         <!--<div class="accordion-item">
               <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
@@ -92,58 +98,59 @@
                 </div>
               </div>
             </div> -->
-            <div class="text-center mt-3">
-              <button type="submit" name="ver_grafica_semestre" class="btn btn-success">Ver Gráfica</button>
-            </div>
-          </div>
+        <div class="text-center mt-3">
+          <button type="submit" name="ver_grafica_semestre" class="btn btn-success">Ver Gráfica</button>
+        </div>
+      </div>
 
-        </form>
-        
-        
-        <div class="table-responsive">
-          <div class="graph" style="min-width: 1000px;">
-            {{ graph|safe }}
+    </form>
+
+
+    <div class="table-responsive">
+      <div class="graph" style="min-width: 1000px;">
+        {{ graph|safe }}
+      </div>
+    </div>
+    {% endif %}
+    <div class="table-responsive">
+      <table class="table table-striped" style="min-width: 800px;">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Semestre</th>
+            <th>Curso</th>
+            <th>Grupo</th>
+            <th class="text-center">Asistencias</th>
+            <th class="text-center">% de Asistencia</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if informacion_asistencia %}
+          {% for asistencia in informacion_asistencia %}
+          <tr>
+            <td>{{asistencia.curso_grupo.id_curso}}</td>
+            <td>{{asistencia.curso_grupo.anio_curso}}-{{asistencia.curso_grupo.semestre_curso}}</td>
+            <td>{{asistencia.curso_grupo.nombre_curso}}</td>
+            <td>{{asistencia.nombre_grupo}}</td>
+            <td class="text-center">{{asistencia.cantidad_asistencia}}</td>
+            <td class="text-center">{{asistencia.porcentaje_asistencia_total}}%</td>
+          </tr>
+          {% endfor %}
+          {% else %}
+          <div class="alert alert-warning" role="alert">
+            Todavía no tienes cursos
           </div>
-        </div>
-      {% endif %}
-        <div class="table-responsive">
-        <table class="table table-striped" style="min-width: 800px;">
-          <thead>
-            <tr>
-              <th>Código</th>
-              <th>Semestre</th>
-              <th>Curso</th>
-              <th>Grupo</th>
-              <th class="text-center">Asistencias</th>
-              <th class="text-center">% de Asistencia</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% if informacion_asistencia %}
-            {% for asistencia in informacion_asistencia %}
-            <tr>
-              <td>{{asistencia.curso_grupo.id_curso}}</td>
-              <td>{{asistencia.curso_grupo.anio_curso}}-{{asistencia.curso_grupo.semestre_curso}}</td>
-              <td>{{asistencia.curso_grupo.nombre_curso}}</td>
-              <td>{{asistencia.nombre_grupo}}</td>
-              <td class="text-center">{{asistencia.cantidad_asistencia}}</td>
-              <td class="text-center">{{asistencia.porcentaje_asistencia_total}}%</td>
-            </tr>
-            {% endfor %}
-            {% else %}
-            <div class="alert alert-warning" role="alert">
-              Todavía no tienes cursos
-            </div>
-            {% endif %}
-          </tbody>
-        </table>
-        </div>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </div>
 
-</div>
 
-
-<div class="modal fade" id="editPasswordModal" tabindex="-1" aria-labelledby="editPasswordModalLabel" aria-hidden="true">
+<div class="modal fade" id="editPasswordModal" tabindex="-1" aria-labelledby="editPasswordModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -152,24 +159,27 @@
       </div>
       <div class="modal-body">
         <form method="POST">
-        <div class="mb-3">
-          <label for="contraActual" class="form-label">Contraseña Actual</label>
-          <input type="password" id="contraActual" name="contraActual" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
-        </div>
-        <div class="mb-3">
-          <label for="nuevaContra" class="form-label">Nueva Contraseña</label>
-          <input type="password" id="nuevaContra" name="nuevaContra" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
-        </div>
-        <div class="mb-3">
-          <label for="confirmContra" class="form-label">Confirmar Contraseña</label>
-          <input type="password" id="confirmContra" name="confirmarContra" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
-        </div>
+          <div class="mb-3">
+            <label for="contraActual" class="form-label">Contraseña Actual</label>
+            <input type="password" id="contraActual" name="contraActual" class="form-control"
+              aria-label="Recipient's username" aria-describedby="basic-addon2">
+          </div>
+          <div class="mb-3">
+            <label for="nuevaContra" class="form-label">Nueva Contraseña</label>
+            <input type="password" id="nuevaContra" name="nuevaContra" class="form-control"
+              aria-label="Recipient's username" aria-describedby="basic-addon2">
+          </div>
+          <div class="mb-3">
+            <label for="confirmContra" class="form-label">Confirmar Contraseña</label>
+            <input type="password" id="confirmContra" name="confirmarContra" class="form-control"
+              aria-label="Recipient's username" aria-describedby="basic-addon2">
+          </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
         <button type="submit" name="cambiarContrasenia" class="btn btn-success">Guardar Cambios</button>
       </div>
-    </form>
+      </form>
     </div>
   </div>
 </div>

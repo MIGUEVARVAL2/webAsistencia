@@ -29,7 +29,7 @@
     <form method="POST">
         {% csrf_token %}
     <div class="input-group mb-3">
-        <input type="date" class="form-control" aria-label="Search" aria-describedby="search-button" name="fecha_asistencia">
+        <input type="date" class="form-control" aria-label="Search" aria-describedby="search-button" name="fecha_asistencia" required>
         <div class="input-group-append">
             <button class="btn btn-outline-success" type="submit" name="buscar_asistencia" id="search-button">Buscar Asistencia</button>
         </div>
@@ -128,7 +128,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="fecha">Fecha de Asistencia</label>
-                        <input type="date" class="form-control" id="fecha" name="fecha" required>
+                        <input type="date" class="form-control" id="fecha" name="fecha" min="" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -139,5 +139,12 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const fecha = document.getElementById('fecha');
+        const today = new Date().toISOString().split('T')[0];
+        fecha.min = today;
+    });
+</script>
 
 {% endblock %}

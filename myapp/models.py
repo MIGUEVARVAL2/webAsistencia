@@ -3,8 +3,7 @@ from django.contrib.auth.models import User
 
 
 # Create your models here.
-
-
+ 
 # Información de los profesores
 class Profesores(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,null=True)
@@ -37,7 +36,7 @@ class Cursos(models.Model):
 #Cada grupo tiene un curso al que pertenece y se agrega toda la información correspondiente del grupo con una relación de muchos a muchos con el modelo estudiantes
 class Grupos(models.Model):
     id_grupo = models.AutoField(primary_key=True)
-    nombre_grupo = models.CharField(max_length=100, null=False)
+    nombre_grupo = models.CharField(max_length=50, null=False)
     curso_grupo = models.ForeignKey(Cursos, on_delete=models.CASCADE)
     estudiantes_grupo = models.ManyToManyField(Estudiantes, through='Inscripcion')
 
@@ -67,7 +66,7 @@ class Asistencia_estudiante(models.Model):
 #Si se agrega un soporte de la excusa se guarda en la carpeta soportes_excusas
 class Excusa_falta_estudiante(models.Model): 
     id_excusa = models.AutoField(primary_key=True) 
-    motivo = models.CharField(max_length=100, null=False) 
+    motivo = models.CharField(max_length=300, null=False) 
     fecha_creacion_excusa = models.DateTimeField(auto_now_add=True)
     soporte_excusa = models.FileField(upload_to='soportes_excusas/',null=True, blank=True)
     excusa_valida= models.BooleanField(default=False)

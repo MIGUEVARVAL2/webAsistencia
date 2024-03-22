@@ -162,3 +162,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+#Configuración de la sesión para que se cierre a los 15 minutos
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_COOKIE_AGE = 15 * 60

@@ -54,21 +54,30 @@
     {% block content %}
     
     {% endblock %}
-    <script>
-        window.onload = function () {
-            // Obtén todos los formularios en el documento
-            var forms = document.getElementsByTagName('form');
 
-            // Itera sobre cada formulario y restablécelo
-            for (var i = 0; i < forms.length; i++) {
-                forms[i].reset();
-            }
-        }
-    </script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <div style="position: fixed; bottom: 20px; left: 20px;">
+        <button class="btn btn-success" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);" onclick="location.href='{{ request.META.HTTP_REFERER }}'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+        </button>
+    </div>
 </body>
+<script>
+    window.onload = function () {
+        // Obtén todos los formularios en el documento
+        var forms = document.getElementsByTagName('form');
+
+        // Itera sobre cada formulario y restablécelo
+        for (var i = 0; i < forms.length; i++) {
+            forms[i].reset();
+        }
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </html>

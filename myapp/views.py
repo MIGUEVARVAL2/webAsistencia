@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Excusa_falta_estudiante, Profesores, Cursos, Estudiantes, Grupos, Asistencia, Asistencia_estudiante,UserDevice
-import plotly.graph_objects as go
-import plotly.offline as opy
+from .models import Excusa_falta_estudiante, Profesores, Cursos, Estudiantes, Grupos, Asistencia, Asistencia_estudiante
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -38,25 +36,12 @@ def index(request):
                     request.session['profesor_id'] = profesor.id
                     return redirect('cursos_estudiantes')
                 elif rol == 'estudiante' and Estudiantes.objects.filter(user=user).exists():
-                    #Obtengo la ip del cliente para registrar el dispositivo
-                    ip_address = request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', '')).split(',')[0].strip()  # obtén la dirección IP del usuario
-                    print("ip view",request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', '')))
-                    # Valido si la IP ya está registrada
-                    validarIP= UserDevice.objects.filter(ip_address=ip_address).first()
-                    print(validarIP)
-                    # Valido si la IP ya está registrada y si es la misma del usuario
-                    if not validarIP is None and validarIP.user != user:
-                        # redirigo al index con un mensaje de error
-                        return render(request, 'index.html', {'error': 'Ya inició sesión en otra cuenta, no puede iniciar sesión en dos cuentas el mismo día'})
-                    else:
-                        #Obtengo el profesor y guardo el ID en la sesión
-                        estudiante= Estudiantes.objects.get(user=user)
-                        request.session['estudiante_id'] = estudiante.id
-                        # Register the IP address
-                        UserDevice.objects.create(user=user, ip_address=ip_address)  # registra la dirección IP del usuario
-                        return redirect('listar_grupos_estudiantes')
+                    #Obtengo el profesor y guardo el ID en la sesión
+                    estudiante= Estudiantes.objects.get(user=user)
+                    request.session['estudiante_id'] = estudiante.id
+                    return redirect('listar_grupos_estudiantes')
                 else:
-                    #En caso de que no se encuentre en la base de datos me devuelve a la página de inicio con un mensaje de error
+                    #En caso de que no seleccione ningún rol
                     return render(request, 'index.html', {'error': 'Usuario o contraseña incorrectos'})
             else:
                 #En caso de que no se encuentre en la base de datos me devuelve a la página de inicio con un mensaje de error
@@ -536,6 +521,7 @@ def registrar_asistencia(request,grupo):
 
                 if f'registar_{i.id_asistencia_estudiante}' in request.POST:
                     #Registro de asistencia
+                    print("Registar asistencia" , i.id_asistencia_estudiante)
                     asistencia_estudiante= Asistencia_estudiante.objects.get(id_asistencia_estudiante=i.id_asistencia_estudiante)
                     asistencia_estudiante.registro_Asistencia=True
                     asistencia_estudiante.save()
@@ -555,15 +541,13 @@ def registrar_asistencia(request,grupo):
                     i.excusa=True
                     i.save()
                     return redirect('registrar_asistencia', grupo=grupo.id_grupo)
-                
-                if request.POST:
-                    #En caso de que no se haya seleccionado ninguna opción
-                    return redirect('registrar_asistencia', grupo=grupo.id_grupo)
                     
         else:
             return render(request, 'estudiantes/registrar_asistencia.html', {'grupo': grupo, 'estudiante': estudiante, 'asistencias': asistencia})
     else:
         return redirect('index')
+    
+    return redirect('registrar_asistencia', grupo=grupo.id_grupo)
 
 @login_required
 def perfil_estudiante(request):

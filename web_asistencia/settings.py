@@ -47,11 +47,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'myapp',
-
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -63,19 +58,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'myapp.middleware.DeviceCheckMiddleware',
-
-    "allauth.account.middleware.AccountMiddleware",
 ]
 
-
 ROOT_URLCONF = 'web_asistencia.urls'
-
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -88,32 +78,6 @@ TEMPLATES = [
     },
 ]
 
-
-AUTHENTICATION_BACKENDS = [
-    # Needed to login by username in Django admin, regardless of `allauth`
-    'django.contrib.auth.backends.ModelBackend',
-
-    # `allauth` specific authentication methods, such as login by email
-    'allauth.account.auth_backends.AuthenticationBackend',
-]
-
-SITE_ID = 1
-
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        },
-        'OAUTH_PKCE_ENABLED': True,
-    }
-}
-
-
-
 WSGI_APPLICATION = 'web_asistencia.wsgi.application'
 
 
@@ -121,6 +85,8 @@ WSGI_APPLICATION = 'web_asistencia.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 # Database documentation https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+
+#Base de datos con posgrest
 """ 
 DATABASES = {
     'default': dj_database_url.config(
@@ -130,6 +96,8 @@ DATABASES = {
     )
 }
  """
+
+#Base de datos con sqlite3 (Desarrollo)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -160,6 +128,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
+# Idioma español
 LANGUAGE_CODE = 'es-es'
 
 TIME_ZONE = 'UTC'
@@ -172,6 +141,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+#Archivos estaticos
 STATIC_URL = 'static/'
 
 if not DEBUG:
@@ -192,23 +162,3 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
-
-
-
-ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
-
-# Ruta adonde va a parar el usuario logueado
-LOGIN_REDIRECT_URL = 'listar_grupos_estudiantes'
-
-# Sistema de autenticación que permite que el usuario ingrese el nombre de usuario o el email con el que se registró
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-
-# Determina que el registro necesita si o si de un email
-ACCOUNT_EMAIL_REQUIRED = True
-
-
-# Hacer que al cerrar la sesión, no se pase a una ventana de verificación de cierre de sesión
-ACCOUNT_LOGOUT_ON_GET = True
-
-SOCIALACCOUNT_AUTO_SIGNUP = False
-SOCIALACCOUNT_ADAPTER = 'myapp.adapter.CustomSocialAccountAdapter'

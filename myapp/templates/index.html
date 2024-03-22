@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 
 {% load static %}
-{% load socialaccount %}
-{% providers_media_js %}
 
 <html lang="en">
 
@@ -33,7 +31,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto mx-5">
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
                     <a class="nav-link" href="#">Inicio</a>
                 </li>
@@ -103,11 +101,6 @@
                                     {% endif %}
                                     <form method="POST" class="row g-3 needs-validation" novalidate>
                                         {% csrf_token %}
-
-                                        
-                                        <a href="{% provider_login_url 'google' %}" class="btn btn-success btn-block" role="button">
-                                            <i class="bi bi-google"></i> Iniciar sesión con Google</a>
-                                        
                                         <div class="form-group">
                                             <label for="rol">Rol</label>
                                             <select class="form-select" name="rol" id="rol"

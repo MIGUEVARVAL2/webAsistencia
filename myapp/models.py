@@ -4,11 +4,6 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-#Este modelo se encarga de guardar la ip del usuario y la fecha de acceso para limitar el acceso a más cuentas durante un mismo lapso de tiempo
-class UserDevice(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    ip_address = models.GenericIPAddressField()
-    fecha= models.DateTimeField(auto_now_add=True)
 
 # Información de los profesores
 class Profesores(models.Model):

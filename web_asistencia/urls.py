@@ -21,10 +21,13 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
+    
     path('admin/', admin.site.urls),
+
+    #Url de las aplicación donde se encuentra toda la info de asistencia
     path('', include('myapp.urls')),
-    path('accounts/', include('allauth.urls')),
 ]
 
+#Para que se pueda ver las imagenes en el navegador
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

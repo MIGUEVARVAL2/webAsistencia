@@ -7,6 +7,7 @@ class informacion_listado_cursos:
         self.id_estudiante = id_estudiante
 
     def listar_cursos(self):
+        #listo los cursos del estudiante y los ordeno
         grupos = Grupos.objects.filter(estudiantes_grupo=self.id_estudiante).order_by('-id_grupo')
         return grupos
     

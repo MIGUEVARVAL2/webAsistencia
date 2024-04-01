@@ -13,6 +13,9 @@ def cerrar_sesion(request):
     logout(request)
     return redirect('index')
 
+def ayuda(request):
+    return render(request, 'ayuda.html')
+
 
 def index(request):
     print("ip index",request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', '')))

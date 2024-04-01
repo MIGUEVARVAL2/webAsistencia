@@ -1,0 +1,347 @@
+{% extends "format_index.html" %}
+
+
+{% block content %}
+{% load static %}
+<style>
+    body {
+        background-image: none !important;
+        background-color: #ffffff !important;
+    }
+
+    .contenedor-index {
+        background-color: #ffffff !important;
+    }
+</style>
+
+<div class="container mt-5 mb-5 pt-5">
+
+
+    <div class="row">
+        <div class="btn-group flex-wrap" id="list-tab" role="tablist">
+            
+            <a class="btn btn-outline-success m-1 btn-tomar-asistencia" id="list-registro-profesor-list" data-bs-toggle="list" href="#list-registro-profesor"
+                role="tab" aria-controls="list-registro-profesor">Registro Profesor</a>
+            <a class="btn btn-outline-success m-1 btn-tomar-asistencia" id="list-crear-cursos-list" data-bs-toggle="list" href="#list-crear-cursos"
+                role="tab" aria-controls="list-crear-cursos">Crear Cursos y Grupos</a>
+            <a class="btn btn-outline-success m-1 btn-tomar-asistencia" id="list-crear-asistencia-list" data-bs-toggle="list" href="#list-crear-asistencia"
+                role="tab" aria-controls="list-crear-asistencia">Crear Asistencia</a>
+            <a class="btn btn-outline-success m-1 btn-tomar-asistencia" id="list-actualizar-estudiantes-list" data-bs-toggle="list" href="#list-actualizar-estudiantes"
+                role="tab" aria-controls="list-list-actualizar-estudiantes">Actualizar Estudiantes</a>
+            <a class="btn btn-outline-success m-1 btn-tomar-asistencia" id="list-ver-asistencia-list" data-bs-toggle="list" href="#list-ver-asistencia"
+                role="tab" aria-controls="list-ver-asistencia">Ver Asistencia, Inasistencia y Excusas</a>
+            <a class="btn btn-outline-success m-1 btn-tomar-asistencia" id="list-perfil-profesor-list" data-bs-toggle="list" href="#list-perfil-profesor"
+                role="tab" aria-controls="list-perfil-profesor">Perfil Profesor</a>
+            <a class="btn btn-outline-success m-1 btn-tomar-asistencia" id="list-resgistro-asistencia-list" data-bs-toggle="list" href="#list-resgistro-asistencia"
+                role="tab" aria-controls="list-resgistro-asistencia">Registro de Asistencia y Excusa</a>
+            <a class="btn btn-outline-success m-1 btn-tomar-asistencia" id="list-perfil-estudiante-list" data-bs-toggle="list" href="#list-perfil-estudiante"
+                role="tab" aria-controls="list-perfil-estudiante">Perfil Estudiante</a>
+
+        </div>
+
+        <div class="tab-content border rounded mt-4" id="nav-tabContent">
+
+            <div class="tab-pane fade show active p-3" id="list-registro-profesor" role="tabpanel"
+                aria-labelledby="list-registro-profesor-list">
+                <h3 class="text-center border-bottom">Registro de Profesor</h3>
+                <p class="py-4">
+                    La página de inicio proporciona el registro para los profesores mediante un formulario
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/registro_1.png'%}" width="40%" class="img-fluid rounded" alt="...">
+
+                </div>
+                <p class="py-4">
+                    Después de darle en el botón “Registrarse”, cargara un formulario de registro donde debe ingresar los datos correspondientes para poder registrarse como profesor.
+                <br>
+                    Nota: El correo electrónico debe ser el correo institucional (@unal.edu.co) y la contraseña debe cumplir con los requisitos descritos debajo del campo de contraseña.
+
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/registro_2.png'%}" width="40%" class="img-fluid rounded" alt="...">
+
+                </div>
+
+                <p class="py-4">
+                    Después del registro, se devuelve al usuario al formulario de inicio de sesión donde debe escoger el rol e ingresar el correo y la contraseña con la que realizó el registro
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/registro_3.png'%}" width="40%" class="img-fluid rounded" alt="...">
+
+                </div>
+
+            </div>
+
+            <div class="tab-pane fade p-3" id="list-crear-cursos" role="tabpanel" aria-labelledby="list-crear-cursos-list">
+                <h3 class="text-center border-bottom">Crear Cursos y Grupos</h3>
+                
+                <p class="py-4">
+                    Para crear un curso, se debe dar click en el botón “Crear Curso” que se encuentra en la parte superior de la página.
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/crear_curso_1.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    Se mostrará el formulario donde se ingresa la información del curso a crear y se debe cargar el archivo de Excel donde se encuentra la información de todos los estudiantes pertenecientes al curso y grupo creado. (El archivo de Excel debe ser el que proporciona el SIA)
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/crear_curso_2.png'%}" width="50%" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    El archivo de Excel debe contener el siguiente formato para que se carguen correctamente los estudiantes
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/crear_curso_3.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    Este formato debe contener el Apellido seguido de una coma y el nombre, en la segunda columna debe ir el documento del estudiante, en la tercera columna debe ir el código del plan – Nombre del plan, y en la quinta columna debe ir el correo. (Este es el formato que proporciona el SIA cuando se saca el exporte de estudiantes)
+                    <br>
+                    Después de darle en el botón guardar, se crea el curso, el grupo, los estudiantes y se asocian al curso y se cargan en la página “Mis Cursos”.
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/crear_curso_4.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    Si el curso tiene varios grupos, el profesor puede crear más grupos dando click en el bóton “Crear Grupo” que se encuentra en la parte inferior derecha del curso
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/crear_curso_5.png'%}" width="50%" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    Esto abrirá un formulario donde debe ingresar solo el número del grupo y el archivo de Excel con la lista de estudiantes como se indicó anteriormente
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/crear_curso_6.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+            </div>
+
+            <div class="tab-pane fade p-3" id="list-crear-asistencia" role="tabpanel" aria-labelledby="list-crear-asistencia-list">
+                <h3 class="text-center border-bottom">Crear Asistencia</h3>
+                
+                <p class="py-4">
+                    En la página “Mis Cursos” debe de identificar el curso a crear la asistencia.
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/crear_asistencia_1.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    Para crear una asistencia, primero debe seleccionar el grupo y darle click en el botón “Información del Curso” y redirigirá al usuario a la página donde está el listado de asistencias del grupo.
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/crear_asistencia_2.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    En esta página se puede ver el listado de estudiantes, editar el grupo, crear una asistencia y ver la gráfica que muestra el porcentaje de asistencia del grupo.
+                    <br><br>
+                    Para crear una asistencia se debe dar click en el botón “Crear Formulario de Asistencia”.
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/crear_asistencia_3.png'%}" width="50%" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    Se selecciona el día y le da click en el botón “Crear Formulario” y se redirigirá a la página de la asistencia con el estado “Asistencia Inhabilitada” para que no permita registro de asistencia hasta que el profesor cambie el estado.
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/crear_asistencia_4.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    El estado lo indican los siguientes botones y el estado se cambia dando click a cada uno dependiendo del estado de la asistencia.
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/crear_asistencia_5.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+            </div>
+
+            <div class="tab-pane fade p-3" id="list-actualizar-estudiantes" role="tabpanel" aria-labelledby="list-actualizar-estudiantes-list">
+                <h3 class="text-center border-bottom">Actualizar Estudiantes</h3>
+                
+                <p class="py-4">
+                    Para los casos en los que el profesor desee validar estudiantes nuevos o estudiantes que cancelaron la asignatura, el profesor puede cargar nuevamente el listado de estudiantes como se explicó al crear el curso.
+                    <br><br>
+                    Para ejecutar esta actualización, el página donde está el listado de asistencias, se debe dar click en el botón “Ver Estudiantes” como se muestra a continuación.
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/actualizar_estudiantes_1.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    Se redirigirá al profesor a la página donde se listan los estudiantes pertenecientes al grupo y al curso.
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/actualizar_estudiantes_2.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    Para actualizar los estudiantes se le da click en el botón “Actualizar Listado de Estudiantes del Curso” y este le abrirá una ventana donde debe cargar el listado de estudiantes.
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/actualizar_estudiantes_3.png'%}" width="50%" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    Después de darle click en el botón “Actualizar”, se muestra el siguiente mensaje.
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/actualizar_estudiantes_4.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    Aquí, los estudiantes nuevos se agregan al curso y los estudiantes que cancelaron la asignatura, se agregan en la sección de estudiantes inactivos.
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/actualizar_estudiantes_5.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+            </div>
+
+            <div class="tab-pane fade p-3" id="list-ver-asistencia" role="tabpanel" aria-labelledby="list-ver-asistencia-list">
+                <h3 class="text-center border-bottom">Ver Asistencia, Inasistencia y Excusas</h3>
+                
+                <p class="py-4">
+                    En la asistencia, el profesor puede ver los estudiantes que ya registraron la asistencia dentro de la sección “Estudiantes Presentes” y los que no la han registrado dentro de la sección “Estudiantes Ausentes” como se muestra a continuación.
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/ver_asistencia_1.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+                
+                <p class="py-4">
+                    Para poder ver las excusas, en la sección “Estudiantes Ausentes” se marcará en rojo en la parte de excusa para los que hayan mandado excusa.
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/ver_asistencia_2.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    Para ver la excusa, se debe identificar al estudiante que envió la excusa y se le da click en el botón “Ver Excusa”, esto abrirá una ventana emergente que muestra la excusa con el soporte correspondiente (si aplica).
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/ver_asistencia_3.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    En caso de que el profesor considere que la excusa es válida, le da click en el botón “Aceptar Excusa” la cual le registra la asistencia al estudiante.
+                </p>
+
+            </div>
+
+            <div class="tab-pane fade p-3" id="list-perfil-profesor" role="tabpanel" aria-labelledby="list-perfil-profesor-list">
+                <h3 class="text-center border-bottom">Perfil Profesor</h3>
+                
+                <p class="py-4">
+                    Para ir a la página del perfil del profesor, debe dar click en el botón donde aparece el nombre completo del profesor el cual abre un menú desplegable donde se debe dar click en el botón “Perfil” como se muestra a continuación.
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/perfil_profesor_1.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    En el perfil del profesor se le listará la información que ingreso al momento de realizar el registro, esta información es el rol, nombres, apellidos, documento de identidad, programa académico, correo y contraseña. La contraseña es la única que se puede modificar.
+                    <br><br>
+                    También cargará la información de los cursos que tiene el profesor.
+                    <br><br>
+                    Dentro de esta sección se muestra una gráfica con el porcentaje de asistencia de cada curso para el último semestre, para los casos en los que el curso tenga varios grupos, se apilan dentro de cada curso.
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/perfil_profesor_2.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    En la sección de Semestre se puede seleccionar el semestre del cual desea ver la gráfica y en la sección donde se muestra la gráfica, en la parte derecha se muestran los grupos con un formato de Código del curso – Nombre Grupo el cual puede selección o deseleccionar 
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/perfil_profesor_3.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    Posterior a la gráfica, se muestra una tabla con la información de cada grupo con la información correspondiente.
+                </p>
+
+            </div>
+
+            <div class="tab-pane fade p-3" id="list-resgistro-asistencia" role="tabpanel" aria-labelledby="list-resgistro-asistencia-list">
+                <h3 class="text-center border-bottom">Registro de Asistencia y Excusa</h3>
+                
+                <p class="py-4">
+                    Para registrar la asistencia, el estudiante debe iniciar sesión seleccionando el rol de estudiante e ingresando el correo institucional con el documento como contraseña.
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/registro_asistencia_1.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    Después de iniciar sesión, al estudiante se le listarán todos los cursos a los que pertenece
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/registro_asistencia_2.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    Debe identificar el curso a registrar la asistencia y le da click en el botón “Ver más” y se redirigirá a la página donde se listan las asistencias.
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/registro_asistencia_3.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="pt-4">
+                    Las asistencias tienen tres estados:
+                </p>
+                <ol>
+                    <li>Estado en el cual la asistencia se encuentra registrada</li>
+                    <li>Estado en el cual la asistencia está habilitada y el estudiante puede registrar la asistencia dando click en el botón “Registrar Asistencia”</li>
+                    <li>Estado en el cual la asistencia está inhabilitada y el estudiante no puede registrar la asistencia, pero sí puede registrar una excusa</li>
+                </ol>
+                <p class="pb-4">
+                    En caso de necesitar registrar una excusa, se da click en el botón “Presentar Excusa” y este le abrirá un formulario donde debe ingresar la justificación y se puede registrar un pdf de soporte de ser necesario. 
+                </p>
+                
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/registro_asistencia_4.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    Posterior a llenar los datos correspondientes se le da click en el botón “Enviar Excusa” y esta excusa se le cargará al profesor.
+                </p>
+
+            </div>
+
+            <div class="tab-pane fade p-3" id="list-perfil-estudiante" role="tabpanel" aria-labelledby="list-perfil-estudiante-list">
+                <h3 class="text-center border-bottom">Perfil Estudiante</h3>
+                
+                <p class="py-4">
+                    Para ir a la página del perfil del estudiante, debe dar click en el botón donde aparece el nombre completo del estudiante el cual abre un menú desplegable donde se debe dar click en el botón “Perfil” como se muestra a continuación.
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/perfil_estudiante_1.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+                <p class="py-4">
+                    En el perfil del estudiante se le listará la información que brinda el SIA, la cual es extraída del listado que cargó el profesor al crear el curso, esta información es el rol, nombres, apellidos, documento de identidad, programa académico, correo y contraseña. Estos datos no pueden ser modificados.
+                    <br><br>
+                    También cargará la información de los cursos a los que pertenece, la cantidad de veces que se ha tomado asistencia en ese grupo y el porcentaje de asistencia del estudiante.
+
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/perfil_estudiante_2.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+
+            </div>
+
+            
+
+        </div>
+    </div>
+</div>
+</div>
+
+
+{% endblock %}

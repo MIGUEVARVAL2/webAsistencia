@@ -7,12 +7,12 @@ class actualizar_grupo_estudiantes:
 
     #Inicializa con los datos del archivo y el id del grupo
     def __init__(self, datos_archivo,id_grupo):
-        self.datos_archivo = pd.read_excel(datos_archivo)
-        self.id_grupo= id_grupo
+        self.__datos_archivo = pd.read_excel(datos_archivo)
+        self.__id_grupo= id_grupo
 
     def modificar_datos_lista(self):
         #Lee el archivo de excel el cual es un formato exacto del SIA, separa los nombres y los apellido, separa el plan de estudio y elimina las columnas que no se necesitan
-        df = self.datos_archivo.copy()
+        df = self.__datos_archivo.copy()
         nombres_apellidos = df['APELLIDOS Y NOMBRE'].str.split(',', expand=True)
         df['NOMBRES'] = nombres_apellidos[1].str.title()
         df['APELLIDOS'] = nombres_apellidos[0].str.title()
@@ -27,7 +27,7 @@ class actualizar_grupo_estudiantes:
     
     def validar_estudiantes_eliminados(self,datos):
         #Obtiene la lista de estudiantes del grupo y verifica si el documento del estudiante no está en el archivo, en caso de que no esté se cambia el estado de la inscripción a False lo que significa que está inactivo
-        lista_estudiantes= Estudiantes.objects.filter(grupos=self.id_grupo)
+        lista_estudiantes= Estudiantes.objects.filter(grupos=self.__id_grupo)
         #Contador para usuarios eliminados
         cant_eliminados=0
         #Ciclo para recorrer los estudiantes del grupo
@@ -46,7 +46,7 @@ class actualizar_grupo_estudiantes:
 
     def cargar_estudiantes(self,datos):
         #Obtiene la lista de estudiantes del grupo, verifica si el estudiante es nuevo y revisa si tenía estado inactivo y lo cambia a activo y en caso de no tener registro, se crea el estudiante y se inscribe en el grupo
-        grupo = Grupos.objects.get(id_grupo=self.id_grupo)
+        grupo = Grupos.objects.get(id_grupo=self.__id_grupo)
         #Contador para usuarios nuevos
         cant_nuevos=0
         #Ciclo para recorrer los datos del archivo

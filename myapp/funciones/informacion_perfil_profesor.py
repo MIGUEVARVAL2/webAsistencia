@@ -6,26 +6,27 @@ class informacion_profesor:
         
         def __init__(self, profesor):
             #Obtiene el profesor
-            self.profesor = Profesores.objects.get(id=profesor)
+            self.__profesor = Profesores.objects.get(id=profesor)
 
-        def datos_profesor(self):
-            return self.profesor
+        @property
+        def get_datos_profesor(self):
+            return self.__profesor
         
         def editar_contrasenia(self, contrasenia):
             #Edita la contraseña del profesor
-            user= User.objects.get(id=self.profesor.user.id)
+            user= User.objects.get(id=self.__profesor.user.id)
             user.password = contrasenia
             user.save()
             return True
         
         def semestres(self):
             #Obtiene los años y semestres de los cursos del profesor
-            semestre = Cursos.objects.filter(profesor_curso=self.profesor).values('anio_curso', 'semestre_curso').distinct().order_by('-anio_curso', '-semestre_curso')
+            semestre = Cursos.objects.filter(profesor_curso=self.__profesor).values('anio_curso', 'semestre_curso').distinct().order_by('-anio_curso', '-semestre_curso')
             return semestre
         
         def listar_asistencia(self):
             #Obtiene los grupos del profesor y las asistencias del grupo
-            cursos = Grupos.objects.filter(curso_grupo__profesor_curso=self.profesor).order_by('-curso_grupo__anio_curso', '-curso_grupo__semestre_curso', 'curso_grupo__nombre_curso', 'nombre_grupo')
+            cursos = Grupos.objects.filter(curso_grupo__profesor_curso=self.__profesor).order_by('-curso_grupo__anio_curso', '-curso_grupo__semestre_curso', 'curso_grupo__nombre_curso', 'nombre_grupo')
             #Ciclo para recorrer los cursos y realizar los calculos correspondientes
             for curso in cursos:
                 #Obtiene las asistencias del grupo
@@ -59,11 +60,11 @@ class informacion_profesor:
                 ultimo_semestre = ultimo_periodo[1]
             #En caso contrario se obtienen los cursos del último semestre
             else:
-                ultimo_periodo = Cursos.objects.filter(profesor_curso=self.profesor).latest('anio_curso', 'semestre_curso')
+                ultimo_periodo = Cursos.objects.filter(profesor_curso=self.__profesor).latest('anio_curso', 'semestre_curso')
                 ultimo_anio = ultimo_periodo.anio_curso
                 ultimo_semestre = ultimo_periodo.semestre_curso
             #Obtiene los cursos del profesor y los ordena
-            cursos = Cursos.objects.filter(profesor_curso=self.profesor,anio_curso=ultimo_anio,semestre_curso=ultimo_semestre).order_by('nombre_curso')
+            cursos = Cursos.objects.filter(profesor_curso=self.__profesor,anio_curso=ultimo_anio,semestre_curso=ultimo_semestre).order_by('nombre_curso')
     
             valor_x = []
             valor_y = []

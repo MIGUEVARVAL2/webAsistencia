@@ -14,16 +14,17 @@
         {% csrf_token %}
         <div class="row pb-3 d-flex justify-content-center">
 
-            <button type="button" class="col-12 col-md-3 mr-2 ml-2 mb-2 btn btn-outline-success btn-tomar-asistencia " data-bs-toggle="modal"
+            <button type="button" class="col-12 col-md-3 mx-1 mb-2 btn btn-outline-success btn-tomar-asistencia " data-bs-toggle="modal"
                 data-bs-target="#crearFormularioAsistenciaModal">
                 Crear Formulario de Asistencia
             </button>
-            <button class="col-12 col-md-3 mr-2 ml-2 mb-2 btn btn-outline-success btn-tomar-asistencia" type="submit"
+            <button class="col-12 col-md-3 mx-1 mb-2 btn btn-outline-success btn-tomar-asistencia" type="submit"
                 name="VerEstudiantes">Ver Estudiantes</button>
-            <button type="button" class="col-12 col-md-3 mr-2 ml-2 mb-2 btn btn-outline-success btn-tomar-asistencia" data-bs-toggle="modal"
+            <button type="button" class="col-12 col-md-3 mx-1 mb-2 btn btn-outline-success btn-tomar-asistencia" data-bs-toggle="modal"
                 data-bs-target="#editarCursoModal">
                 Editar Grupo
             </button>
+            <a href="{% url 'descargar_reporte' grupo=grupo.id_grupo %}" download="reporte.xlsx" class="col-12 col-md-2 mx-1 mb-2 btn btn-outline-success btn-tomar-asistencia">Reporte</a>
         </div>
     </form>
     <form method="POST">

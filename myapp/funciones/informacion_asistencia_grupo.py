@@ -1,15 +1,16 @@
-from ..models import Asistencia, Asistencia_estudiante
+from ..models import Asistencia, Asistencia_estudiante, Estudiantes
 import plotly.graph_objects as go
 import plotly.offline as opy
+import pandas as pd
 
 class informacion_listado_asistencia:
 
     def __init__(self, id_grupo):
-        self.id_grupo = id_grupo
+        self.__id_grupo = id_grupo
 
     def listar_asistencia(self):
         #Obtiene las asistencias del grupo y las lista de forma descendente
-        asistencias = Asistencia.objects.filter(grupo=self.id_grupo).order_by('-fecha_asistencia')
+        asistencias = Asistencia.objects.filter(grupo=self.__id_grupo).order_by('-fecha_asistencia')
         return asistencias
     
     def info_asistencia(self, asistencias):
@@ -57,10 +58,41 @@ class informacion_listado_asistencia:
 
         return datos,grafica
     
-
-
+    def generar_reporte(self):
+        # Obtener todas las asistencias del grupo
+        asistencias = self.listar_asistencia()
         
+        # Obtener todos los estudiantes del grupo
+        estudiantes = Estudiantes.objects.filter(
+            inscripcion__grupo=self.__id_grupo
+        )
         
+        # Crear una lista para almacenar los datos del reporte
+        reporte = []
+        
+        # Agregar la primera fila con los nombres de las asistencias
+        nombres_asistencias = [f'{asistencia.id_asistencia}-{asistencia.fecha_asistencia.strftime("%d/%m/%Y")}' for asistencia in asistencias]
+        reporte.append(['Documento']+['Estudiante'] + nombres_asistencias)
+        
+        # Recorrer cada estudiante
+        for estudiante in estudiantes:
+            # Crear una lista para almacenar los datos del estudiante
+            datos_estudiante = [estudiante.documento_estudiante,estudiante.nombres_estudiante]
+            
+            # Recorrer cada asistencia
+            for asistencia in asistencias:
+                # Verificar si el estudiante asistió a la asistencia
+                asistencia_estudiante = Asistencia_estudiante.objects.filter(asistencia=asistencia, estudiante=estudiante).first()
+                if asistencia_estudiante and asistencia_estudiante.registro_Asistencia:
+                    datos_estudiante.append('Sí')
+                else:
+                    datos_estudiante.append('No')
+            
+            # Agregar los datos del estudiante al reporte
+            reporte.append(datos_estudiante)
+        df_reporte = pd.DataFrame(reporte[1:], columns=reporte[0])
+        
+        return df_reporte
     
     def ejecutar(self):
         asistencia= self.listar_asistencia()
@@ -70,7 +102,7 @@ class informacion_listado_asistencia:
     
     def buscar_asistencia(self,fecha):
         #Busca la asistencia por fecha y la ordena de forma descendente
-        asistencia= Asistencia.objects.filter(grupo=self.id_grupo,fecha_asistencia=fecha).order_by('-fecha_asistencia')
+        asistencia= Asistencia.objects.filter(grupo=self.__id_grupo,fecha_asistencia=fecha).order_by('-fecha_asistencia')
         datos,_= self.info_asistencia(asistencia)
         return datos
 

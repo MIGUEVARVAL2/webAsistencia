@@ -4,7 +4,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .funciones import informacion_cursos_estudiantes, crear_estudiantes, informacion_asistencia_grupo, actualizar_estudiantes, informacion_tomar_asistencia, informacion_perfil_profesor, informacion_perfil_estudiante, informacion_estudiante_profesor
-
+import pandas as pd
+from io import BytesIO
+from django.http import FileResponse
 
 # Create your views here.
 
@@ -318,6 +320,44 @@ def informacion_curso(request, grupo):
         return redirect('index')
 
 @login_required
+def descargar_reporte(request,grupo):
+    if  'profesor_id' in request.session:
+    # Genera el DataFrame
+        grupo = Grupos.objects.get(id_grupo=grupo)
+        listar_asistencia= informacion_asistencia_grupo.informacion_listado_asistencia(grupo.id_grupo)
+        reporte = listar_asistencia.generar_reporte()
+
+        # Crea un objeto BytesIO
+        excel_file = BytesIO()
+
+        # Escribe el DataFrame en el objeto BytesIO como un archivo de Excel
+        with pd.ExcelWriter(excel_file, engine='xlsxwriter') as writer:
+            reporte.to_excel(writer, sheet_name='Sheet1')
+
+            # Obtiene el workbook
+            workbook = writer.book
+
+            # Obtiene la hoja de trabajo
+            worksheet = writer.sheets['Sheet1']
+
+            # Establece el ancho de las columnas
+            for i, col in enumerate(reporte.columns):
+                # El índice de la columna en Excel es 1 más que el índice de la columna en pandas
+                column = i + 1
+
+                # Establece el ancho de la columna (por ejemplo, 20)
+                worksheet.set_column(column, column, 20)
+            worksheet.set_column(2,2, 55)
+
+        # Mueve el cursor al principio del archivo
+        excel_file.seek(0)
+
+        # Crea una respuesta con el archivo de Excel
+        response = FileResponse(excel_file, as_attachment=True, filename='reporte.xlsx')
+
+        return response
+
+@login_required
 def listar_estudiantes_curso(request,grupo):
     #Valido si el usuario tiene una sesión activa como profesor
     if  'profesor_id' in request.session:
@@ -421,7 +461,7 @@ def perfil_profesor(request):
         #Obtengo los datos del profesor, semestres y la información de las asistencias
         profesor = Profesores.objects.get(id=request.session['profesor_id'])
         informacion= informacion_perfil_profesor.informacion_profesor(profesor.id)
-        datos_profesor= informacion.datos_profesor()
+        datos_profesor= informacion.get_datos_profesor()
         semestres= informacion.semestres()
         informacion_asistencia = informacion.listar_asistencia()
 
@@ -458,7 +498,7 @@ def informacion_estudiante(request,id_estudiante):
         #Obtengo los datos del profesor, el estudiante y listo la información de las asistencias
         profesor= Profesores.objects.get(id=request.session['profesor_id'])
         estudiante= Estudiantes.objects.get(id=id_estudiante)
-        informacion= informacion_estudiante_profesor.informacion_estudiante(estudiante.id)
+        informacion= informacion_estudiante_profesor.informacion_estudiante_profesor(estudiante.id)
         informacion_asistencia= informacion.listar_asistencia(profesor.id)
         return render(request, 'profesores/informacion_estudiante.html', {'profesor': profesor, 'datos_estudiante': estudiante, 'informacion_asistencia':informacion_asistencia})
     else:
@@ -559,7 +599,7 @@ def perfil_estudiante(request):
         #Obtengo los datos del estudiante y de la información de las asistencias
         estudiante = Estudiantes.objects.get(id=request.session['estudiante_id'])
         informacion= informacion_perfil_estudiante.informacion_estudiante(estudiante.id)
-        datos_estudiante= informacion.datos_estudiante()
+        datos_estudiante= informacion.get_datos_estudiante()
         informacion_asistencia,periodo = informacion.listar_asistencia()
         return render(request, 'estudiantes/perfil_estudiante.html', {'estudiante': estudiante, 'datos_estudiante':datos_estudiante, 'informacion_asistencia':informacion_asistencia, 'periodo': periodo})
     else:

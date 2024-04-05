@@ -5,13 +5,14 @@ class informacion_estudiante:
         
         def __init__(self, estudiante):
             #Obtiene el estudiante
-            self.estudiante = Estudiantes.objects.get(id=estudiante)
+            self.__estudiante = Estudiantes.objects.get(id=estudiante)
 
-        def datos_estudiante(self):
-            return self.estudiante
+        @property
+        def get_datos_estudiante(self):
+            return self.__estudiante
         
         def editar_contrasenia(self, contrasenia):
-            user= User.objects.get(id=self.estudiante.user.id)
+            user= User.objects.get(id=self.__estudiante.user.id)
             user.password = contrasenia
             user.save()
             return True
@@ -22,8 +23,8 @@ class informacion_estudiante:
             ultimo_anio = ultimo_periodo.anio_curso
             #obtengo el último semestre
             ultimo_semestre = ultimo_periodo.semestre_curso
-            grupos = Grupos.objects.filter(estudiantes_grupo=self.estudiante, curso_grupo__anio_curso=ultimo_anio, curso_grupo__semestre_curso=ultimo_semestre)
-            asistencias_estudiante = Asistencia_estudiante.objects.filter(estudiante=self.estudiante, asistencia__grupo__curso_grupo__anio_curso=ultimo_anio, asistencia__grupo__curso_grupo__semestre_curso=ultimo_semestre)
+            grupos = Grupos.objects.filter(estudiantes_grupo=self.__estudiante, curso_grupo__anio_curso=ultimo_anio, curso_grupo__semestre_curso=ultimo_semestre)
+            asistencias_estudiante = Asistencia_estudiante.objects.filter(estudiante=self.__estudiante, asistencia__grupo__curso_grupo__anio_curso=ultimo_anio, asistencia__grupo__curso_grupo__semestre_curso=ultimo_semestre)
             #Guardo los datos necesarios para listar la asistencia del estudiante
             data = []
             #Ciclo para recorrer los grupos

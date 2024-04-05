@@ -4,11 +4,11 @@ from ..models import Cursos,Grupos, Inscripcion
 class informacion_listado_cursos:
 
     def __init__(self, id_profesor):
-        self.id_profesor = id_profesor
+        self.__id_profesor = id_profesor
 
     def listar_cursos(self):
         #listo los cursos del profesor y los ordeno 
-        cursos = Cursos.objects.filter(profesor_curso=self.id_profesor).order_by('-anio_curso', '-semestre_curso', '-id_curso')
+        cursos = Cursos.objects.filter(profesor_curso=self.__id_profesor).order_by('-anio_curso', '-semestre_curso', '-id_curso')
         return cursos
     
     def cantidad_estudiantes(self, grupo):
@@ -46,7 +46,7 @@ class informacion_listado_cursos:
 
     def anios_semestre(self):
         #Obtengo los años y semestres de los cursos del profesor    
-        anios = Cursos.objects.filter(profesor_curso=self.id_profesor).values('anio_curso', 'semestre_curso').distinct().order_by('-anio_curso', '-semestre_curso')
+        anios = Cursos.objects.filter(profesor_curso=self.__id_profesor).values('anio_curso', 'semestre_curso').distinct().order_by('-anio_curso', '-semestre_curso')
         return anios
 
     def buscar_cursos(self, nombre, anio='', semestre=''):
@@ -54,7 +54,7 @@ class informacion_listado_cursos:
         nombre = '' if nombre is None else nombre
         anio = '' if anio is None else anio
         semestre = '' if semestre is None else semestre
-        cursos = Cursos.objects.filter(profesor_curso=self.id_profesor, nombre_curso__contains=nombre, anio_curso__contains=anio, semestre_curso__contains=semestre).order_by('-id_curso')
+        cursos = Cursos.objects.filter(profesor_curso=self.__id_profesor, nombre_curso__contains=nombre, anio_curso__contains=anio, semestre_curso__contains=semestre).order_by('-id_curso')
         datos = self.listar_grupos(cursos)
         return datos
 

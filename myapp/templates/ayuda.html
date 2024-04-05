@@ -52,8 +52,8 @@
 
                 </div>
                 <p class="py-4">
-                    Después de darle en el botón “Registrarse”, cargara un formulario de registro donde debe ingresar los datos correspondientes para poder registrarse como profesor.
-                <br>
+                    Después de darle en el botón “Registrarse”, cargará un formulario de registro donde debe ingresar los datos correspondientes para poder registrarse como profesor.
+                <br><br>
                     Nota: El correo electrónico debe ser el correo institucional (@unal.edu.co) y la contraseña debe cumplir con los requisitos descritos debajo del campo de contraseña.
 
                 </p>
@@ -90,15 +90,17 @@
                 </div>
 
                 <p class="py-4">
-                    El archivo de Excel debe contener el siguiente formato para que se carguen correctamente los estudiantes
+                    El archivo de Excel debe contener el siguiente formato para que se carguen correctamente los estudiantes. 
+                    <br><br>
+                    <strong>Nota: </strong> En caso de que el Excel no cumpla con el formato, los estudiantes no se cargarán al grupo y se deben ingresar desde el formulario de actualizar estudiantes
                 </p>
                 <div class="text-center">
                     <img src="{% static 'img_ayuda/crear_curso_3.png'%}" class="img-fluid rounded" alt="...">   
                 </div>
 
                 <p class="py-4">
-                    Este formato debe contener el Apellido seguido de una coma y el nombre, en la segunda columna debe ir el documento del estudiante, en la tercera columna debe ir el código del plan – Nombre del plan, y en la quinta columna debe ir el correo. (Este es el formato que proporciona el SIA cuando se saca el exporte de estudiantes)
-                    <br>
+                    Este formato debe contener en la primer columna los apellidos seguidos de una coma y los nombres, en la segunda columna debe ir el documento del estudiante, en la tercer columna debe ir el código del plan – Nombre del plan, y en la quinta columna debe ir el correo. (Este es el formato que proporciona el SIA cuando se saca el exporte de estudiantes)
+                    <br><br>
                     Después de darle en el botón guardar, se crea el curso, el grupo, los estudiantes y se asocian al curso y se cargan en la página “Mis Cursos”.
                 </p>
                 <div class="text-center">
@@ -138,7 +140,7 @@
                 </div>
 
                 <p class="py-4">
-                    En esta página se puede ver el listado de estudiantes, editar el grupo, crear una asistencia y ver la gráfica que muestra el porcentaje de asistencia del grupo.
+                    En esta página se puede ver el listado de estudiantes, editar el grupo, crear una asistencia, generar un reporte de asistencia (Archivo de Excel) y ver la gráfica que muestra el porcentaje de asistencia del grupo.
                     <br><br>
                     Para crear una asistencia se debe dar click en el botón “Crear Formulario de Asistencia”.
                 </p>
@@ -208,24 +210,35 @@
                 <h3 class="text-center border-bottom">Ver Asistencia, Inasistencia y Excusas</h3>
                 
                 <p class="py-4">
-                    En la asistencia, el profesor puede ver los estudiantes que ya registraron la asistencia dentro de la sección “Estudiantes Presentes” y los que no la han registrado dentro de la sección “Estudiantes Ausentes” como se muestra a continuación.
+                    En la página de mis cursos, debe identificar el curso y el grupo y darle click en el botón “Información del Curso” y se redirigirá a la página donde se listan las asistencias del curso como se muestra a continuación.
                 </p>
                 <div class="text-center">
                     <img src="{% static 'img_ayuda/ver_asistencia_1.png'%}" class="img-fluid rounded" alt="...">   
+                </div>
+                <p class="py-4">
+                    Para ver la información de la asistencia, el profesor tiene una vista previa de la cantidad de asistencias e inasistencias para esa fecha y para ver más información le debe dar clcik en el botón “Información de la Asistencia”.
+                </p>
+                <br><br>
+                
+                <p class="py-4">
+                    En la asistencia, el profesor puede ver los estudiantes que ya registraron la asistencia dentro de la sección “Estudiantes Presentes” y los que no la han registrado dentro de la sección “Estudiantes Ausentes” como se muestra a continuación.
+                </p>
+                <div class="text-center">
+                    <img src="{% static 'img_ayuda/ver_asistencia_2.png'%}" class="img-fluid rounded" alt="...">   
                 </div>
                 
                 <p class="py-4">
                     Para poder ver las excusas, en la sección “Estudiantes Ausentes” se marcará en rojo en la parte de excusa para los que hayan mandado excusa.
                 </p>
                 <div class="text-center">
-                    <img src="{% static 'img_ayuda/ver_asistencia_2.png'%}" class="img-fluid rounded" alt="...">   
+                    <img src="{% static 'img_ayuda/ver_asistencia_3.png'%}" class="img-fluid rounded" alt="...">   
                 </div>
 
                 <p class="py-4">
                     Para ver la excusa, se debe identificar al estudiante que envió la excusa y se le da click en el botón “Ver Excusa”, esto abrirá una ventana emergente que muestra la excusa con el soporte correspondiente (si aplica).
                 </p>
                 <div class="text-center">
-                    <img src="{% static 'img_ayuda/ver_asistencia_3.png'%}" class="img-fluid rounded" alt="...">   
+                    <img src="{% static 'img_ayuda/ver_asistencia_4.png'%}" class="img-fluid rounded" alt="...">   
                 </div>
 
                 <p class="py-4">
@@ -343,5 +356,13 @@
 </div>
 </div>
 
+<div style="position: fixed; bottom: 20px; left: 20px;">
+    <button class="btn btn-success" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);" onclick="location.href='{{ request.META.HTTP_REFERER }}'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+    </button>
+</div>
 
 {% endblock %}

@@ -573,8 +573,8 @@ def registrar_asistencia(request,grupo):
                     #Envío de excusa en caso de que el estudiante la presente, se guarda la excusa y el soporte
                     excusa = request.POST.get('justificacion')
                     soporte = request.FILES.get('documento_soporte', None)
-                    #Para los casos en los que la asistencia lleva más de 30 días no la podrá presentar
-                    if (datetime.date.today() - i.asistencia.fecha_asistencia).days < 30:
+                    #Para los casos en los que la asistencia lleva más de 5 días no la podrá presentar
+                    if (datetime.date.today() - i.asistencia.fecha_asistencia).days < 5:
                         excusa_estudiante= Excusa_falta_estudiante.objects.create(
                             motivo=excusa,
                             soporte_excusa=soporte,

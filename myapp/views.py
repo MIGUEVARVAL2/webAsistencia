@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render, redirect
 from .models import Excusa_falta_estudiante, Profesores, Cursos, Estudiantes, Grupos, Asistencia, Asistencia_estudiante
 from django.contrib.auth.models import User
@@ -20,7 +21,6 @@ def ayuda(request):
 
 
 def index(request):
-    print("ip index",request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', '')))
     #Recibo todas las solicitudes POST (Formularios)
     if request.method == 'POST':
         #Verifico de qué formulario proviene la solicitud
@@ -461,7 +461,7 @@ def perfil_profesor(request):
         #Obtengo los datos del profesor, semestres y la información de las asistencias
         profesor = Profesores.objects.get(id=request.session['profesor_id'])
         informacion= informacion_perfil_profesor.informacion_profesor(profesor.id)
-        datos_profesor= informacion.get_datos_profesor()
+        datos_profesor= informacion.get_datos_profesor
         semestres= informacion.semestres()
         informacion_asistencia = informacion.listar_asistencia()
 
@@ -564,7 +564,6 @@ def registrar_asistencia(request,grupo):
 
                 if f'registar_{i.id_asistencia_estudiante}' in request.POST:
                     #Registro de asistencia
-                    print("Registar asistencia" , i.id_asistencia_estudiante)
                     asistencia_estudiante= Asistencia_estudiante.objects.get(id_asistencia_estudiante=i.id_asistencia_estudiante)
                     asistencia_estudiante.registro_Asistencia=True
                     asistencia_estudiante.save()
@@ -574,16 +573,22 @@ def registrar_asistencia(request,grupo):
                     #Envío de excusa en caso de que el estudiante la presente, se guarda la excusa y el soporte
                     excusa = request.POST.get('justificacion')
                     soporte = request.FILES.get('documento_soporte', None)
-                    excusa_estudiante= Excusa_falta_estudiante.objects.create(
-                        motivo=excusa,
-                        soporte_excusa=soporte,
-                        estudiante=estudiante,
-                        asistencia_estudiante=i
-                    )
-                    #Para los casos en los que tenga excusa, se registra la excusa en la asistencia (Todavía no se está usando pero sirve para posterior información)
-                    i.excusa=True
-                    i.save()
-                    return redirect('registrar_asistencia', grupo=grupo.id_grupo)
+                    #Para los casos en los que la asistencia lleva más de 30 días no la podrá presentar
+                    if (datetime.date.today() - i.asistencia.fecha_asistencia).days < 30:
+                        excusa_estudiante= Excusa_falta_estudiante.objects.create(
+                            motivo=excusa,
+                            soporte_excusa=soporte,
+                            estudiante=estudiante,
+                            asistencia_estudiante=i
+                        )
+                        #Para los casos en los que tenga excusa, se registra la excusa en la asistencia (Todavía no se está usando pero sirve para posterior información)
+                        i.excusa=True
+                        i.save()
+                        return redirect('registrar_asistencia', grupo=grupo.id_grupo)
+                    else:
+                        return redirect('registrar_asistencia', grupo=grupo.id_grupo)
+
+                    
                     
         else:
             return render(request, 'estudiantes/registrar_asistencia.html', {'grupo': grupo, 'estudiante': estudiante, 'asistencias': asistencia})
@@ -599,7 +604,7 @@ def perfil_estudiante(request):
         #Obtengo los datos del estudiante y de la información de las asistencias
         estudiante = Estudiantes.objects.get(id=request.session['estudiante_id'])
         informacion= informacion_perfil_estudiante.informacion_estudiante(estudiante.id)
-        datos_estudiante= informacion.get_datos_estudiante()
+        datos_estudiante= informacion.get_datos_estudiante
         informacion_asistencia,periodo = informacion.listar_asistencia()
         return render(request, 'estudiantes/perfil_estudiante.html', {'estudiante': estudiante, 'datos_estudiante':datos_estudiante, 'informacion_asistencia':informacion_asistencia, 'periodo': periodo})
     else:

@@ -157,8 +157,9 @@
         <h5 class="modal-title" id="editPasswordModalLabel">Editar Contraseña</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <form method="POST">
+      <form method="POST">
+        {% csrf_token %}
+        <div class="modal-body">
           <div class="mb-3">
             <label for="contraActual" class="form-label">Contraseña Actual</label>
             <input type="password" id="contraActual" name="contraActual" class="form-control"
@@ -174,11 +175,11 @@
             <input type="password" id="confirmContra" name="confirmarContra" class="form-control"
               aria-label="Recipient's username" aria-describedby="basic-addon2">
           </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="submit" name="cambiarContrasenia" class="btn btn-success">Guardar Cambios</button>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" name="cambiarContrasenia" class="btn btn-success">Guardar Cambios</button>
+        </div>
       </form>
     </div>
   </div>

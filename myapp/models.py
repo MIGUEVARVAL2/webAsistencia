@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
  
 # Información de los profesores
 class Profesores(models.Model):
+    id= models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE,null=True)
     documento_profesor = models.CharField(max_length=20, null=False)
     nombres_profesor = models.CharField(max_length=100, null=False)
@@ -18,6 +19,7 @@ class PlanesEstudio(models.Model):
 
 #Información de los estudiantes, por defecto la contraseña es el documento del estudiante
 class Estudiantes(models.Model):
+    id= models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE,null=True)
     documento_estudiante = models.CharField(max_length=20, null=False)
     nombres_estudiante = models.CharField(max_length=100, null=False)

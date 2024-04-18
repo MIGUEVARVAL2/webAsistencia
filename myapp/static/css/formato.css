@@ -14,6 +14,10 @@ body h1,h2,h3{
     text-overflow: ellipsis;
 }
 
+.container{
+    min-height: 80vh;
+}
+
 .contenedor-index {  
     width: 100%;
     height: 100vh;
@@ -97,4 +101,8 @@ body h1,h2,h3{
     border-color: #198754;
     background-color: #f7fffc;
     padding-right: calc(1.5em + .75rem);
+}
+
+.modal-content{
+    padding: 15px;
 }

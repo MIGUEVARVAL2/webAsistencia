@@ -70,7 +70,7 @@ class Excusa_falta_estudiante(models.Model):
     id_excusa = models.AutoField(primary_key=True) 
     motivo = models.CharField(max_length=300, null=False) 
     fecha_creacion_excusa = models.DateTimeField(auto_now_add=True)
-    soporte_excusa = models.FileField(upload_to='soportes_excusas/',null=True, blank=True)
+    soporte_excusa = models.URLField(max_length=2000, null=True)
     excusa_valida= models.BooleanField(default=False)
     estudiante = models.ForeignKey(Estudiantes, on_delete=models.CASCADE) 
     asistencia_estudiante = models.ForeignKey(Asistencia_estudiante, on_delete=models.CASCADE)

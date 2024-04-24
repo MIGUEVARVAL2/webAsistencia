@@ -4,7 +4,8 @@
 
 
 <div class="container mt-3 ">
-    <h3 class="pb-3" style="border-bottom: 2px solid black;">Listado de Asistencia </h3>
+    <h3 class="pb-3 text-center" style="border-bottom: 2px solid black;" >{{ grupo.curso_grupo.nombre_curso }} - Grupo {{grupo.nombre_grupo}} </h3>
+    <h4 class="py-3" >Listado de Asistencia </h4>
     <br>
     <form method="POST">
         {% csrf_token %}
@@ -17,7 +18,7 @@
     </form>
     {% if asistencias %}
     <div class="alert alert-secondary" role="alert">
-        En caso de que haya pasado más de 5 días de la fecha de la asistencia, no se podrá registrar excusa.
+        En caso de que haya pasado más de 7 días calendario de la fecha de la asistencia, no se podrá registrar excusa.
     </div>
     {% for asistencia in asistencias %}
     {% if asistencia.registro_Asistencia %}
@@ -79,10 +80,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="mb-3">
-                                        <label for="formFile" class="form-label">Anexar Documento PDF
+                                        <label for="formFile" class="form-label">Anexar link donde se puede visualizar el documento PDF
                                             (Opcional)</label>
-                                        <input class="form-control" type="file" id="archivo" name="documento_soporte"
-                                            accept=".pdf">
+                                        <input class="form-control" type="text" id="archivo" name="documento_soporte"
+                                        placeholder="Debe tener permisos de visualiazción">
                                     </div>
                                 </div>
                             </div>

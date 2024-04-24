@@ -89,11 +89,14 @@ WSGI_APPLICATION = 'web_asistencia.wsgi.application'
 #Base de datos con posgrest
 """ 
 DATABASES = {
-    'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
-        default='postgresql://postgres:postgres@localhost:5432/mysite',
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',   # Tipo de motor de base de datos
+        'NAME': 'database_asistenciaun ',            # Nombre de la base de datos
+        'USER': 'usuarioasistenciaun',               # Nombre de usuario de PostgreSQL
+        'PASSWORD': ''asistenciaun12345*',           # Contraseña de PostgreSQL
+        'HOST': 'localhost',                         # Dirección del servidor de la base de datos
+        'PORT': '5432',                              # Puerto de la base de datos
+    }
 }
  """
 

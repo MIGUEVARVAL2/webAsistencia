@@ -14,53 +14,84 @@
         {% csrf_token %}
         <div class="row pb-3 d-flex justify-content-center">
 
-            <button type="button" class="col-12 col-md-3 mx-1 mb-2 btn btn-outline-success btn-tomar-asistencia " data-bs-toggle="modal"
-                data-bs-target="#crearFormularioAsistenciaModal">
+            <button type="button" class="col-12 col-md-3 mx-1 mb-2 btn btn-outline-success btn-tomar-asistencia "
+                data-bs-toggle="modal" data-bs-target="#crearFormularioAsistenciaModal">
                 Crear Formulario de Asistencia
             </button>
             <button class="col-12 col-md-3 mx-1 mb-2 btn btn-outline-success btn-tomar-asistencia" type="submit"
                 name="VerEstudiantes">Ver Estudiantes</button>
-            <button type="button" class="col-12 col-md-3 mx-1 mb-2 btn btn-outline-success btn-tomar-asistencia" data-bs-toggle="modal"
-                data-bs-target="#editarCursoModal">
+            <button type="button" class="col-12 col-md-3 mx-1 mb-2 btn btn-outline-success btn-tomar-asistencia"
+                data-bs-toggle="modal" data-bs-target="#editarCursoModal">
                 Editar Grupo
             </button>
-            <a href="{% url 'descargar_reporte' grupo=grupo.id_grupo %}" download="reporte.xlsx" class="col-12 col-md-2 mx-1 mb-2 btn btn-outline-success btn-tomar-asistencia">Reporte</a>
+            <a href="{% url 'descargar_reporte' grupo=grupo.id_grupo %}" download="reporte.xlsx"
+                class="col-12 col-md-2 mx-1 mb-2 btn btn-outline-success btn-tomar-asistencia">Reporte</a>
         </div>
     </form>
     <form method="POST">
         {% csrf_token %}
-    <div class="input-group mb-3">
-        <input type="date" class="form-control" aria-label="Search" aria-describedby="search-button" name="fecha_asistencia" required>
-        <div class="input-group-append">
-            <button class="btn btn-outline-success" type="submit" name="buscar_asistencia" id="search-button">Buscar Asistencia</button>
-        </div>
+        <div class="input-group mb-3">
+            <input type="date" class="form-control" aria-label="Search" aria-describedby="search-button"
+                name="fecha_asistencia" required>
+            <div class="input-group-append">
+                <button class="btn btn-outline-success" type="submit" name="buscar_asistencia" id="search-button">Buscar
+                    Asistencia</button>
+            </div>
     </form>
-    </div>
-    <div class="row">
-        {% if asistencias%}
-        {% for asistencia in asistencias %}
-        <div class="col-md-4">
-            <form method="POST">
-                {% csrf_token %}
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Asistencia - {{ asistencia.0.fecha_asistencia|date:"d/m/Y" }}</h5>
-                        <p class="card-text">
-                            Código Asistencia: {{ asistencia.0.id_asistencia }} <br>
-                            Cantidad Inasistencias: {{ asistencia.1 }} <br>
-                            Porcentaje de Asistencia: {{ asistencia.2 }}%
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-outline-success" name="info_{{asistencia.0.id_asistencia}}">Información de la Asistencia</button>
-                    </div>
+</div>
+<div class="row">
+    {% if asistencias%}
+    {% for asistencia in asistencias %}
+    <div class="col-md-4">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Asistencia - {{ asistencia.0.fecha_asistencia|date:"d/m/Y" }}</h5>
+                    <p class="card-text">
+                        Código Asistencia: {{ asistencia.0.id_asistencia }} <br>
+                        Cantidad Inasistencias: {{ asistencia.1 }} <br>
+                        Porcentaje de Asistencia: {{ asistencia.2 }}%
+                    </p>
                 </div>
-            </form>
-        </div>
-        {% endfor %}
-        {% endif %}
-
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-sm btn-outline-success"
+                        name="info_{{asistencia.0.id_asistencia}}">Información de la Asistencia</button>
+                    <a class="btn btn-sm btn-danger float-end" href="#" data-bs-toggle="modal"
+                        data-bs-target="#eliminar_asistencia_{{asistencia.0.id_asistencia}}">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </div>
+            </div>
+        </form>
     </div>
+    <div class="modal fade" id="eliminar_asistencia_{{asistencia.0.id_asistencia}}" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">Eliminar Curso</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Al eliminar las asistencia {{asistencia.0.fecha_asistencia}}, se eliminarán todas las excusas y
+                    registros de asistencias para esa fecha.
+                </div>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-danger"
+                            name="eliminar_asistencia_{{asistencia.0.id_asistencia}}">Eliminar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+</div>
 </div>
 
 
@@ -75,7 +106,7 @@
             <div class="modal-body">
                 <div class="graph">
                     {{ graph|safe }}
-                  </div>
+                </div>
             </div>
         </div>
     </div>
@@ -92,24 +123,28 @@
             </div>
             <form method="POST" class="row g-3 needs-validation" novalidate>
                 {% csrf_token %}
-            <div class="modal-body">
+                <div class="modal-body">
                     <div class="form-group">
                         <label for="nombreCurso">Nombre del Curso</label>
-                        <input type="text" class="form-control" id="nombreCurso" value="{{grupo.curso_grupo.nombre_curso}}" disabled>
+                        <input type="text" class="form-control" id="nombreCurso"
+                            value="{{grupo.curso_grupo.nombre_curso}}" disabled>
                     </div>
                     <div class="row">
                         <div class="form-group">
                             <label for="grupo">Número del Grupo</label>
-                            <input type="text" class="form-control" id="grupo" name="nuevo_nombre_grupo" value="{{grupo.nombre_grupo}}" required>
+                            <input type="text" class="form-control" id="grupo" name="nuevo_nombre_grupo"
+                                value="{{grupo.nombre_grupo}}" required>
                             <div class="invalid-feedback">Ingrese el nuevo número del grupo</div>
                         </div>
                     </div>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-success" name="actualizar_grupo">Actualizar</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="submit" class="btn btn-danger" name="eliminar_grupo" data-bs-dismiss="modal" onclick="return confirm('¿Estás seguro de que deseas eliminar el grupo?')">Eliminar Grupo</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" name="actualizar_grupo">Actualizar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-danger" name="eliminar_grupo" data-bs-dismiss="modal"
+                        onclick="return confirm('¿Estás seguro de que deseas eliminar el grupo?')">Eliminar
+                        Grupo</button>
+                </div>
             </form>
         </div>
     </div>

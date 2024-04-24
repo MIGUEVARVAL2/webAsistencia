@@ -307,6 +307,15 @@ def informacion_curso(request, grupo):
                         except Exception as e:
                             print(e)
                             return render(request, 'profesores/informacion_curso.html', {'grupo': grupo,'profesor': profesor, 'asistencias': datos, 'graph':graph})
+                    
+                    elif f'eliminar_asistencia_{i[0].id_asistencia}' in request.POST:
+                        try:
+                            asistencia= Asistencia.objects.get(id_asistencia=i[0].id_asistencia)
+                            asistencia.delete()
+                            return redirect('informacion_curso', grupo=grupo.id_grupo)
+                        except Exception as e:
+                            print(e)
+                            return redirect('informacion_curso', grupo=grupo.id_grupo)
 
             #Método get   
             else:
@@ -549,14 +558,14 @@ def registrar_asistencia(request,grupo):
         #Obtengo los datos del estudiante, del grupo y de la asistencia
         estudiante = Estudiantes.objects.get(id=request.session['estudiante_id'])
         grupo = Grupos.objects.get(id_grupo=grupo)
-        asistencia = Asistencia_estudiante.objects.filter(estudiante=estudiante, asistencia__grupo=grupo)
+        asistencia = Asistencia_estudiante.objects.filter(estudiante=estudiante, asistencia__grupo=grupo).order_by('-asistencia__fecha_asistencia')
 
         if request.method == 'POST':
 
             #Busqueda de asistencia por fecha
             if 'buscar_asistencia' in request.POST:
                 fecha = request.POST.get('fecha_asistencia')
-                asistencia = Asistencia_estudiante.objects.filter(estudiante=estudiante, asistencia__grupo=grupo, asistencia__fecha_asistencia=fecha)
+                asistencia = Asistencia_estudiante.objects.filter(estudiante=estudiante, asistencia__grupo=grupo, asistencia__fecha_asistencia=fecha).order_by('-asistencia__fecha_asistencia')
                 return render(request, 'estudiantes/registrar_asistencia.html', {'grupo': grupo, 'estudiante': estudiante, 'asistencias': asistencia})
 
             #Creo un ciclo para tener el post de cada asistencia y poder realizar las acciones
@@ -572,9 +581,9 @@ def registrar_asistencia(request,grupo):
                 elif f'enviar_excusa_{i.id_asistencia_estudiante}' in request.POST:
                     #Envío de excusa en caso de que el estudiante la presente, se guarda la excusa y el soporte
                     excusa = request.POST.get('justificacion')
-                    soporte = request.FILES.get('documento_soporte', None)
+                    soporte = request.POST.get('documento_soporte')
                     #Para los casos en los que la asistencia lleva más de 5 días no la podrá presentar
-                    if (datetime.date.today() - i.asistencia.fecha_asistencia).days < 5:
+                    if (datetime.date.today() - i.asistencia.fecha_asistencia).days < 7:
                         excusa_estudiante= Excusa_falta_estudiante.objects.create(
                             motivo=excusa,
                             soporte_excusa=soporte,
